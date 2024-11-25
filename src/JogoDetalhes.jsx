@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import NavbarInterna from "./assets/navbarInterna";
-import "./Style/JogoDetalhes.css"; // Importa o arquivo CSS
+import "./Style/JogoDetalhes.css";
 
 function JogoDetalhes() {
-  const { id } = useParams(); // ID do jogo obtido a partir da URL
+  const { id } = useParams();
   const [jogo, setJogo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("../Json/jogos.json"); // Busca o arquivo JSON
+        const response = await fetch("../Json/jogos.json");
         const jogos = await response.json();
 
         // Verifica o jogo com o ID correspondente
