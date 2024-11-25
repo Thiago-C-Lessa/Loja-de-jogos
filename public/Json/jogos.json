@@ -1,32 +1,164 @@
 [
   {
-    "id": "3",
+    "id": "1",
     "nome": "Counter-Strike 2",
     "imagem": "/imagem/cs2.jpg",
-    "preco": 150000,
+    "preco": 1499,
+    "descricao": "Há mais de duas décadas, o Counter-Strike oferece uma experiência competitiva de elite moldada por milhões de jogadores mundialmente. Agora, o próximo capítulo da história do CS vai começar. Isso é Counter-Strike 2.",
+    "genero": "competitivo",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "2",
+    "nome": "The Witcher 3",
+    "imagem": "/imagem/the_witcher_3.jpg",
+    "preco": 199,
+    "descricao": "Você é Geralt de Rívia, mercenário matador de monstros. Você está em um continente devastado pela guerra e infestado de monstros para você explorar à vontade. Sua tarefa é encontrar Ciri, a Criança da Profecia — uma arma viva que pode alterar a forma do mundo.",
+    "genero": "ação",
+    "quantidade_ps5": 10,
+    "quantidade_pc": 0
+  },
+  {
+    "id": "3",
+    "nome": "The Last of us",
+    "imagem": "/imagem/the_last_of_us.jpg",
+    "preco": 1499,
+    "descricao": "Descubra o jogo premiado que inspirou a série de TV aclamada pela crítica. Desbrave a América pós-apocalíptica com Joel e Ellie e conheça aliados e inimigos inesquecíveis em The Last of Us™.",
+    "genero": "modo historia",
+    "quantidade_ps5": 10,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "4",
+    "nome": "The Witcher",
+    "imagem": "/imagem/the_witcher.jpg",
+    "preco": 199,
+    "descricao": "Torne-se o bruxo Geralt de Rívia, um lendário caçador de monstros envolto em uma teia de intrigas tecida por forças que lutam pelo controle do mundo. Tome decisões difíceis e viva com as consequências em um jogo que fará você mergulhar em uma história extraordinária e inigualável.",
+    "genero": "ação",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 0,
+    "quantidade_xbox": 0
+  },
+  {
+    "id": "5",
+    "nome": "GTA V",
+    "imagem": "/imagem/gta6.jpg",
+    "preco": 849,
+    "descricao": "Lançamento exclusivo da jogo.com",
+    "genero": "aventura",
+    "quantidade_ps5": "100",
+    "quantidade_pc": "0",
+    "quantidade_xbox": "100"
+  },
+  {
+    "id": "6",
+    "nome": "Ark Survival Ascended",
+    "imagem": "/imagem/ark_survival_ascended.jpg",
+    "preco": 1490,
+    "descricao": "A Ark é reimaginada desde o início nesta próxima geração de tecnologia de videogame com Unreal Engine 5! Formar uma tribo, manso e raça centenas de dinossauros exclusivos e criaturas primitivas, explore, artesanato, construa e lute para o topo da cadeia de alimentos. Seu novo mundo aguarda!",
+    "genero": "mundo aberto",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "7",
+    "nome": "Call of Duty®: Black Ops 6",
+    "imagem": "/imagem/call_of_duty_6.jpg",
+    "preco": 1499,
     "descricao": "Apenas um teste para ver como esta funcionando",
     "genero": "competitivo",
     "quantidade_ps5": 0,
     "quantidade_pc": 10
   },
   {
-    "id": "4",
-    "nome": "The Witcher 3",
-    "imagem": "/imagem/the_witcher.jpg",
-    "preco": 200,
-    "descricao": "Apenas um teste para ver como esta funcionando",
-    "genero": "ação",
-    "quantidade_ps5": 10,
-    "quantidade_pc": 0
+    "id": "8",
+    "nome": "Baldur's Gate 3",
+    "imagem": "/imagem/bdg3.jpg",
+    "preco": 1599,
+    "descricao": "Gather your party, and return to the Forgotten Realms in a tale of fellowship and betrayal, sacrifice and survival, and the lure of absolute power.",
+    "genero": "competitivo",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
   },
   {
-    "id": "5",
-    "nome": "The Last of us",
-    "imagem": "/imagem/the_last_of_us.jpg",
-    "preco": 150,
-    "descricao": "Apenas um teste para ver como esta funcionando",
+    "id": "9",
+    "nome": "Subnautica",
+    "imagem": "/imagem/subnautica.jpg",
+    "preco": 1245,
+    "descricao": "Descend into the depths of an alien underwater world filled with wonder and peril. Craft equipment, pilot submarines and out-smart wildlife to explore lush coral reefs, volcanoes, cave systems, and more - all while trying to survive",
+    "genero": "aventura",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "10",
+    "nome": "Don't Starve Together",
+    "imagem": "/imagem/dst.jpg",
+    "preco": 2790,
+    "descricao": "Don't Starve Together é uma expansão multiplayer autônoma para o jogo de sobrevivência em lugares inóspitos, Don't Starve.",
+    "genero": "aventura",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "11",
+    "nome": "Life is Strange Remastered",
+    "imagem": "/imagem/lisr.jpg",
+    "preco": 1990,
+    "descricao": "Vivencie a história de Life is Strange, vencedor do BAFTA, agora numa belíssima remasterização com visuais e animação aprimorados usando tecnologia de captura de movimento.",
     "genero": "modo historia",
-    "quantidade_ps5": 10,
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "12",
+    "nome": "Cyberpunk 2077",
+    "imagem": "/imagem/2077.jpg",
+    "preco": 1999,
+    "descricao": "Cyberpunk 2077 é um RPG de ação e aventura em mundo aberto que se passa em Night City, uma megalópole perigosa onde todos são obcecados por poder, glamour e alterações corporais.",
+    "genero": "ação",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "13",
+    "nome": "EA SPORTS FC™ 25",
+    "imagem": "/imagem/fifa.jpg",
+    "preco": 1495,
+    "descricao": "O EA SPORTS FC™ 25 oferece mais maneiras de ganhar pelo clube. Jogue com suas amizades nos seus modos favoritos com o novo Rush 5x5 e leve seu clube à vitória com o FC IQ dando mais controle tático do que nunca.",
+    "genero": "aventura",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "14",
+    "nome": "DayZ",
+    "imagem": "/imagem/dayz.jpg",
+    "preco": 1499,
+    "descricao": "Quanto você aguenta em um mundo pós-apocalíptico? Uma terra arrasada por zumbis infectados, onde você compete com outros sobreviventes por recursos limitados. Você vai ajudar estranhos em sua luta? Ou evitará traições como um lobo solitário? Esse é o DayZ. Essa é a sua história.",
+    "genero": "aventura",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "15",
+    "nome": "Elden Ring",
+    "imagem": "/imagem/elden_ring.jpg",
+    "preco": 2299,
+    "descricao": "Levante-se, Maculado, e seja guiado pela graça para portar o poder do Anel Prístino e se tornar um Lorde Prístino nas Terras Intermédias.",
+    "genero": "mundo aberto",
+    "quantidade_ps5": 0,
+    "quantidade_pc": 10
+  },
+  {
+    "id": "16",
+    "nome": "Rust",
+    "imagem": "/imagem/rust.jpg",
+    "preco": 1039,
+    "descricao": "The only aim' in Rust is to survive. Everything wants you to die - the island’s wildlife and other inhabitants, the environment, other survivors. Do whatever it takes to last another night.",
+    "genero": "mundo aberto",
+    "quantidade_ps5": 0,
     "quantidade_pc": 10
   }
 ]
