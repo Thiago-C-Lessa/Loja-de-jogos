@@ -28,55 +28,5 @@
     "genero": "modo historia",
     "quantidade_ps5": 10,
     "quantidade_pc": 10
-  },
-  {
-    "nome": "The Witcher",
-    "imagem": "/imagem/the_witcher.jpg",
-    "preco": "500",
-    "descricao": "testeeeee",
-    "genero": "ação",
-    "quantidade_ps5": 0,
-    "quantidade_pc": 0,
-    "quantidade_xbox": 0
-  },
-  {
-    "nome": "The Witcher",
-    "imagem": "/imagem/the_witcher.jpg",
-    "preco": "500",
-    "descricao": "testeee",
-    "genero": "ação",
-    "quantidade_ps5": 0,
-    "quantidade_pc": 0,
-    "quantidade_xbox": 0
-  },
-  {
-    "nome": "GTA VI",
-    "imagem": "/imagem/gta6.jpg",
-    "preco": "1000000",
-    "descricao": "Lançamento exclusivo da jogo.com",
-    "genero": "aventura",
-    "quantidade_ps5": "100",
-    "quantidade_pc": "0",
-    "quantidade_xbox": "100"
-  },
-  {
-    "nome": "GTA VI",
-    "imagem": "/imagem/gta6.jpg",
-    "preco": "1000000",
-    "descricao": "Lançamento exclusivo jogo.com",
-    "genero": "aventura",
-    "quantidade_ps5": 0,
-    "quantidade_pc": 0,
-    "quantidade_xbox": 0
-  },
-  {
-    "nome": "GTA VI",
-    "imagem": "/imagem/gta6.jpg",
-    "preco": "1000000",
-    "descricao": "Lançamento exclusivo da jogo.com",
-    "genero": "aventura",
-    "quantidade_ps5": "100",
-    "quantidade_pc": "0",
-    "quantidade_xbox": "100"
   }
 ]

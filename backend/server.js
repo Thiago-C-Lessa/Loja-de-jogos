@@ -48,6 +48,11 @@ app.post('/api/jogos', (req, res) => {
         }
 
         const games = JSON.parse(data);
+
+        // Encontrar o maior id existente
+        const maxId = games.reduce((max, game) => (game.id > max ? game.id : max), 0);
+       // maxId = String(Number(maxId) + 1);// transforma em número e Incrementar o id
+        newGame.id = String(Number(maxId) + 1); // transforma de volta em string
         games.push(newGame);
 
         fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'jogos.json'), JSON.stringify(games, null, 2), (err) => {
@@ -56,7 +61,7 @@ app.post('/api/jogos', (req, res) => {
                 return res.status(500).send('Erro ao salvar o novo jogo');
             }
 
-            console.log(`Novo jogo "${newGame.nome}" criado com sucesso.`);
+            console.log(`Novo jogo "${newGame.nome}" criado com sucesso com id ${newGame.id}.`);
             res.status(201).send('Jogo criado');
         });
     });
@@ -112,6 +117,7 @@ app.delete('/api/jogos/:id', (req, res) => {
         const games = JSON.parse(data);
         const index = games.findIndex(game => game.id === id);
 
+
         if (index === -1) {
             console.error(`Jogo com id ${id} não encontrado.`);
             return res.status(404).send('Jogo não encontrado');
@@ -133,5 +139,5 @@ app.delete('/api/jogos/:id', (req, res) => {
 
 // Inicializa o servidor
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
+    console.log(`\n\nServidor rodando em http://localhost:${port}`);
 });

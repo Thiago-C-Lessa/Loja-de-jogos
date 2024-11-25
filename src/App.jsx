@@ -4,8 +4,8 @@ import Login from './Login';
 import Cadastro from './Cadastro';
 import GerirJogos from './GerirJogos';
 import Carrinho from './carrinho';
-import JogosPc from './jogosPc';
-import JogosXbox from './jogosxbox';
+import JogosPc from './JogosPc';
+import JogosXbox from './jogosXbox';
 import JogosPs5 from './jogosPs5';
 import { BrowserRouter as Router,
         Routes,

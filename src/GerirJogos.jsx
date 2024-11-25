@@ -83,6 +83,7 @@ const GerirJogos = () => {
 
   // Deletar um jogo
   const handleDelete = (id) => {
+    console.log(typeof(id))
     axios
       .delete(`${API_URL}/${id}`)
       .then(() => setJogos(jogos.filter((jogo) => jogo.id !== id)))
