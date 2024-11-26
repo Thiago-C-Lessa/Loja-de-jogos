@@ -51,7 +51,7 @@ function JogoDetalhes() {
           Preço: R$ {(jogo.preco/10).toFixed(2)}
         </p>
         <a href="/Carrinho" className="jogo-detalhes-botao">
-          Comprar Agora
+          Adicionar ao Carrinho
         </a>
       </div>
     </div>
