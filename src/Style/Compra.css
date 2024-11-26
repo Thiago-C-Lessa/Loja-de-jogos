@@ -1,0 +1,86 @@
+/* Apenas para a página de pagamento */
+.comprar-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.comprar-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.comprar-form h2 {
+    color: #4a2e9b;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.comprar-form label {
+    font-size: 16px;
+    color: #333;
+    display: block;
+    margin: 10px 0 5px;
+}
+
+.comprar-form input,
+.comprar-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.comprar-form input:focus,
+.comprar-form select:focus {
+    border-color: #4a2e9b;
+    outline: none;
+}
+
+.comprar-form button {
+    background-color: #4a2e9b;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.comprar-form button:hover {
+    background-color: #7b57c7;
+}
+
+.comprar-form h3 {
+    color: #4a2e9b;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+@media (max-width: 768px) {
+    .comprar-container {
+        padding: 10px;
+    }
+
+    .comprar-form {
+        padding: 15px;
+    }
+
+    .comprar-form button {
+        padding: 12px 20px;
+    }
+
+    .comprar-form input,
+    .comprar-form select {
+        padding: 8px;
+    }
+}

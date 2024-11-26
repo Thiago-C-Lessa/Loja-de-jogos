@@ -32,6 +32,16 @@ function Carrinho() {
     localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho));
   }
 
+  const calcularTotal = () => {
+    const total = itensCarrinho.reduce(
+      (acc, item) => acc + (parseFloat(item.preco) * (item.quantidade || 1)),
+      0
+    ).toFixed(2);
+    // Salva o valor total no localStorage para acesso na página de pagamento
+    localStorage.setItem('totalCarrinho', total);
+    return total;
+  };
+
   return (
     <div>
       <NavbarInterna />
@@ -99,7 +109,7 @@ function Carrinho() {
             </thead>
             <tbody>
               <tr>
-                <td>R$ {itensCarrinho.reduce((acc, item) => acc + (parseFloat((item.preco/10)) * (item.quantidade || 1)), 0).toFixed(2)}</td>
+                <td>R$ {calcularTotal()}</td>
               </tr>
             </tbody>
 
