@@ -1,5 +1,152 @@
 
 body {
-    background-color: rgb(176, 143, 226);
+    background: linear-gradient(to right, black 10%, #111545 50%, black 90%);
+    background-size: 400%;
+    background-position: center;
     font-family: 'Arial', sans-serif;
   }
+
+
+
+
+.btn {
+
+  color:white
+
+
+}
+
+.genero-titulo{
+
+  color:#ff7f26
+}
+
+
+
+
+/* Alterar a cor do botão de buscar da borda, texto e fundo padrão */
+.btn-outline-success{
+
+  color: #ffffff !important; /* Cor do texto */
+  border-color: #ff7f26 !important; /* Cor da borda */
+  background-color: transparent !important; /* Fundo transparente */
+
+}
+
+
+
+
+/* Alterar a cor do botão de buscar ao passar o mouse (hover) */
+.btn-outline-success:hover {
+
+  color: white !important; /* Cor do texto */
+  background-color: #ff7f26 !important; /* Fundo ao passar o mouse */
+  border-color: #ff7f26 !important; /* Cor da borda */
+
+}
+
+
+
+/* Estilo base para os botões btn-danger */
+.btn-danger{
+
+  background-color: #ff7f26 !important; /* Cor inicial */
+  transition: background-color 0.3s ease, color 0.3s ease !important; /* Suaviza as transições */
+  border-color: #000000 !important;
+
+}
+
+
+
+/* Modifica o estilo de btn-danger quando o mouse passar por cima */
+.btn-danger:hover {
+  background-color: #ff5500 !important; /* Nova cor ao passar o mouse */
+}
+
+
+
+
+/* Altera o card */
+.card{
+border-radius: 10px;
+border-color: #000000 !important;
+box-shadow: 
+0 0 10px rgba(0, 0, 0, 50),   /* Sombra preta */
+0 0 50px rgba(22, 28, 90, 100) /* Sombra azul */
+
+
+/*filter: drop-shadow(0 0 1px rgb(59, 18, 173, 100));
+filter: drop-shadow(0 0 10px rgba(0, 0, 0, 50));*/
+}
+
+.CardsGrid {
+  display: flex;
+  flex-wrap: wrap;            /* Permite que os cards se ajustem quando a tela for menor */
+  justify-content: center;    /* Centraliza os cards horizontalmente */
+  gap: 20px;                  /* Espaçamento entre os cards */
+  margin: 0 auto;             /* Garante que o contêiner principal esteja centralizado */
+  padding: 20px;              /* Espaçamento ao redor da grade */
+}
+
+.card-item {
+  width: auto;                /* Permite que o card mantenha seu tamanho original */
+  height: auto;               /* Garante que o card tenha altura automática conforme o conteúdo */
+}
+
+.genero-jogos {
+  display: flex;
+  flex-wrap: wrap;            /* Permite que os jogos se ajustem em diferentes resoluções */
+  justify-content: center;    /* Centraliza os jogos dentro do gênero */
+}
+
+.genero-titulo {
+  text-align: center;         /* Centraliza o texto */
+  width: 100%;                /* Faz com que o título ocupe toda a largura disponível */
+  margin: 0;                  /* Remove margens adicionais */
+  padding-bottom: 10px;       /* Um pequeno espaçamento abaixo do título */
+}
+
+
+
+
+
+
+/* Altera o card-body */
+.card-body{
+  background-color: hsl(235, 60%, 8%);
+}
+
+
+
+/* Altera o card-title */
+.card-title{
+  color:white
+}
+
+
+
+/* Altera o text-center */
+.text-center{
+  color:white !important;
+}
+
+
+
+
+/* Altera o form-label */
+.form-label{
+  color:white
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

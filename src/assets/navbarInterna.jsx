@@ -14,7 +14,7 @@ function NavbarInterna() {
   
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
       <div className="container-fluid">
       <button onClick={handleVoltar} className="btn btn-outline-secondary" id='botaoVoltar'>
         <i class="bi bi-caret-left-fill"></i> {/* Ícone de seta para a esquerda */}
@@ -61,6 +61,9 @@ function NavbarInterna() {
                 <li><hr className="dropdown-divider" /></li>
                 <li><a className="dropdown-item" href="JogoXbox">Xbox Series X/S</a></li>
               </ul>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link active" aria-current="page" href="/PerfilUsuario">TESTE_PERFIL</a>
             </li>
           </ul>
           

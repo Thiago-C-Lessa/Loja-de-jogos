@@ -9,7 +9,7 @@ function Navbar({ onSearch }) {
     onSearch(event.target.value); // Passar a pesquisa para o App
   };
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <nav className="navbar navbar-expand-lg" data-bs-theme="dark">
       <div className="container-fluid">
       <a className="navbar-brand" href="/" id='conteinerLogo'>
           <img src="/public/imagem/logo.png" alt="Logo" width="30" height="30" className="d-inline-block align-text-top" id='logoNavbar'/>

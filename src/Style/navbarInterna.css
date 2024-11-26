@@ -1,3 +1,5 @@
+/* Essa navbarinterna é a navbar para páginas onde não têm busca de jogos (por exemplo: perfil) */
+
 #conteinerLogo{
     display: flex;
     text-align: center;
@@ -11,3 +13,75 @@
 #botaoVoltar{
     border: none;
 }
+
+
+
+
+/* Altera a Navbar */
+.navbar {
+    background-color: hsl(235, 60%, 8%) !important; /* Define a cor de fundo preta */
+    color: white; /* Altere a cor do texto, se necessário */
+  }
+  
+  .navbar a {
+    color: white !important; /* Deixa os links na navbar brancos */
+  }
+  
+
+
+
+  /* Essa regra afeta os links na navbar, mas exclui links dentro de botões */
+  .navbar a:hover {
+  color: #ff7f26 !important; /* Altera a cor dos links ao passar o mouse */
+  }
+
+
+
+  
+  .navbar .btn-outline-success {
+    color: white !important; /* Cor do texto do botão */
+    border-color: #ff7f26 !important; /* Cor da borda */
+    background-color: transparent !important; /* Fundo transparente */
+  }
+
+
+
+
+  /* Não altera a cor do texto de links dentro de botões na navbar */
+  .navbar .btn-outline-success:hover {
+    color: white !important; /* Garante que o texto do botão mantenha a cor branca ao passar o mouse */
+    background-color: #ff7f26 !important; /* Cor de fundo do botão ao passar o mouse */
+    border-color: #ff7f26 !important; /* Cor da borda ao passar o mouse */
+  }
+  
+
+
+
+  /* Não altera a cor do texto de links dentro de botões na navbar */
+.navbar .navbar-toggler a:hover {
+    color: white !important; /* Garante que o texto dentro dos botões não mude de cor */
+  }
+
+
+
+  
+  /* Altera a cor de fundo do campo de pesquisa */
+  #pesquisas .form-control {
+    background-color: hsl(235, 20%, 8%) !important; /* Cor de fundo */
+    color: rgb(255, 255, 255) !important; /* Cor do texto */
+    border: 1px solid #ff7f26 !important; /* Cor da borda */
+  }
+  
+  /* Altera a cor do texto do placeholder */
+  #pesquisas .form-control::placeholder {
+    color: #ffffff; /* Cor do texto do placeholder */
+    opacity: 1; /* Garante que a opacidade do placeholder esteja alta */
+  }
+  
+  /* Estiliza o campo ao focar */
+  #pesquisas .form-control:focus {
+    background-color: #333; /* Cor de fundo ao focar */
+    color: white; /* Cor do texto digitado ao focar */
+    border-color: #ff7f26; /* Cor da borda ao focar */
+    box-shadow: none; /* Remove a sombra padrão do Bootstrap */
+  }
