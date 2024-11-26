@@ -42,7 +42,7 @@ function CardProduto(props) {
             {jogosPorGenero[genero].map((jogo, index) => (
               <div key={index} className="card-item">
                 <a
-                  href="jogo.html"
+                  href={`/jogo/${jogo.id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div className="card" data-bs-theme="dark">
