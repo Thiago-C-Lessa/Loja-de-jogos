@@ -2,7 +2,7 @@
     padding: 20px;
     max-width: 800px;
     margin: 0 auto;
-    background-color: #f9f9f980;
+    background-color: #2E3944;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -10,7 +10,7 @@
   .jogo-detalhes-titulo {
     font-size: 2rem;
     font-weight: bold;
-    color: #333;
+    color: #FFFFFF;
     margin-bottom: 20px;
     text-align: center;
   }
@@ -25,7 +25,7 @@
 
   .jogo-detalhes-descricao {
     font-size: 1.2rem;
-    color: #555;
+    color: #FFFFFF;
     line-height: 1.6;
     margin-bottom: 20px;
   }
@@ -33,7 +33,7 @@
   .jogo-detalhes-preco {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #2d9c5c;
+    color: #1fc062;
     margin-bottom: 20px;
     text-align: center;
   }
