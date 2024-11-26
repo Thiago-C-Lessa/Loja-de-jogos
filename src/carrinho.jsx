@@ -82,7 +82,7 @@ function Carrinho() {
                         onChange={(e) => handlequantidade(index, parseInt(e.target.value))}
                       />
                     </td>
-                    <td id="colunapreco">R$ {(item.preco * (item.quantidade || 1)).toFixed(2)}</td>
+                    <td id="colunapreco">R$ {((item.preco/10) * (item.quantidade || 1)).toFixed(2)}</td>
                     <td id="colunaexcluir"><button onClick={() => handleRemover(index)}>Excluir</button></td>
                   </tr>
                 ))
@@ -99,7 +99,7 @@ function Carrinho() {
             </thead>
             <tbody>
               <tr>
-                <td>R$ {itensCarrinho.reduce((acc, item) => acc + (parseFloat(item.preco) * (item.quantidade || 1)), 0).toFixed(2)}</td>
+                <td>R$ {itensCarrinho.reduce((acc, item) => acc + (parseFloat((item.preco/10)) * (item.quantidade || 1)), 0).toFixed(2)}</td>
               </tr>
             </tbody>
 
