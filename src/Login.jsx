@@ -30,7 +30,7 @@ function Login() {
 
     <div className="container mt-5 d-flex justify-content-center">
       <div className="card p-4" style={{ width: '24rem' }}>
-        <h2 className="text-center mb-4">Entrar</h2>
+      <h2 className="text-center mb-4" style={{ color: "black" }}>Entrar</h2>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">

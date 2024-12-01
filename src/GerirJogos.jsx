@@ -94,11 +94,17 @@ const GerirJogos = () => {
   const handleEdit = (jogo) => {
     setEditarJogoId(jogo.id);
     setNovoJogo(jogo);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Para fazer transição suave
+    });
+
   };
 
   return (
     <div className="container my-4">
-      <h1 className="text-center mb-4">Gerir Jogos</h1>
+      <h1 style={{color:"White", textAlign: "center"}}>Gerir Jogos</h1>
 
       {/* Formulário */}
       <form onSubmit={handleSubmit} className="mb-5">
@@ -221,7 +227,7 @@ const GerirJogos = () => {
             <div className="card" style={{marginTop:"20px"}}>
               <img src={jogo.imagem} className="card-img-top" alt={jogo.nome} />
               <div className="card-body">
-                <h5 className="card-title">{jogo.nome}</h5>
+              <h5 className="card-title" style={{ color: "white" }}>{jogo.nome}</h5>
                 <button
                   className="btn btn-warning me-2"
                   onClick={() => handleEdit(jogo)}

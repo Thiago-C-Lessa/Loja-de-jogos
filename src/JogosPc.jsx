@@ -40,7 +40,7 @@ function JogosPc() {
   return (
     <div id="JogoPcConteiner">
       <Navbar onSearch={busca} />
-      <h1 style={{ fontSize: '35px', fontWeight: 'bold', textAlign: 'center' }}>Jogos para Computador</h1>
+      <h1 style={{ fontSize: '35px', fontWeight: 'bold', textAlign: 'center' , color:"#ff7f26" }}>Jogos para Computador</h1>
       {/* Passando a plataforma como prop para CardProduto */}
       <CardProduto 
         pesquisa={pesquisa} 

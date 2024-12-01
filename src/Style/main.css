@@ -80,7 +80,6 @@ filter: drop-shadow(0 0 10px rgba(0, 0, 0, 50));*/
 }
 
 .CardsGrid {
-  display: flex;
   flex-wrap: wrap;            /* Permite que os cards se ajustem quando a tela for menor */
   justify-content: center;    /* Centraliza os cards horizontalmente */
   gap: 20px;                  /* Espaçamento entre os cards */
@@ -127,7 +126,7 @@ filter: drop-shadow(0 0 10px rgba(0, 0, 0, 50));*/
 
 /* Altera o text-center */
 .text-center{
-  color:white !important;
+  color:black ;
 }
 
 

@@ -9,13 +9,12 @@
 }
 
 .genero-titulo {
-font-size: 1.5rem;
+
 font-weight: bold;
 margin-bottom: 1rem;
 text-transform: uppercase;
 
 text-shadow: 
-    
     0 0 2px rgb(255, 223, 83), /* Efeito de brilho maior */
     0 0 40px rgb(255, 170, 101); /* Efeito de brilho maior */
 }

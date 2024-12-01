@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../Style/CardProduto.css";
 
+
 function CardProduto(props) {
 
   const [jogos, setJogos] = useState([]);

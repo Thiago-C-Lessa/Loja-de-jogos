@@ -36,8 +36,8 @@
     "preco": 199,
     "descricao": "Torne-se o bruxo Geralt de Rívia, um lendário caçador de monstros envolto em uma teia de intrigas tecida por forças que lutam pelo controle do mundo. Tome decisões difíceis e viva com as consequências em um jogo que fará você mergulhar em uma história extraordinária e inigualável.",
     "genero": "ação",
-    "quantidade_ps5": 0,
-    "quantidade_pc": 0,
+    "quantidade_ps5": "10",
+    "quantidade_pc": "10",
     "quantidade_xbox": 0
   },
   {
@@ -103,7 +103,7 @@
   },
   {
     "id": "11",
-    "nome": "Life is Strange Remastered",
+    "nome": "Life is Strange",
     "imagem": "/imagem/lisr.jpg",
     "preco": 1990,
     "descricao": "Vivencie a história de Life is Strange, vencedor do BAFTA, agora numa belíssima remasterização com visuais e animação aprimorados usando tecnologia de captura de movimento.",
