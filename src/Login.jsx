@@ -34,7 +34,7 @@ function Login() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="loginInput" className="form-label">Login</label>
+            <label htmlFor="loginInput" className="form-label" style={{color:"black"}}>Login</label>
             <input
               type="text"
               className="form-control"
@@ -48,7 +48,7 @@ function Login() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="passwordInput" className="form-label">Senha</label>
+            <label htmlFor="passwordInput" className="form-label"style={{color:"black"}}>Senha</label>
             <input
               type="password"
               className="form-control"

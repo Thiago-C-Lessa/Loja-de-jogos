@@ -25,12 +25,12 @@ function Carrinho() {
     localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho)); // Atualiza o localStorage
   };
 
-  const handlplataforma = (index, plataforma) =>{
+  const handlplataforma = (index, plataforma) => {
     const updatedCarrinho = [...itensCarrinho];
     updatedCarrinho[index].plataforma = plataforma; // Atualiza a plataforma
     setItensCarrinho(updatedCarrinho);
     localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho));
-  }
+  };
 
   const calcularTotal = () => {
     const total = itensCarrinho.reduce(
@@ -46,9 +46,10 @@ function Carrinho() {
     <div>
       <NavbarInterna />
 
-        <div className="container text-center" id="containercarinho">
-          <h1>MEU CARRINHO</h1>
+      <div className="container text-center" id="containercarinho">
+        <h1 style={{color: "white"}}>MEU CARRINHO</h1>
 
+        <form action="/Comprar" method="get">
           <table className="table" id="carinhodejogos">
             <thead>
               <tr>
@@ -63,21 +64,30 @@ function Carrinho() {
             <tbody>
               {itensCarrinho.length === 0 ? (
                 <tr>
-                  <td colSpan="6" id ="carrinho-vazio">
-                  Ainda não há itens no seu carrinho!!
+                  <td colSpan="6" id="carrinho-vazio">
+                    Ainda não há itens no seu carrinho!!
                   </td>
                 </tr>
               ) : (
                 itensCarrinho.map((item, index) => (
                   <tr key={index}>
-                    <td id="colunaimagem"><img src={item.imagem} alt={item.nome} width="50" /></td>
+                    <td id="colunaimagem">
+                      <img src={item.imagem} alt={item.nome} width="50" />
+                    </td>
                     <td id="colunanome">{item.nome}</td>
                     <td id="colunaplataforma">
-                      {item.plataforma ? (item.plataforma) : (    // verifica se existe plataforma definida
-                        <select onChange={(e) => handlplataforma(index,(e.target.value))} defaultValue="" // chama a função que add a plataforma no local localStorage
+                      {item.plataforma ? (
+                        item.plataforma
+                      ) : (
+                        <select
+                          onChange={(e) => handlplataforma(index, e.target.value)}
+                          defaultValue=""
+                          required
                         >
-                          <option value="" disabled>Escolha</option>
-                          {item.quantidade_ps4 > 0 && <option value="PS5">PS5</option>}
+                          <option value="" disabled>
+                            Escolha
+                          </option>
+                          {item.quantidade_ps5 > 0 && <option value="PS5">PS5</option>}
                           {item.quantidade_xbox > 0 && <option value="Xbox">Xbox</option>}
                           {item.quantidade_pc > 0 && <option value="PC">PC</option>}
                         </select>
@@ -92,15 +102,20 @@ function Carrinho() {
                         onChange={(e) => handlequantidade(index, parseInt(e.target.value))}
                       />
                     </td>
-                    <td id="colunapreco">R$ {((item.preco/10) * (item.quantidade || 1)).toFixed(2)}</td>
-                    <td id="colunaexcluir"><button onClick={() => handleRemover(index)}>Excluir</button></td>
+                    <td id="colunapreco">
+                      R$ {((item.preco / 10) * (item.quantidade || 1)).toFixed(2)}
+                    </td>
+                    <td id="colunaexcluir">
+                      <button type="button" onClick={() => handleRemover(index)}>
+                        Excluir
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
-          
-        
+
           <table className="table" id="valortotal">
             <thead>
               <tr>
@@ -112,14 +127,20 @@ function Carrinho() {
                 <td>R$ {calcularTotal()}</td>
               </tr>
             </tbody>
-
           </table>
-            <div className="pagamento">
-              <a className="btn btn-outline-success" id="botaopagamento" href="/Comprar" role="button">Seguir para pagamento</a>
-            </div>
 
-        </div>
+          <div className="pagamento">
+            <button
+              className="btn btn-outline-success"
+              id="botaopagamento"
+              type="submit"
+            >
+              Seguir para pagamento
+            </button>
+          </div>
+        </form>
       </div>
+    </div>
   );
 }
 

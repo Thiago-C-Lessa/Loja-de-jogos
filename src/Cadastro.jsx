@@ -37,7 +37,7 @@ function Cadastro() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="nameInput" className="form-label">Nome</label>
+            <label htmlFor="nameInput" className="form-label" style={{color:"black"}}>Nome</label>
             <input
               type="text"
               className="form-control"
@@ -51,7 +51,7 @@ function Cadastro() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="dobInput" className="form-label">Data de Nascimento</label>
+            <label htmlFor="dobInput" className="form-label" style={{color:"black"}}>Data de Nascimento</label>
             <input
               type="date"
               className="form-control"
@@ -64,7 +64,7 @@ function Cadastro() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="cpfInput" className="form-label">CPF</label>
+            <label htmlFor="cpfInput" className="form-label" style={{color:"black"}}>CPF</label>
             <input
               type="number"
               className="form-control"
@@ -78,7 +78,7 @@ function Cadastro() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="emailInput" className="form-label">E-mail</label>
+            <label htmlFor="emailInput" className="form-label" style={{color:"black"}}>E-mail</label>
             <input
               type="email"
               className="form-control"
@@ -92,7 +92,7 @@ function Cadastro() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="passwordInput" className="form-label">Senha</label>
+            <label htmlFor="passwordInput" className="form-label" style={{color:"black"}}>Senha</label>
             <input
               type="password"
               className="form-control"
