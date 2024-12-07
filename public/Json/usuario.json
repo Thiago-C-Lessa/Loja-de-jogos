@@ -1,0 +1,19 @@
+[
+  {
+    "nome": "Gustavo",
+    "dataNascimento": "2001-09-16",
+    "cpf": "123456",
+    "email": "11@gmail.com",
+    "senha": "123456",
+    "id": "1"
+  },
+  {
+    "nome": "Usuario Master",
+    "dataNascimento": "0001-01-01",
+    "cpf": "40028922",
+    "email": "jogo.com@gmail.com",
+    "senha": "0000",
+    "id": "2"
+  }
+  
+]

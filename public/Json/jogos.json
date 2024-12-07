@@ -92,16 +92,6 @@
     "quantidade_pc": 10
   },
   {
-    "id": "10",
-    "nome": "Don't Starve Together",
-    "imagem": "/imagem/dst.jpg",
-    "preco": 2790,
-    "descricao": "Don't Starve Together é uma expansão multiplayer autônoma para o jogo de sobrevivência em lugares inóspitos, Don't Starve.",
-    "genero": "aventura",
-    "quantidade_ps5": 0,
-    "quantidade_pc": 10
-  },
-  {
     "id": "11",
     "nome": "Life is Strange",
     "imagem": "/imagem/lisr.jpg",
@@ -160,5 +150,16 @@
     "genero": "mundo aberto",
     "quantidade_ps5": 0,
     "quantidade_pc": 10
+  },
+  {
+    "nome": "GTA VI",
+    "imagem": "/imagem/gta6.jpg",
+    "preco": "1",
+    "descricao": "1",
+    "genero": "d",
+    "quantidade_ps5": "1",
+    "quantidade_pc": "01",
+    "quantidade_xbox": "01",
+    "id": "10"
   }
 ]

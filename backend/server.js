@@ -137,6 +137,51 @@ app.delete('/api/jogos/:id', (req, res) => {
     });
 });
 
+// criação de cadastro do usuario
+
+app.post('/api/usuario', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const novoUsuario = req.body; // Dados do usuário enviados no corpo da requisição
+
+    // Lê o arquivo de usuarios
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'usuario.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de usuario:', err);
+            return res.status(500).send('Erro ao ler o arquivo de usuários');
+        }
+
+        let usuarios;
+        try {
+            // Tenta fazer o parse do JSON
+            usuarios = JSON.parse(data);
+        } catch (parseError) {
+            console.error('Erro ao parsear o arquivo JSON:', parseError);
+            return res.status(500).send('Erro ao processar os dados do arquivo');
+        }
+
+        // Obtém o maior ID dos usuários existentes (se houver)
+        const maxId = usuarios.reduce((max, usuario) => (usuario.id > max ? usuario.id : max), 0);
+        novoUsuario.id = String(Number(maxId) + 1); // Incrementa o ID
+
+        // Adiciona o novo usuário ao array
+        usuarios.push(novoUsuario);
+
+        // Escreve no arquivo
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'usuario.json'), JSON.stringify(usuarios,null,2), 'utf8', (err) => {
+            if (err) {
+                console.error('Erro ao salvar o usuário:', err);
+                return res.status(500).send('Erro ao salvar o novo usuário');
+            }
+
+            console.log('Novo usuário adicionado com sucesso!');
+            res.status(201).json({ message: 'Usuário criado com sucesso!' });
+        });
+    });
+});
+
+
+
 // Inicializa o servidor
 app.listen(port, () => {
     console.log(`\n\nServidor rodando em http://localhost:${port}`);

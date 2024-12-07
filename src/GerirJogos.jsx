@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import NavbarInterna from './assets/navbarInterna.jsx'
 
 
 const GerirJogos = () => {
@@ -103,6 +104,8 @@ const GerirJogos = () => {
   };
 
   return (
+    <div>
+      <NavbarInterna/>
     <div className="container my-4">
       <h1 style={{color:"White", textAlign: "center"}}>Gerir Jogos</h1>
 
@@ -246,6 +249,7 @@ const GerirJogos = () => {
         ))}
       </div>
     </div>
+  </div>
   );
 };
 
