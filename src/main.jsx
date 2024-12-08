@@ -9,9 +9,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-
+    
     <App/>
     <Footer/>
 

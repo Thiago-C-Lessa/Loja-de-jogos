@@ -18,7 +18,7 @@ function CardProduto(props) {
     (jogo) =>
       (jogo.nome.toLowerCase().includes(props.pesquisa.toLowerCase()) ||
         jogo.genero.toLowerCase().includes(props.pesquisa.toLowerCase())) &&
-      ((props.plataforma === "todos") ||
+      ((props.plataforma === "todos" && (jogo.quantidade_pc > 0 || jogo.quantidade_ps5 > 0 || jogo.quantidade_xbox > 0 )) ||
         (props.plataforma === "pc" && jogo.quantidade_pc > 0) ||
         (props.plataforma === "ps5" && jogo.quantidade_ps5 > 0) ||
         (props.plataforma === "xbox" && jogo.quantidade_xbox > 0))

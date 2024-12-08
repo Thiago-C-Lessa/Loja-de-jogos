@@ -62,9 +62,6 @@ function NavbarInterna() {
                 <li><a className="dropdown-item" href="JogoXbox">Xbox Series X/S</a></li>
               </ul>
             </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/PerfilUsuario">TESTE_PERFIL</a>
-            </li>
           </ul>
           
         </div>
@@ -73,8 +70,8 @@ function NavbarInterna() {
           <a className="navbar-brand" href="/Carrinho">
             <img src={'/public/imagem/carinho.png'} alt="Cart" width="30" height="30" className="d-inline-block align-text-top" style={{ marginBottom: '5px' }} />
           </a>
-
-          <a className="btn btn-outline-success" href="/Login" role="button">Entrar</a>
+         { /*<a className="btn btn-outline-success" href="/Login" role="button">Entrar</a>*/}
+          <a className="btn btn-outline-success" id = "Perfil" href="/PerfilUsuario/:id" role="button">U</a>
         </div>
       </div>
     </nav>

@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "ApelidoCartao": "card principal",
+    "numeroCartao": "40028922",
+    "NomeCartao": "Elon Musk",
+    "dataNascimento": "6/1971"
+  },
+  {
+    "ApelidoCartao": "teste",
+    "numeroCartao": "121",
+    "NomeCartao": "121",
+    "dataNascimento": "2026-11",
+    "id": 1
+  },
+  {
+    "ApelidoCartao": "lariCel",
+    "numeroCartao": "12344321",
+    "NomeCartao": "TonyStark",
+    "dataNascimento": "2027-06",
+    "id": 1
+  },
+  {
+    "ApelidoCartao": "teste",
+    "numeroCartao": "1",
+    "NomeCartao": "1",
+    "dataNascimento": "0001-01",
+    "id": 1
+  },
+  {
+    "ApelidoCartao": "teste",
+    "numeroCartao": "qq",
+    "NomeCartao": "qw",
+    "dataNascimento": "2026-09",
+    "id": 1
+  }
+]

@@ -85,3 +85,7 @@
     border-color: #ff7f26; /* Cor da borda ao focar */
     box-shadow: none; /* Remove a sombra padrão do Bootstrap */
   }
+  
+  #Perfil{
+    border-radius: 100%;
+  }

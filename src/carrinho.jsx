@@ -49,7 +49,7 @@ function Carrinho() {
       <div className="container text-center" id="containercarinho">
         <h1 style={{color: "white"}}>MEU CARRINHO</h1>
 
-        <form action="/Comprar" method="get">
+        <form action="/Comprar/:id" method="get">
           <table className="table" id="carinhodejogos">
             <thead>
               <tr>

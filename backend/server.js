@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const cors = require('cors'); 
 const path = require('path');
+const { default: axios } = require('axios');
 const app = express();
 const port = 5000;
 
@@ -150,7 +151,6 @@ app.post('/api/usuario', (req, res) => {
             console.error('Erro ao ler o arquivo de usuario:', err);
             return res.status(500).send('Erro ao ler o arquivo de usuários');
         }
-
         let usuarios;
         try {
             // Tenta fazer o parse do JSON
@@ -159,27 +159,60 @@ app.post('/api/usuario', (req, res) => {
             console.error('Erro ao parsear o arquivo JSON:', parseError);
             return res.status(500).send('Erro ao processar os dados do arquivo');
         }
-
         // Obtém o maior ID dos usuários existentes (se houver)
         const maxId = usuarios.reduce((max, usuario) => (usuario.id > max ? usuario.id : max), 0);
         novoUsuario.id = String(Number(maxId) + 1); // Incrementa o ID
-
         // Adiciona o novo usuário ao array
         usuarios.push(novoUsuario);
-
         // Escreve no arquivo
         fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'usuario.json'), JSON.stringify(usuarios,null,2), 'utf8', (err) => {
             if (err) {
                 console.error('Erro ao salvar o usuário:', err);
                 return res.status(500).send('Erro ao salvar o novo usuário');
             }
-
             console.log('Novo usuário adicionado com sucesso!');
             res.status(201).json({ message: 'Usuário criado com sucesso!' });
         });
     });
 });
 
+app.post('/api/pagamento', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const novoPagamento = req.body; // Dados do pagamento enviados no corpo da requisição
+
+    // Caminho para o arquivo JSON
+    const filePath = path.join(__dirname, '..', 'public', 'Json', 'pagamento.json');
+
+    // Lê o arquivo JSON existente
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de pagamentos:', err);
+            return res.status(500).send('Erro ao acessar o arquivo de pagamentos.');
+        }
+        let pagamentos = [];
+        try {
+            pagamentos = JSON.parse(data); // Converte o conteúdo do arquivo para um array de objetos
+        } catch (parseError) {
+            console.error('Erro ao analisar o JSON:', parseError);
+            return res.status(500).send('Erro ao processar os pagamentos existentes.');
+        }
+        
+        // Adiciona o novo método de pagamento ao array
+        pagamentos.push(novoPagamento);
+
+        // Salva os pagamentos atualizados no arquivo JSON
+        fs.writeFile(filePath, JSON.stringify(pagamentos, null, 2), 'utf8', (writeErr) => {
+            if (writeErr) {
+                console.error('Erro ao salvar o arquivo de pagamentos:', writeErr);
+                return res.status(500).send('Erro ao salvar o novo pagamento.');
+            }
+
+            console.log('Novo pagamento adicionado com sucesso!');
+            res.status(201).json({ message: 'Método de pagamento criado com sucesso!' });
+        });
+    });
+});
 
 
 // Inicializa o servidor
