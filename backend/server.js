@@ -198,6 +198,8 @@ app.post('/api/pagamento', (req, res) => {
             return res.status(500).send('Erro ao processar os pagamentos existentes.');
         }
         
+        const maxId = pagamentos.reduce((max, pagamento) => (pagamento.idPagamento > max ? pagamento.idPagamento : max), 0);
+        novoPagamento.idPagamento = String(Number(maxId) + 1); // Incrementa o ID
         // Adiciona o novo método de pagamento ao array
         pagamentos.push(novoPagamento);
 
@@ -213,6 +215,115 @@ app.post('/api/pagamento', (req, res) => {
         });
     });
 });
+
+app.delete('/api/pagamento/:id', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const { id } = req.params;
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'pagamento.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de pagamento:', err);
+            return res.status(500).send('Erro ao deletar o pagamento');
+        }
+
+        let pagamentos = [];
+        try {
+            pagamentos = JSON.parse(data);
+        } catch (parseError) {
+            console.error('Erro ao analisar o JSON:', parseError);
+            return res.status(500).send('Erro ao processar os pagamentos');
+        }
+
+        const index = pagamentos.findIndex(pagamento => pagamento.idPagamento === id);
+
+        if (index === -1) {
+            console.error(`Pagamento com id ${id} não encontrado.`);
+            return res.status(404).send('Pagamento não encontrado');
+        }
+
+        pagamentos.splice(index, 1);
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'pagamento.json'), JSON.stringify(pagamentos, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao deletar o pagamento:', err);
+                return res.status(500).send('Erro ao deletar o pagamento');
+            }
+
+            console.log(`Pagamento com id ${id} deletado com sucesso.`);
+            res.send('Pagamento deletado');
+        });
+    });
+});
+
+app.put('/api/pagamento/:id', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const { id } = req.params;
+    const updatedPagamento = req.body;
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'pagamento.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de pagamento:', err);
+            return res.status(500).send('Erro ao atualizar o pagamento');
+        }
+
+        let pagamentos = [];
+        try {
+            pagamentos = JSON.parse(data);
+        } catch (parseError) {
+            console.error('Erro ao analisar o JSON:', parseError);
+            return res.status(500).send('Erro ao processar os pagamentos');
+        }
+
+        const index = pagamentos.findIndex(pagamento => pagamento.idPagamento === id);
+
+        if (index === -1) {
+            console.error(`Pagamento com id ${id} não encontrado.`);
+            return res.status(404).send('Pagamento não encontrado');
+        }
+
+        pagamentos[index] = { ...pagamentos[index], ...updatedPagamento };
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'pagamento.json'), JSON.stringify(pagamentos, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao salvar a atualização:', err);
+                return res.status(500).send('Erro ao atualizar o pagamento');
+            }
+
+            console.log(`Pagamento com id ${id} atualizado com sucesso.`);
+            res.send('Pagamento atualizado');
+        });
+    });
+});
+app.get('/api/pagamento/:id', (req, res) => {
+    const { id } = req.params;  // Acessando o id da URL, usando req.params
+    const filePath = path.join(__dirname, '..', 'public', 'Json', 'pagamento.json');
+
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de pagamentos:', err);
+            return res.status(500).send('Erro ao acessar o arquivo de pagamentos.');
+        }
+
+        let pagamentos = [];
+        try {
+            pagamentos = JSON.parse(data);
+        } catch (parseError) {
+            console.error('Erro ao analisar o JSON:', parseError);
+            return res.status(500).send('Erro ao processar os pagamentos existentes.');
+        }
+
+        // Verificar se o ID foi fornecido
+        if (id) {
+            // Filtrar os pagamentos onde o id do pagamento é igual ao id passado na URL
+            pagamentos = pagamentos.filter(pagamento =>  parseInt(pagamento.id) === parseInt(id));
+        }
+
+        res.json(pagamentos);
+    });
+});
+
 
 
 // Inicializa o servidor

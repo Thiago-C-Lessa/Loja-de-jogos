@@ -30,7 +30,7 @@ function Comprar() {
                 const data = await response.json();
 
                 // Filtra os métodos de pagamento pelo ID da URL
-                const metodosFiltrados = data.filter((item) => item.id === parseInt(id));
+                const metodosFiltrados = data.filter((item) => parseInt(item.id) === parseInt(id));
                 setPagamentos(metodosFiltrados);
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
@@ -98,7 +98,7 @@ function Comprar() {
                 <select className="form-select mb-4" value={metodoSelecionado} onChange={handleMetodoChange}>
                     <option value="">Escolha um método</option>
                     {pagamentos.map((metodo, index) => (
-                        <option key={index} value={metodo.ApelidoCartao}>
+                        <option key={index} value={metodo.idPagamento}>
                             {metodo.ApelidoCartao}
                         </option>
                     ))}
@@ -107,13 +107,15 @@ function Comprar() {
 
                 {metodoSelecionado && metodoSelecionado !== "NovoPagamento" && (
                     <div className="card p-4">
-                        <h3 style={{textAlign: "center"}}>Método Selecionado: <br/> {metodoSelecionado}</h3> <br/>
-
+                        <h3 style={{ textAlign: "center" }}>Método Selecionado: <br/>
+                            {pagamentos.find((m) => m.idPagamento === metodoSelecionado).ApelidoCartao} <br/>
+                        </h3>
+                        <br/>
                         {/* Exibindo informações do cartão */}
                         {pagamentos
-                        .filter((metodo) => metodo.ApelidoCartao === metodoSelecionado)
-                                .map((metodo, index) => (
-                                    <div key={index}>
+                        .filter((metodo) => metodo.idPagamento === metodoSelecionado)
+                                .map((metodo) => (
+                                    <div key={metodo.idPagamento}>
                                         <p><strong>Nome no Cartão:</strong> {metodo.NomeCartao}</p>
                                         <p><strong>Número do Cartão:</strong> {String(metodo.numeroCartao)}</p>
                                         <p><strong>Data de Validade:</strong> {metodo.dataNascimento}</p>

@@ -9,7 +9,8 @@ import JogosXbox from '../jogosXbox';
 import JogosPs5 from '../jogosPs5';
 import JogoDetalhes from '../JogoDetalhes';
 import Comprar from '../Comprar';
-import PerfilUsuario from '../assets/PerfilUsuario';
+import PerfilUsuario from '../PerfilUsuario';
+import Pagamentos from '../Pagamentos';
 
 import { BrowserRouter as Router,
         Routes,
@@ -35,7 +36,8 @@ function Usuario() {
         <Route path="/JogoPs5" element={<JogosPs5/>}/>
         <Route path="/jogo/:id" element={<JogoDetalhes />} />
         <Route path="/Comprar" element={<Comprar />} />
-        <Route path="/PerfilUsuario/" element={<PerfilUsuario/>}/>
+        <Route path="/PerfilUsuario/:id" element={<PerfilUsuario/>}/>
+        <Route path="/Pagamentos/:id" element={<Pagamentos/>}/>
 
         {/* <Route path="/another" element={<AnotherPage />} /> */}
       </Routes>

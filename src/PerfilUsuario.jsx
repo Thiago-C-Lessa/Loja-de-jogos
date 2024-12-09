@@ -1,7 +1,7 @@
 import React from "react"; 
-import NavbarInterna from "./navbarInterna.jsx";
-import "../Style/main.css";
-import "../Style/navbarInterna.css";
+import NavbarInterna from "./assets/navbarInterna.jsx";
+import "./Style/main.css";
+import "./Style/navbarInterna.css";
 
 
 /* Vou botar esse jsx na pasta correta */
@@ -15,6 +15,7 @@ function PerfilUsuario() {
       
       <NavbarInterna />
 
+      
 
       <div className="card" style={{ height: "100px" }}>
         <div
@@ -32,18 +33,7 @@ function PerfilUsuario() {
           Perfil de Usuário
         </div>
       </div>
-
-      {/* Histórico de Compras */}
-      <div className="card" style={{ maxWidth: "700px", margin: "100px auto" }}>
-        <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Histórico de Compras</div>
-        <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
-          <h5 className="card-title" style={{color: "white"}}>Ver histórico de compras</h5>
-          <a href="#" className="btn btn-danger">
-            Acessar
-          </a>
-        </div>
-      </div>
-
+        
       {/* Dados do Usuário */}
       <div className="card" style={{ width: "700px", margin: "auto" }}>
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Dados do Usuário</div>
@@ -102,6 +92,29 @@ function PerfilUsuario() {
           </li>
         </ul>
       </div>
+
+      {/* Histórico de Compras */}
+      <div className="card" style={{ maxWidth: "700px", margin: "100px auto" }}>
+        <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Histórico de Compras</div>
+        <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
+          <h5 className="card-title" style={{color: "white"}}>Ver histórico de compras</h5>
+          <a href="#" className="btn btn-danger">
+            Acessar
+          </a>
+        </div>
+      </div>
+
+      {/* Pagamentos cadastrados */}
+      <div className="card" style={{ maxWidth: "700px", margin: "100px auto" }}>
+        <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Pagamentos</div>
+        <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
+          <h5 className="card-title" style={{color: "white"}}>Pagamento cadastrados</h5>
+          <a href="/Pagamentos/:id" className="btn btn-danger">
+            Acessar
+          </a>
+        </div>
+      </div>
+
     </>
   );
 }
