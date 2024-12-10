@@ -6,6 +6,7 @@ const { default: axios } = require('axios');
 const app = express();
 const port = 5000;
 
+
 //Evita erro de cors
 app.use(cors());
 
@@ -321,6 +322,120 @@ app.get('/api/pagamento/:id', (req, res) => {
         }
 
         res.json(pagamentos);
+    });
+});
+
+app.get('/api/avaliacao', (req, res) => {
+    logRequest(req.method, req.url);
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de avaliações:', err);
+            return res.status(500).send('Erro ao carregar avaliações');
+        }
+
+        const { jogoId } = req.query;
+        let avaliacoes = JSON.parse(data);
+
+        if (jogoId) {
+            avaliacoes = avaliacoes.filter(avaliacao => avaliacao.jogoId === jogoId);
+        }
+
+        res.json(avaliacoes);
+    });
+});
+
+app.post('/api/avaliacao', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const novaAvaliacao = req.body;
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de avaliações:', err);
+            return res.status(500).send('Erro ao salvar a nova avaliação');
+        }
+
+        const avaliacoes = JSON.parse(data);
+        const maxId = avaliacoes.reduce((max, avaliacao) => (avaliacao.id > max ? avaliacao.id : max), 0);
+        novaAvaliacao.id = String(Number(maxId) + 1);
+        avaliacoes.push(novaAvaliacao);
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), JSON.stringify(avaliacoes, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao salvar avaliação:', err);
+                return res.status(500).send('Erro ao salvar a nova avaliação');
+            }
+
+            console.log(`Nova avaliação para jogo ${novaAvaliacao.jogoId} adicionada com sucesso.`);
+            res.status(201).send('Avaliação criada');
+        });
+    });
+});
+
+app.put('/api/avaliacao/:id', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const { id } = req.params;
+    const atualizacao = req.body;
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de avaliações:', err);
+            return res.status(500).send('Erro ao atualizar a avaliação');
+        }
+
+        const avaliacoes = JSON.parse(data);
+        const index = avaliacoes.findIndex(avaliacao => avaliacao.id === id);
+
+        if (index === -1) {
+            console.error(`Avaliação com id ${id} não encontrada.`);
+            return res.status(404).send('Avaliação não encontrada');
+        }
+
+        avaliacoes[index] = { ...avaliacoes[index], ...atualizacao };
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), JSON.stringify(avaliacoes, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao salvar a atualização:', err);
+                return res.status(500).send('Erro ao atualizar a avaliação');
+            }
+
+            console.log(`Avaliação com id ${id} atualizada com sucesso.`);
+            res.send('Avaliação atualizada');
+        });
+    });
+});
+
+app.delete('/api/avaliacao/:id', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const { id } = req.params;
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de avaliações:', err);
+            return res.status(500).send('Erro ao deletar a avaliação');
+        }
+
+        const avaliacoes = JSON.parse(data);
+        const index = avaliacoes.findIndex(avaliacao => avaliacao.id === id);
+
+        if (index === -1) {
+            console.error(`Avaliação com id ${id} não encontrada.`);
+            return res.status(404).send('Avaliação não encontrada');
+        }
+
+        avaliacoes.splice(index, 1);
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'avaliacao.json'), JSON.stringify(avaliacoes, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao deletar a avaliação:', err);
+                return res.status(500).send('Erro ao deletar a avaliação');
+            }
+
+            console.log(`Avaliação com id ${id} deletada com sucesso.`);
+            res.send('Avaliação deletada');
+        });
     });
 });
 
