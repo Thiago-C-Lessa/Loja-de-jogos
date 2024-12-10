@@ -168,18 +168,18 @@ app.post('/api/endereco', (req, res) => {
             console.error('Erro ao ler o arquivo de endereços:', err);
             return res.status(500).send('Erro ao salvar o novo endereço');
         }
-
+    
         const enderecos = JSON.parse(data);
         const maxId = enderecos.reduce((max, endereco) => (endereco.id > max ? endereco.id : max), 0);
         novoEndereco.id = String(Number(maxId) + 1);
         enderecos.push(novoEndereco);
-
+    
         fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), JSON.stringify(enderecos, null, 2), (err) => {
             if (err) {
                 console.error('Erro ao salvar o endereço:', err);
                 return res.status(500).send('Erro ao salvar o novo endereço');
             }
-
+    
             console.log(`Novo endereço criado com sucesso com ID ${novoEndereco.id}.`);
             res.status(201).send('Endereço criado');
         });

@@ -1,14 +1,5 @@
 [
   {
-    "id": "1",
-    "rua": "Rua das Flores Rosas",
-    "numero": "123",
-    "cidade": "São Paulo",
-    "estado": "SP",
-    "cep": "01001-000",
-    "usuarioId": "1"
-  },
-  {
     "rua": "Ritxanero",
     "numero": "43",
     "cidade": "Ritxanero2",
@@ -25,5 +16,29 @@
     "cep": "",
     "id": "5",
     "usuarioId": "1"
+  },
+  {
+    "rua": "wefwe",
+    "numero": "123",
+    "cidade": "wef",
+    "estado": "weq",
+    "cep": "445",
+    "id": "6"
+  },
+  {
+    "rua": "mello",
+    "numero": "456",
+    "cidade": "wer",
+    "estado": "eq",
+    "cep": "123",
+    "id": "7"
+  },
+  {
+    "rua": "dos bobos",
+    "numero": "0",
+    "cidade": "s",
+    "estado": "a",
+    "cep": "43535",
+    "id": "8"
   }
 ]

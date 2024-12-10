@@ -43,10 +43,10 @@ function Usuario() {
         <Route path="/Comprar" element={<Comprar />} />
         <Route path="/PerfilUsuario/:id" element={<PerfilUsuario/>}/>
         <Route path="/Pagamentos/:id" element={<Pagamentos/>}/>
-        <Route path="/EditarEndereco/:id" element={<EditarEndereco />} />
-        <Route path="/CriarEndereco/:id" element={<CriarEndereco />} />
-        <Route path="/VisualizarEndereco/:id" element={<VisualizarEndereco />} />
-        <Route path="/DeletarEndereco/:id" element={<DeletarEndereco />} />
+        <Route path="/EditarEndereco/::usuarioId" element={<EditarEndereco />} />
+        <Route path="/CriarEndereco/:usuarioId" element={<CriarEndereco />} />
+        <Route path="/VisualizarEndereco/:usuarioId" element={<VisualizarEndereco />} />
+        <Route path="/DeletarEndereco/:usuarioId" element={<DeletarEndereco />} />
    
 
         {/* <Route path="/another" element={<AnotherPage />} /> */}
