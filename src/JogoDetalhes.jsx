@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import NavbarInterna from "./assets/navbarInterna";
+import Avaliacoes from "./Avaliacoes";
 import "./Style/JogoDetalhes.css";
 
 
@@ -49,10 +50,6 @@ function JogoDetalhes() {
     history.push("/Carrinho"); // Navega para a página do carrinho
   };
 
-  const setJogoAtualizado = (updatedJogo) => {
-    setJogo(updatedJogo);
-  };
-
   if(loading){
     return <div>Carregando informações do jogo...</div>;
   }
@@ -79,6 +76,8 @@ function JogoDetalhes() {
         <button onClick={handleAdicionarAoCarrinho} className="jogo-detalhes-botao">
           Adicionar ao Carrinho
         </button>
+
+        <Avaliacoes jogoId={id} />
       </div>
     </div>
   );
