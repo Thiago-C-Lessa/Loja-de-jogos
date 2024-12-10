@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import NavbarInterna from "./assets/navbarInterna";
-import Avaliacoes from "./Avaliacoes";
+import Avaliacoes from "./assets/Avaliacoes";
 import "./Style/JogoDetalhes.css";
 
 
@@ -9,6 +9,8 @@ function JogoDetalhes() {
   const{id} = useParams();
   const[jogo, setJogo] = useState(null);
   const[loading, setLoading] = useState(true);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,20 +34,16 @@ function JogoDetalhes() {
 
   const handleAdicionarAoCarrinho = () => {
     const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    const itemExistente = carrinho.find(item => item.id === jogo.id);
-
-    if(itemExistente){
-      itemExistente.quantidade += 1;
-    }else{
       carrinho.push({
         id: jogo.id,
         nome: jogo.nome,
         imagem: jogo.imagem,
         preco: jogo.preco,
         quantidade: 1,
-        plataforma: null,
+        quantidade_ps5: jogo.quantidade_ps5,
+        quantidade_xbox: jogo.quantidade_xbox,
+        quantidade_pc: jogo.quantidade_pc ,
       });
-    }
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
     history.push("/Carrinho"); // Navega para a página do carrinho
   };
@@ -73,9 +71,11 @@ function JogoDetalhes() {
           Preço: R$ {(jogo.preco/10).toFixed(2)}
         </p>
 
-        <button onClick={handleAdicionarAoCarrinho} className="jogo-detalhes-botao">
-          Adicionar ao Carrinho
-        </button>
+        
+        <a href="/Carrinho" onClick={handleAdicionarAoCarrinho} className="jogo-detalhes-botao">Adicionar ao Carrinho</a>
+
+        
+        
 
         <Avaliacoes jogoId={id} />
       </div>

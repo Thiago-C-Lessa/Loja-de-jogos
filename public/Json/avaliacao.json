@@ -19,5 +19,19 @@
     "usuario": "Pedro Santos",
     "texto": "Achei repetitivo, mas valeu a experiência.",
     "estrelas": 3
+  },
+  {
+    "jogoId": "7",
+    "usuario": "Usuário Teste",
+    "texto": "jogo legal",
+    "estrelas": 2,
+    "id": "4"
+  },
+  {
+    "jogoId": "7",
+    "usuario": "Usuário Teste",
+    "texto": "Jogo pay to win",
+    "estrelas": 5,
+    "id": "5"
   }
 ]

@@ -40,9 +40,9 @@ function NavbarInterna() {
         
         <div className="collapse navbar-collapse" id="navbarScroll">
           <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{ '--bs-scroll-height': '100px' }}>
-            <li className="nav-item">
+            {/*<li className="nav-item">
               <a className="nav-link active" aria-current="page" href="#">Mais Vendidos</a>
-            </li>
+            </li>*/}
             <li className="nav-item">
               <a className="nav-link" href="/JogoPc">Jogos para PC</a>
             </li>
