@@ -34,7 +34,7 @@ function Carrinho() {
 
   const calcularTotal = () => {
     const total = itensCarrinho.reduce(
-      (acc, item) => acc + (parseFloat(item.preco) * (item.quantidade || 1)),
+      (acc, item) => acc + (parseFloat((item.preco)/10) * (item.quantidade || 1)),
       0
     ).toFixed(2);
     // Salva o valor total no localStorage para acesso na página de pagamento
