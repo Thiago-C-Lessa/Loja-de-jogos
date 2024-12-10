@@ -1,0 +1,16 @@
+.form-group {
+    margin-bottom: 20px; /* Espaço entre os campos */
+  }
+  
+  .form-group label {
+    display: block;       /* Faz com que os rótulos fiquem em uma linha separada */
+    margin-bottom: 5px;   /* Adiciona espaço entre o rótulo e o campo */
+    font-weight: bold;    /* Opcional: deixa o texto do rótulo em negrito */
+  }
+  
+  .form-control {
+    max-width: 400px; /* Mantém os campos menos compridos */
+    width: 100%;      /* Garante que sejam responsivos */
+    display: block;   /* Garante que cada campo ocupe uma linha */
+  }
+  

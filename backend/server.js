@@ -139,6 +139,120 @@ app.delete('/api/jogos/:id', (req, res) => {
     });
 });
 
+
+//ENDEREÇO
+
+app.get('/api/endereco', (req, res) => {
+    logRequest(req.method, req.url);
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de endereços:', err);
+            return res.status(500).send('Erro ao carregar endereços');
+        }
+
+        res.json(JSON.parse(data));
+    });
+});
+
+app.post('/api/endereco', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const novoEndereco = req.body;
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de endereços:', err);
+            return res.status(500).send('Erro ao salvar o novo endereço');
+        }
+
+        const enderecos = JSON.parse(data);
+        const maxId = enderecos.reduce((max, endereco) => (endereco.id > max ? endereco.id : max), 0);
+        novoEndereco.id = String(Number(maxId) + 1);
+        enderecos.push(novoEndereco);
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), JSON.stringify(enderecos, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao salvar o endereço:', err);
+                return res.status(500).send('Erro ao salvar o novo endereço');
+            }
+
+            console.log(`Novo endereço criado com sucesso com ID ${novoEndereco.id}.`);
+            res.status(201).send('Endereço criado');
+        });
+    });
+});
+
+//--
+
+app.put('/api/endereco/:id', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const { id } = req.params;
+    const enderecoAtualizado = req.body;
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de endereços:', err);
+            return res.status(500).send('Erro ao atualizar o endereço');
+        }
+
+        const enderecos = JSON.parse(data);
+        const index = enderecos.findIndex(endereco => endereco.id === id);
+
+        if (index === -1) {
+            console.error(`Endereço com ID ${id} não encontrado.`);
+            return res.status(404).send('Endereço não encontrado');
+        }
+
+        enderecos[index] = { ...enderecos[index], ...enderecoAtualizado };
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), JSON.stringify(enderecos, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao salvar o arquivo de endereços:', err);
+                return res.status(500).send('Erro ao salvar as alterações no endereço');
+            }
+
+            console.log(`Endereço com ID ${id} atualizado com sucesso.`);
+            res.send('Endereço atualizado');
+        });
+    });
+});
+
+//--------
+
+app.delete('/api/endereco/:id', (req, res) => {
+    logRequest(req.method, req.url);
+
+    const { id } = req.params;
+
+    fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Erro ao ler o arquivo de endereços:', err);
+            return res.status(500).send('Erro ao deletar o endereço');
+        }
+
+        const enderecos = JSON.parse(data);
+        const index = enderecos.findIndex(endereco => endereco.id === id);
+
+        if (index === -1) {
+            console.error(`Endereço com ID ${id} não encontrado.`);
+            return res.status(404).send('Endereço não encontrado');
+        }
+
+        enderecos.splice(index, 1);
+
+        fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), JSON.stringify(enderecos, null, 2), (err) => {
+            if (err) {
+                console.error('Erro ao deletar o endereço:', err);
+                return res.status(500).send('Erro ao deletar o endereço');
+            }
+
+            console.log(`Endereço com ID ${id} deletado com sucesso.`);
+            res.send('Endereço deletado');
+        });
+    });
+});
+
 // criação de cadastro do usuario
 
 app.post('/api/usuario', (req, res) => {

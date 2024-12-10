@@ -78,5 +78,21 @@
     "dataNascimento": "0003-03",
     "id": 3,
     "idPagamento": "10"
+  },
+  {
+    "ApelidoCartao": "Lebron James",
+    "numeroCartao": "121212",
+    "NomeCartao": "Rodolfo",
+    "dataNascimento": "223445-12",
+    "id": null,
+    "idPagamento": "10"
+  },
+  {
+    "ApelidoCartao": "Lebron James",
+    "numeroCartao": "123",
+    "NomeCartao": "Rodolfo",
+    "dataNascimento": "0034-12",
+    "id": null,
+    "idPagamento": "10"
   }
 ]

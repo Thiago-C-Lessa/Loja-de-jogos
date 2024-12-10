@@ -11,6 +11,12 @@ import JogoDetalhes from '../JogoDetalhes';
 import Comprar from '../Comprar';
 import PerfilUsuario from '../PerfilUsuario';
 import Pagamentos from '../Pagamentos';
+import EditarEndereco from '../EditarEndereco';
+import CriarEndereco from '../CriarEndereco';
+import VisualizarEndereco from '../VisualizarEndereco';
+import DeletarEndereco from '../DeletarEndereco';
+
+
 
 import { BrowserRouter as Router,
         Routes,
@@ -38,6 +44,11 @@ function Adm() {
         <Route path="/Comprar/:id" element={<Comprar />} />
         <Route path="/PerfilUsuario/:id" element={<PerfilUsuario/>}/>
         <Route path="/Pagamentos/:id" element={<Pagamentos/>}/>
+        <Route path="/EditarEndereco/:id" element={<EditarEndereco/>} />
+        <Route path="/CriarEndereco" element={<CriarEndereco/>} />
+        <Route path="/VisualizarEndereco" element={<VisualizarEndereco/>} />
+        <Route path="/DeletarEndereco" element={<DeletarEndereco/>} />
+    
         
 
         {/* <Route path="/another" element={<AnotherPage />} /> */}

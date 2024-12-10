@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "rua": "Rua das Flores Rosas",
+    "numero": "123",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "01001-000"
+  },
+  {
+    "id": "2",
+    "rua": "Avenida Paulista",
+    "numero": "456",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "01311-200"
+  },
+  {
+    "rua": "Ritxanero",
+    "numero": "43",
+    "cidade": "Ritxanero2",
+    "estado": "ERRE JOTA",
+    "cep": "12312341241",
+    "id": "4"
+  }
+]
