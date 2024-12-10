@@ -6,7 +6,7 @@
     "preco": 1499,
     "descricao": "Há mais de duas décadas, o Counter-Strike oferece uma experiência competitiva de elite moldada por milhões de jogadores mundialmente. Agora, o próximo capítulo da história do CS vai começar. Isso é Counter-Strike 2.",
     "genero": "competitivo",
-    "quantidade_ps5": 0,
+    "quantidade_ps5": 10,
     "quantidade_pc": 10
   },
   {
@@ -129,7 +129,8 @@
     "descricao": "Quanto você aguenta em um mundo pós-apocalíptico? Uma terra arrasada por zumbis infectados, onde você compete com outros sobreviventes por recursos limitados. Você vai ajudar estranhos em sua luta? Ou evitará traições como um lobo solitário? Esse é o DayZ. Essa é a sua história.",
     "genero": "aventura",
     "quantidade_ps5": 0,
-    "quantidade_pc": 10
+    "quantidade_pc": 10,
+    "quantidade_xbox": "1"
   },
   {
     "id": "15",
@@ -148,18 +149,7 @@
     "preco": 1039,
     "descricao": "The only aim' in Rust is to survive. Everything wants you to die - the island’s wildlife and other inhabitants, the environment, other survivors. Do whatever it takes to last another night.",
     "genero": "mundo aberto",
-    "quantidade_ps5": 0,
+    "quantidade_ps5": 5,
     "quantidade_pc": 10
-  },
-  {
-    "nome": "GTA VI",
-    "imagem": "/imagem/gta6.jpg",
-    "preco": "1",
-    "descricao": "1",
-    "genero": "d",
-    "quantidade_ps5": "1",
-    "quantidade_pc": "01",
-    "quantidade_xbox": "01",
-    "id": "10"
   }
 ]

@@ -23,7 +23,7 @@
   background-color: #fff;
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0 , 0.7);
   margin-bottom: 10px;
 }
 
@@ -98,3 +98,11 @@
 .avaliacoes-formulario span.inactive {
   color: gray;
 }
+
+.botoes-container {
+  display: flex;
+  gap: 10px; /* Espaço entre os botões */
+  margin-top: 15px;
+}
+
+

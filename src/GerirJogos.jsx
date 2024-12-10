@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import NavbarInterna from './assets/navbarInterna.jsx'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const GerirJogos = () => {
@@ -18,6 +20,31 @@ const GerirJogos = () => {
   const [editarJogoId, setEditarJogoId] = useState(null);
 
   const API_URL = "http://localhost:5000/api/jogos";
+
+  function notify(x) {
+
+    if (x==0){
+    toast.success("Jogo excluido!", {
+      position: "top-center", 
+      autoClose: 2500, 
+      theme: "dark", 
+    });}
+
+    if (x==1){
+      toast.success("Jogo Adicionado!", {
+        position: "top-center", 
+        autoClose: 2500, 
+        theme: "dark", 
+      });}
+
+    if (x==2){
+      toast.success("Jogo Atualizado!", {
+        position: "top-center", 
+        autoClose: 2500, 
+        theme: "dark", 
+      });}
+    
+  }
 
   // Carregar todos os jogos
   useEffect(() => {
@@ -59,7 +86,9 @@ const GerirJogos = () => {
             quantidade_xbox: 0,
 
           });
-        })
+          notify(2)
+        }
+      )
         .catch((error) => console.error("Erro ao atualizar jogo:", error));
     } else {
       // Criar jogo
@@ -77,7 +106,9 @@ const GerirJogos = () => {
             quantidade_pc: 0,
             quantidade_xbox: 0,
           });
-        })
+          notify(1)
+        }
+      )
         .catch((error) => console.error("Erro ao criar jogo:", error));
     }
   };
@@ -89,6 +120,7 @@ const GerirJogos = () => {
       .delete(`${API_URL}/${id}`)
       .then(() => setJogos(jogos.filter((jogo) => jogo.id !== id)))
       .catch((error) => console.error("Erro ao deletar jogo:", error));
+      notify(0)
   };
 
   // Iniciar edição de um jogo
@@ -249,6 +281,7 @@ const GerirJogos = () => {
         ))}
       </div>
     </div>
+    <ToastContainer/>
   </div>
   );
 };
