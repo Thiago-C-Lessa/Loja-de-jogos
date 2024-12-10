@@ -5,15 +5,8 @@
     "numero": "123",
     "cidade": "São Paulo",
     "estado": "SP",
-    "cep": "01001-000"
-  },
-  {
-    "id": "2",
-    "rua": "Avenida Paulista",
-    "numero": "456",
-    "cidade": "São Paulo",
-    "estado": "SP",
-    "cep": "01311-200"
+    "cep": "01001-000",
+    "usuarioId": "1"
   },
   {
     "rua": "Ritxanero",
@@ -21,6 +14,16 @@
     "cidade": "Ritxanero2",
     "estado": "ERRE JOTA",
     "cep": "12312341241",
-    "id": "4"
+    "id": "4",
+    "usuarioId": "2"
+  },
+  {
+    "rua": "",
+    "numero": "",
+    "cidade": "",
+    "estado": "",
+    "cep": "",
+    "id": "5",
+    "usuarioId": "1"
   }
 ]

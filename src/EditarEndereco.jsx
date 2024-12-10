@@ -1,47 +1,48 @@
 import React, { useEffect, useState } from "react"; 
 import axios from "axios"; 
 import NavbarInterna from "./assets/navbarInterna.jsx";
+import { useParams } from "react-router-dom";
 import "./Style/main.css";
 import "./Style/navbarInterna.css";
 
 function EditarEndereco() {
-  const [enderecos, setEnderecos] = useState([]); // Armazena todos os endereços
-  const [selectedEndereco, setSelectedEndereco] = useState(null); // Armazena o endereço selecionado
-  const [formData, setFormData] = useState({}); // Armazena os dados do formulário
+  const { usuarioId } = useParams(); // Obter o ID do usuário da URL
+  const [enderecos, setEnderecos] = useState([]); 
+  const [selectedEndereco, setSelectedEndereco] = useState(null); 
+  const [formData, setFormData] = useState({}); 
 
   useEffect(() => {
     const fetchEnderecos = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/endereco`); // Ajuste a URL conforme necessário
-        setEnderecos(response.data); // Armazena todos os endereços no estado
+        const response = await axios.get(`http://localhost:5000/api/endereco/${usuarioId}`); // Ajuste a URL conforme necessário
+        setEnderecos(response.data); 
       } catch (error) {
         console.error("Erro ao buscar os endereços:", error);
       }
     };
 
     fetchEnderecos(); 
-  }, []); // O efeito será executado apenas uma vez ao montar o componente
+  }, [usuarioId]); 
 
   const handleSelectEndereco = (endereco) => {
     setSelectedEndereco(endereco);
-    setFormData(endereco); // Preenche o formulário com os dados do endereço selecionado
+    setFormData(endereco); 
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value }); // Atualiza os dados do formulário
+    setFormData({ ...formData, [name]: value }); 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/endereco/${selectedEndereco.id}`, formData); // Ajuste a URL conforme necessário
+      await axios.put(`http://localhost:5000/api/endereco/${selectedEndereco.id}`, formData); 
       alert("Endereço atualizado com sucesso!");
-      // Atualiza a lista de endereços após a edição
-      const response = await axios.get(`http://localhost:5000/api/endereco`);
+      const response = await axios.get(`http://localhost:5000/api/endereco/${usuarioId}`);
       setEnderecos(response.data);
-      setSelectedEndereco(null); // Limpa a seleção
-      setFormData({}); // Limpa os dados do formulário
+      setSelectedEndereco(null); 
+      setFormData({}); 
     } catch (error) {
       console.error("Erro ao atualizar o endereço:", error);
       alert("Erro ao atualizar o endereço.");
@@ -49,31 +50,18 @@ function EditarEndereco() {
   };
 
   const handleCancel = () => {
-    setSelectedEndereco(null); // Limpa a seleção
-    setFormData({}); // Limpa os dados do formulário
+    setSelectedEndereco(null); 
+    setFormData({}); 
   };
 
   return (
     <>
       <NavbarInterna />
-
       <div className="card" style={{ height: "100px" }}>
-        <div
-          className="card-body"
-          style={{
-            textAlign: "center",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            color: "white",
-            fontSize: "xx-large",
-          }}
-        >
+        <div className="card-body" style={{ textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center", height: "100%", color: "white", fontSize: "xx-large" }}>
           Editar Endereço
         </div>
       </div>
-
       <div className="container" style={{ margin: "auto", maxWidth: "700px" }}>
         {enderecos.map((endereco) => (
           <div className="card" key={endereco.id} style={{ margin: "10px 0" }}>
@@ -84,7 +72,7 @@ function EditarEndereco() {
               <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
                 Estado: {endereco.estado}
               </li>
-              <li className="list-group-item " style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
+              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
                 Cidade: {endereco.cidade}
               </li>
               <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
@@ -96,7 +84,7 @@ function EditarEndereco() {
               <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
                 CEP: {endereco.cep}
               </li>
-              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
+              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color : "white", borderColor: "black"}}>
                 <button className="btn btn-primary" onClick={() => handleSelectEndereco(endereco)}>
                   Editar
                 </button>

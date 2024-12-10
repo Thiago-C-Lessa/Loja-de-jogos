@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react"; 
 import axios from "axios"; 
 import NavbarInterna from "./assets/navbarInterna.jsx";
+import { useParams } from "react-router-dom";
 import "./Style/main.css";
 import "./Style/navbarInterna.css";
 
 function VisualizarEndereco() {
-  const [enderecos, setEnderecos] = useState([]); // Armazena todos os endereços
+  const { usuarioId } = useParams(); // Obter o ID do usuário da URL
+  const [enderecos, setEnderecos] = useState([]); 
 
   useEffect(() => {
     const fetchEnderecos = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/endereco`); // Ajuste a URL conforme necessário
-        setEnderecos(response.data); // Armazena todos os endereços no estado
+        const response = await axios.get(`http://localhost:5000/api/endereco/${usuarioId}`); // Ajuste a URL conforme necessário
+        setEnderecos(response.data); 
       } catch (error) {
-        console.error("Erro ao buscar os endereços:", error);
+ console.error("Erro ao buscar os endereços:", error);
       }
     };
 
     fetchEnderecos(); 
-  }, []); // O efeito será executado apenas uma vez ao montar o componente
+  }, [usuarioId]); 
 
   return (
     <>
@@ -69,10 +71,9 @@ function VisualizarEndereco() {
       </div>
 
       <div className="container" style={{ margin: "auto", maxWidth: "700px", marginTop: "20px" }}>
-        <a href="/PerfilUsuario/:id" className="btn btn-danger">
+        <a href={`/PerfilUsuario/${usuarioId}`} className="btn btn-danger">
           Voltar
         </a>
-    
       </div>
     </>
   );

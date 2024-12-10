@@ -88,7 +88,7 @@ function PerfilUsuario() {
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
             
 
-            <a href="/CriarEndereco" className="btn btn-danger">
+            <a href="/CriarEndereco/:id" className="btn btn-danger">
               Adicionar Endereço
             </a>
 
@@ -96,11 +96,11 @@ function PerfilUsuario() {
               Editar Endereços
             </a>
 
-            <a href="/VisualizarEndereco" className="btn btn-danger">
+            <a href="/VisualizarEndereco/:id" className="btn btn-danger">
               Visualizar Endereços
             </a>
 
-            <a href="/DeletarEndereco" className="btn btn-danger">
+            <a href="/DeletarEndereco/:id" className="btn btn-danger">
               Remover Endereço
             </a>
           </li>

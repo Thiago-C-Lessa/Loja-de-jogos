@@ -44,10 +44,10 @@ function CriarEndereco() {
 
   return (
     <div>
-      <h1>Criar Endereço</h1>
+      <h1 style={{color:"white"}}>Adicionar Endereço</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Rua:</label>
+          <label style={{color:"white"}}>Rua:</label>
           <input
             type="text"
             name="rua"
@@ -56,7 +56,7 @@ function CriarEndereco() {
           />
         </div>
         <div>
-          <label>Número:</label>
+          <label style={{color:"white"}}>Número:</label>
           <input
             type="text"
             name="numero"
@@ -65,7 +65,7 @@ function CriarEndereco() {
           />
         </div>
         <div>
-          <label>Cidade:</label>
+          <label style={{color:"white"}}>Cidade:</label>
           <input
             type="text"
             name="cidade"
@@ -74,7 +74,7 @@ function CriarEndereco() {
           />
         </div>
         <div>
-          <label>Estado:</label>
+          <label style={{color:"white"}}>Estado:</label>
           <input
             type="text"
             name="estado"
@@ -83,7 +83,7 @@ function CriarEndereco() {
           />
         </div>
         <div>
-          <label>CEP:</label>
+          <label style={{color:"white"}}>CEP:</label>
           <input
             type="text"
             name="cep"

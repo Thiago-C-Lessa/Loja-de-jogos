@@ -142,8 +142,10 @@ app.delete('/api/jogos/:id', (req, res) => {
 
 //ENDEREÇO
 
-app.get('/api/endereco', (req, res) => {
+// Rota para listar endereços de um usuário específico
+app.get('/api/endereco/:usuarioId', (req, res) => {
     logRequest(req.method, req.url);
+    const { usuarioId } = req.params;
 
     fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
         if (err) {
@@ -151,14 +153,16 @@ app.get('/api/endereco', (req, res) => {
             return res.status(500).send('Erro ao carregar endereços');
         }
 
-        res.json(JSON.parse(data));
+        const enderecos = JSON.parse(data).filter(endereco => endereco.usuarioId === usuarioId);
+        res.json(enderecos);
     });
 });
 
+// Rota para criar um novo endereço
 app.post('/api/endereco', (req, res) => {
     logRequest(req.method, req.url);
-
     const novoEndereco = req.body;
+
     fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
         if (err) {
             console.error('Erro ao ler o arquivo de endereços:', err);
@@ -182,11 +186,9 @@ app.post('/api/endereco', (req, res) => {
     });
 });
 
-//--
-
+// Rota para atualizar um endereço
 app.put('/api/endereco/:id', (req, res) => {
     logRequest(req.method, req.url);
-
     const { id } = req.params;
     const enderecoAtualizado = req.body;
 
@@ -208,8 +210,8 @@ app.put('/api/endereco/:id', (req, res) => {
 
         fs.writeFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), JSON.stringify(enderecos, null, 2), (err) => {
             if (err) {
-                console.error('Erro ao salvar o arquivo de endereços:', err);
-                return res.status(500).send('Erro ao salvar as alterações no endereço');
+                console.error('Erro ao salvar a atualização:', err);
+                return res.status(500).send('Erro ao atualizar o endereço');
             }
 
             console.log(`Endereço com ID ${id} atualizado com sucesso.`);
@@ -218,11 +220,9 @@ app.put('/api/endereco/:id', (req, res) => {
     });
 });
 
-//--------
-
+// Rota para deletar um endereço
 app.delete('/api/endereco/:id', (req, res) => {
     logRequest(req.method, req.url);
-
     const { id } = req.params;
 
     fs.readFile(path.join(__dirname, '..', 'public', 'Json', 'endereco.json'), 'utf8', (err, data) => {
