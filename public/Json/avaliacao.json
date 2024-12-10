@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "jogoId": "1",
+    "usuario": "João Silva",
+    "texto": "Ótimo jogo! A história é envolvente e os gráficos são incríveis.",
+    "estrelas": 5
+  },
+  {
+    "id": "2",
+    "jogoId": "2",
+    "usuario": "Maria Oliveira",
+    "texto": "Gostei bastante, mas achei o preço um pouco alto.",
+    "estrelas": 4
+  },
+  {
+    "id": "3",
+    "jogoId": "3",
+    "usuario": "Pedro Santos",
+    "texto": "Achei repetitivo, mas valeu a experiência.",
+    "estrelas": 3
+  }
+]
