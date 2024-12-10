@@ -1,0 +1,100 @@
+.avaliacoes-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.avaliacoes-container h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.avaliacoes-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.avaliacoes-container li {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.avaliacoes-container strong {
+  color: #555;
+}
+
+.avaliacoes-container p {
+  font-size: 1rem;
+  color: #666;
+}
+
+.avaliacoes-formulario {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.avaliacoes-formulario h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.avaliacoes-formulario textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.avaliacoes-formulario label {
+  font-size: 1rem;
+  color: #333;
+  margin-right: 10px;
+}
+
+.avaliacoes-formulario button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.avaliacoes-formulario button:hover {
+  background-color: #45a049;
+}
+
+.avaliacoes-formulario span {
+  font-size: 30px; 
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.avaliacoes-formulario span:hover {
+  color: yellowgreen; 
+}
+
+.avaliacoes-formulario span.active {
+  color: gold; 
+}
+
+.avaliacoes-formulario span.inactive {
+  color: gray;
+}
