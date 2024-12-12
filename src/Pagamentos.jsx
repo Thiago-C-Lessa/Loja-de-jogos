@@ -15,7 +15,7 @@ const Pagamentos = () => {
   });
   const [editarPagamentoId, setEditarPagamentoId] = useState(null);
 
-  const API_URL = "http://localhost:5000/api/pagamento";
+  const API_URL = "http://localhost:5000/pagamento";
 
   // Carregar pagamentos de um usuário específico
   useEffect(() => {

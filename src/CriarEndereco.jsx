@@ -10,7 +10,7 @@ function CriarEndereco() {
     cep: "",
   });
 
-  const API_URL = "http://localhost:5000/api/endereco";
+  const API_URL = "http://localhost:5000/endereco";
 
   const handleChange = (event) => {
     const { name, value } = event.target;

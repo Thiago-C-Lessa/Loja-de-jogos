@@ -14,7 +14,7 @@ function EditarEndereco() {
   useEffect(() => {
     const fetchEnderecos = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/endereco/${usuarioId}`); // Ajuste a URL conforme necessário
+        const response = await axios.get(`http://localhost:5000/endereco/${usuarioId}`); // Ajuste a URL conforme necessário
         setEnderecos(response.data); 
       } catch (error) {
         console.error("Erro ao buscar os endereços:", error);

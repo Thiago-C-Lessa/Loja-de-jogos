@@ -12,7 +12,7 @@ const GerirEnderecos = () => {
   });
   const [editarEnderecoId, setEditarEnderecoId] = useState(null);
 
-  const API_URL = "http://localhost:5000/api/endereco";
+  const API_URL = "http://localhost:5000/endereco";
 
   // Carregar todos os endereços
   useEffect(() => {

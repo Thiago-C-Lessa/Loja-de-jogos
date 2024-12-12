@@ -12,7 +12,7 @@ function PerfilUsuario() {
   useEffect(() => {
     const fetchEndereco = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/endereco`); // Ajuste a URL conforme necessário
+        const response = await axios.get(`http://localhost:5000/endereco`); // Ajuste a URL conforme necessário
         const enderecos = response.data;
 
         // Filtrar o endereço com o maior ID

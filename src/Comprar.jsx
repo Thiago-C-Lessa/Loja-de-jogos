@@ -17,7 +17,7 @@ function Comprar() {
     const [novoEndereco, setNovoEndereco] = useState(false); // Controle para exibir formulário de novo endereço
     const [novoEnderecoData, setNovoEnderecoData] = useState({ rua: "", numero: "", cidade: "", estado: "" }); // Novo endereço
 
-    const navigate = useNavigate();
+    const navigate = useNavigate();api/
 
     function notify() {
         toast.success("Pagamento concluído!", {
