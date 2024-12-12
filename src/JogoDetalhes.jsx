@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import NavbarInterna from "./assets/navbarInterna";
 import Avaliacoes from "./assets/Avaliacoes";
 import "./Style/JogoDetalhes.css";
+import axios from "axios";
 
 
 function JogoDetalhes() {
@@ -15,9 +16,9 @@ function JogoDetalhes() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("../Json/jogos.json");
-        //const response = await axios.get(`http://localhost:5000/jogos`);
-        const jogos = await response.json();
+        //const response = await fetch("../Json/jogos.json");
+        const response = await axios.get(`http://localhost:5000/jogos`);
+        const jogos = await response.data;
 
         // Verifica o jogo com o ID correspondente
         const jogoEncontrado = jogos.find((jogo) => jogo.id === id);
