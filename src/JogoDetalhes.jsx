@@ -16,6 +16,7 @@ function JogoDetalhes() {
     const fetchData = async () => {
       try {
         const response = await fetch("../Json/jogos.json");
+        //const response = await axios.get(`http://localhost:5000/jogos`);
         const jogos = await response.json();
 
         // Verifica o jogo com o ID correspondente
