@@ -13,7 +13,7 @@ Currently, two official plugins are available:
 
 2. Abra um terminal na pasta **backend** e execute:  
   
-   "npx json-server --watch db.json --port 5000"
+   "json-server --watch db.json --port 5000 cors"
 
 3. Volte ao terminal que abriu na pasta **Loja-de-jogos** e execute:
 
