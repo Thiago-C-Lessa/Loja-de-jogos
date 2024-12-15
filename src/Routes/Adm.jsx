@@ -15,6 +15,7 @@ import EditarEndereco from '../EditarEndereco';
 import CriarEndereco from '../CriarEndereco';
 import VisualizarEndereco from '../VisualizarEndereco';
 import DeletarEndereco from '../DeletarEndereco';
+import EditarUsuario from '../EditarUsuario';
 
 
 
@@ -48,6 +49,7 @@ function Adm() {
         <Route path="/CriarEndereco/:usuarioId" element={<CriarEndereco />} />
         <Route path="/VisualizarEndereco/:usuarioId" element={<VisualizarEndereco />} />
         <Route path="/DeletarEndereco/:usuarioId" element={<DeletarEndereco />} />
+        <Route path="/EditarUsuario/:id" element={<EditarUsuario />} />
     
         
 
