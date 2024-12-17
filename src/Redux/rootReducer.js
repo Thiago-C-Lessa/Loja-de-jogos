@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Usando localStorage como armazenamento
-import userReducer from './user/reduer';  // Certifique-se de que o caminho está correto
+import userReducer from './user/reduer';  
 
 // Configuração do redux-persist
 const persistConfig = {

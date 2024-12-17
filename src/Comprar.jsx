@@ -4,6 +4,7 @@ import NavbarInterna from './assets/navbarInterna';
 import './Style/Compra.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 function Comprar() {
     const { id } = useParams(); // Captura o ID da URL
@@ -17,7 +18,7 @@ function Comprar() {
     const [novoEndereco, setNovoEndereco] = useState(false); // Controle para exibir formulário de novo endereço
     const [novoEnderecoData, setNovoEnderecoData] = useState({ rua: "", numero: "", cidade: "", estado: "" }); // Novo endereço
 
-    const navigate = useNavigate();api/
+    const navigate = useNavigate();
 
     function notify() {
         toast.success("Pagamento concluído!", {
@@ -28,27 +29,24 @@ function Comprar() {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
+        const caregardados = async () => {
             try {
                 // Fetch de pagamentos
-                const responsePagamento = await fetch("../Json/pagamento.json");
-                const dataPagamento = await responsePagamento.json();
-                const metodosFiltrados = dataPagamento.filter((item) => parseInt(item.id) === parseInt(id));
+                const responsePagamento = await axios.get("http://localhost:5000/pagamentos");
+                const metodosFiltrados = responsePagamento.data.filter((item) => parseInt(item.id) === parseInt(id));
                 setPagamentos(metodosFiltrados);
-
+    
                 // Fetch de endereços
-                const responseEndereco = await fetch("../Json/endereco.json");
-                const dataEndereco = await responseEndereco.json();
-                
-                const enderecosFiltrados = dataEndereco.filter((item) => parseInt(item.id) === parseInt(id));
+                const responseEndereco = await axios.get("http://localhost:5000/enderecos");
+                const enderecosFiltrados = responseEndereco.data.filter((item) => parseInt(item.id) === parseInt(id));
                 setEnderecos(enderecosFiltrados);
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
                 alert("Erro ao carregar dados do usuário.");
             }
         };
-
-        fetchData();
+    
+        caregardados();
     }, [id]);
 
     function handleMetodoChange(e) {

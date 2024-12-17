@@ -92,7 +92,7 @@ function NavbarInterna() {
           {/* Verifica se o usuário está logado */}
           {currentUser ? (
             <>
-              <a href="/Perfil">
+              <a href="/PerfilUsuario/:id">
                 <img
                   src="/public/imagem/user-avatar.png" // Substitua pela imagem do avatar genérico
                   alt="User Avatar"
