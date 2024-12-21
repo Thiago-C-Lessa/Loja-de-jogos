@@ -3,8 +3,13 @@ import axios from "axios";
 import NavbarInterna from "./assets/navbarInterna";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Cadastro() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const notify = (message, type = "success") => {
     toast[type](message, {
       position: "top-center",
@@ -21,7 +26,7 @@ function Cadastro() {
     senha: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar a visibilidade da senha
+  const [showPassword, setShowPassword] = useState(false);
 
   // Função para validar CPF
   const isValidCPF = (cpf) => {
@@ -84,16 +89,18 @@ function Cadastro() {
       const response = await axios.post("http://localhost:5000/usuarios", formDataWithHashedPassword);
 
       if (response.status === 201 || response.status === 200) {
-        console.log("Usuário cadastrado:", response.data);
+        const user = response.data; // Usuário retornado pelo backend
 
-        setFormData({
-          nome: "",
-          dataNascimento: "",
-          cpf: "",
-          email: "",
-          senha: "",
+        // Atualiza o estado global com o usuário logado
+        dispatch({
+          type: "user/login",
+          payload: user,
         });
+
         notify("Cadastro concluído!");
+
+        // Redireciona para a página inicial ou anterior
+        navigate(-2);
       } else {
         notify("Erro ao cadastrar o usuário. Tente novamente.", "error");
       }
@@ -183,7 +190,7 @@ function Cadastro() {
               </label>
               <div className="input-group">
                 <input
-                  type={showPassword ? "text" : "password"} // Alterna entre "text" e "password"
+                  type={showPassword ? "text" : "password"}
                   className="form-control"
                   id="passwordInput"
                   name="senha"
@@ -195,7 +202,7 @@ function Cadastro() {
                 <button
                   type="button"
                   className="btn btn-outline-secondary"
-                  onClick={() => setShowPassword(!showPassword)} // Alterna a visibilidade
+                  onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? "Ocultar" : "Mostrar"}
                 </button>

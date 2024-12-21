@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import NavbarInterna from './assets/navbarInterna';
 import './Style/carrinho.css';
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Carrinho() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
+  const { currentUser } = useSelector((state) => state.userReducer); // Obtém o usuário atual do Redux
+  const navigate = useNavigate();
 
   useEffect(() => {
     const carrinho = JSON.parse(localStorage.getItem('carrinho')); // Obtém os itens do carrinho armazenados
@@ -42,6 +46,14 @@ function Carrinho() {
     return total;
   };
 
+  const handlePagamento = () => {
+    if (!currentUser) {
+      navigate("/login"); // Redireciona para a página de login se o usuário não estiver logado
+    } else {
+      navigate("/pagamento"); // Redireciona para a página de pagamento
+    }
+  };
+
   return (
     <div>
       <NavbarInterna />
@@ -49,7 +61,7 @@ function Carrinho() {
       <div className="container text-center" id="containercarinho">
         <h1 style={{color: "white"}}>MEU CARRINHO</h1>
 
-        <form action="/Comprar/:id" method="get">
+        <div>
           <table className="table" id="carinhodejogos">
             <thead>
               <tr>
@@ -133,12 +145,12 @@ function Carrinho() {
             <button
               className="btn btn-outline-success"
               id="botaopagamento"
-              type="submit"
+              onClick={handlePagamento}
             >
               Seguir para pagamento
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

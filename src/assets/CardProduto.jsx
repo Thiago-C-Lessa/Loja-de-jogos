@@ -40,7 +40,6 @@ function CardProduto(props) {
     grupo_jogos[genero].push(jogo); // Adiciona o jogo ao array do seu gênero
     return grupo_jogos;
   }, {});
-
   return (
     <div className="CardsGrid">
       {Object.keys(jogosPorGenero).map((genero) => (
@@ -66,7 +65,7 @@ function CardProduto(props) {
                         role="button"
                         style={{ marginRight: "15px" }}
                       >
-                        R$ {jogo.preco}
+                        R$ {((jogo.preco / 10) * (jogo.quantidade || 1)).toFixed(2)}
                       </a>
                       <a
                         className="btn btn-outline-success valor"
