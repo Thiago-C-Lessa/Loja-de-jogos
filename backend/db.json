@@ -208,6 +208,14 @@
       "email": "Roberto2@gmail.com",
       "senha": "123",
       "id": "3"
+    },
+    {
+      "id": "d757",
+      "nome": "ximira",
+      "dataNascimento": "1908-09-14",
+      "cpf": "06852678067",
+      "email": "ximira@ximira.com",
+      "senha": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f"
     }
   ],
   "pagamentos": [
