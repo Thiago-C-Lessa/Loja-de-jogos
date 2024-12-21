@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import NavbarInterna from './assets/navbarInterna';
 import './Style/Compra.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 function Comprar() {
-    const { id } = useParams(); // Captura o ID da URL
+    const {currentUser} = useSelector((state)=>state.userReducer);//pega o Usuário
+    const ID = parseInt(currentUser.id)
+    //console.log(currentUser)
     const [pagamentos, setPagamentos] = useState([]); // Métodos de pagamento disponíveis
     const [metodoSelecionado, setMetodoSelecionado] = useState(""); // Método selecionado
     const [novoMetodo, setNovoMetodo] = useState(false); // Controle para exibir formulário de novo método
@@ -33,12 +36,12 @@ function Comprar() {
             try {
                 // Fetch de pagamentos
                 const responsePagamento = await axios.get("http://localhost:5000/pagamentos");
-                const metodosFiltrados = responsePagamento.data.filter((item) => parseInt(item.id) === parseInt(id));
+                const metodosFiltrados = responsePagamento.data.filter((item) => parseInt(item.id) === parseInt(ID));
                 setPagamentos(metodosFiltrados);
     
                 // Fetch de endereços
                 const responseEndereco = await axios.get("http://localhost:5000/enderecos");
-                const enderecosFiltrados = responseEndereco.data.filter((item) => parseInt(item.id) === parseInt(id));
+                const enderecosFiltrados = responseEndereco.data.filter((item) => parseInt(item.usuarioId) === parseInt(ID));
                 setEnderecos(enderecosFiltrados);
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
@@ -47,7 +50,7 @@ function Comprar() {
         };
     
         caregardados();
-    }, [id]);
+    }, [ID]);
 
     function handleMetodoChange(e) {
         const metodo = e.target.value;
