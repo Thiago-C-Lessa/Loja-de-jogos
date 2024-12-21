@@ -169,33 +169,9 @@
       "numero": "",
       "cidade": "",
       "estado": "",
-      "cep": "",
+      "cep": "22999-999",
       "id": "5",
       "usuarioId": "1"
-    },
-    {
-      "rua": "wefwe",
-      "numero": "123",
-      "cidade": "wef",
-      "estado": "weq",
-      "cep": "445",
-      "id": "6"
-    },
-    {
-      "rua": "mello",
-      "numero": "456",
-      "cidade": "wer",
-      "estado": "eq",
-      "cep": "123",
-      "id": "7"
-    },
-    {
-      "rua": "dos bobos",
-      "numero": "0",
-      "cidade": "s",
-      "estado": "a",
-      "cep": "43535",
-      "id": "8"
     }
   ],
   "usuarios": [
@@ -359,5 +335,6 @@
       "estrelas": 5,
       "id": "5"
     }
-  ]
+  ],
+  "pedidos":[]
 }

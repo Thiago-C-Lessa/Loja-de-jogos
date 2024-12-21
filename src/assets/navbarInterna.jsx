@@ -31,7 +31,7 @@ function NavbarInterna() {
 
         <a className="navbar-brand" href="/" id="conteinerLogo">
           <img
-            src="/public/imagem/logo.png"
+            src="/imagem/logo.png"
             alt="Logo"
             width="30"
             height="30"
@@ -80,7 +80,7 @@ function NavbarInterna() {
         <div id="entrar" style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
           <a className="navbar-brand" href="/Carrinho">
             <img
-              src="/public/imagem/carinho.png"
+              src="/imagem/carinho.png"
               alt="Cart"
               width="30"
               height="30"
@@ -94,7 +94,7 @@ function NavbarInterna() {
             <>
               <a href="/PerfilUsuario/:id">
                 <img
-                  src="/public/imagem/user-avatar.png" // Substitua pela imagem do avatar genérico
+                  src="/imagem/user-avatar.png" // Substitua pela imagem do avatar genérico
                   alt="User Avatar"
                   width="30"
                   height="30"

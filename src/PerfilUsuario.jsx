@@ -1,33 +1,27 @@
 import React, { useEffect, useState } from "react"; 
-import { useParams } from "react-router-dom";  
-import axios from "axios"; 
 import NavbarInterna from "./assets/navbarInterna.jsx";
 import "./Style/main.css";
 import "./Style/navbarInterna.css";
+import { useSelector } from "react-redux";
+import EnderecoCard from "./assets/EnderecoCard.jsx";
+
+
+
 
 function PerfilUsuario() {
-  const { id } = useParams();  
-  const [endereco, setEndereco] = useState(null); 
 
-  useEffect(() => {
-    const fetchEndereco = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/endereco`); // Ajuste a URL conforme necessário
-        const enderecos = response.data;
+  //acessa o o usuário no redux
+  const { currentUser } = useSelector((state) => state.userReducer);
+  const ID = currentUser.id;
+  //console.log(currentUser.id)
 
-        // Filtrar o endereço com o maior ID
-        const enderecoMaiorId = enderecos.reduce((prev, current) => {
-          return (prev.id > current.id) ? prev : current;
-        });
+  //função para converter a data de nascimento
+  function formatacaoData(dateString) {
+    const [ano, mes, dia] = dateString.split('-');
+    return `${dia}/${mes}/${ano}`;
+  }
 
-        setEndereco(enderecoMaiorId); // Armazena o endereço com o maior ID no estado
-      } catch (error) {
-        console.error("Erro ao buscar o endereço:", error);
-      }
-    };
 
-    fetchEndereco(); 
-  }, []); // O efeito será executado apenas uma vez ao montar o componente
 
   return (
     <>
@@ -54,37 +48,19 @@ function PerfilUsuario() {
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)", display: "flex", justifyContent: "center", alignItems: "center"}}>DADOS DO USUÁRIO</div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-            Nome completo: {/* Aqui você pode adicionar o nome do usuário */}
+            Nome completo: { currentUser.nome}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
-            Data de nascimento: {/* Aqui você pode adicionar a data de nascimento do usuário */}
+            Data de nascimento: {formatacaoData(currentUser.dataNascimento)}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-            Endereço de E-mail: {/* Aqui você pode adicionar o e-mail do usuário */}
+            Endereço de E-mail: {currentUser.email}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 8%)", color: "white", borderColor: "black", display: "flex", justifyContent: "center", alignItems: "center"}}>
-          DADOS DO ENDEREÇO DO USUÁRIO (mais recente)
+          DADOS DO ENDEREÇO DO USUÁRIO
           </li>
+          <EnderecoCard id={ID}></EnderecoCard>
 
-          {endereco && (
-            <>
-              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-                Estado: {endereco.estado}
-              </li>
-              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
-                Cidade: {endereco.cidade}
-              </li>
-              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-                Rua: {endereco.rua}
-              </li>
-              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
-                Número: {endereco.numero}
-              </li>
-              <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-                CEP: {endereco.cep}
-              </li>
-            </>
-          )}
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
             
 
@@ -118,7 +94,7 @@ function PerfilUsuario() {
         </div>
       </div>
 
-      {/* Pagamentos cadastrados */}
+      {/* Pagamentos cadastrados 
       <div className="card" style={{ maxWidth: "700px", margin: "100px auto" }}>
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Pagamentos</div>
         <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
@@ -128,6 +104,7 @@ function PerfilUsuario() {
           </a>
         </div>
       </div>
+      */}
     </>
   );
 }
