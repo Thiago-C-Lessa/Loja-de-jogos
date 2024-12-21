@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import NavbarInterna from './assets/navbarInterna.jsx';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GerirEnderecos = () => {
   const [enderecos, setEnderecos] = useState([]);
@@ -12,7 +15,29 @@ const GerirEnderecos = () => {
   });
   const [editarEnderecoId, setEditarEnderecoId] = useState(null);
 
-  const API_URL = "http://localhost:5000/endereco";
+  const API_URL = "http://localhost:5000/enderecos";
+
+  function notify(x) {
+    if (x === 0) {
+      toast.success("Endereço excluído!", {
+        position: "top-center",
+        autoClose: 2500,
+        theme: "dark",
+      });
+    } else if (x === 1) {
+      toast.success("Endereço Adicionado!", {
+        position: "top-center",
+        autoClose: 2500,
+        theme: "dark",
+      });
+    } else if (x === 2) {
+      toast.success("Endereço Atualizado!", {
+        position: "top-center",
+        autoClose: 2500,
+        theme: "dark",
+      });
+    }
+  }
 
   // Carregar todos os endereços
   useEffect(() => {
@@ -50,10 +75,9 @@ const GerirEnderecos = () => {
             estado: "",
             cep: "",
           });
+          notify(2);
         })
-        .catch((error) =>
-          console.error("Erro ao atualizar endereço:", error)
-        );
+        .catch((error) => console.error("Erro ao atualizar endereço:", error));
     } else {
       // Criar endereço
       axios
@@ -67,6 +91,7 @@ const GerirEnderecos = () => {
             estado: "",
             cep: "",
           });
+          notify(1);
         })
         .catch((error) => console.error("Erro ao criar endereço:", error));
     }
@@ -78,12 +103,14 @@ const GerirEnderecos = () => {
       .delete(`${API_URL}/${id}`)
       .then(() => setEnderecos(enderecos.filter((endereco) => endereco.id !== id)))
       .catch((error) => console.error("Erro ao deletar endereço:", error));
+    notify(0);
   };
 
   // Iniciar edição de um endereço
   const handleEdit = (endereco) => {
     setEditarEnderecoId(endereco.id);
     setNovoEndereco(endereco);
+
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -91,109 +118,115 @@ const GerirEnderecos = () => {
   };
 
   return (
-    <div className="container my-4">
-      <h1 style={{ textAlign: "center" }}>Gerir Endereços</h1>
+    <div>
+      <NavbarInterna />
+      <div className="container my-4">
+        <h1 style={{ color: "White", textAlign: "center" }}>Gerir Endereços</h1>
 
-      {/* Formulário */}
-      <form onSubmit={handleSubmit} className="mb-5">
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="rua" className="form-label">Rua</label>
-            <input
-              type="text"
-              id="rua"
-              name="rua"
-              className="form-control"
-              value={novoEndereco.rua}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label htmlFor="numero" className="form-label">Número</label>
-            <input
-              type="text"
-              id="numero"
-              name="numero"
-              className="form-control"
-              value={novoEndereco.numero}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-4 mb-3">
-            <label htmlFor="cidade" className="form-label">Cidade</label>
-            <input
-              type="text"
-              id="cidade"
-              name="cidade"
-              className="form-control"
-              value={novoEndereco.cidade}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-4 mb-3">
-            <label htmlFor="estado" className="form-label">Estado</label>
-            <input
-              type="text"
-              id="estado"
-              name="estado"
-              className="form-control"
-              value={novoEndereco.estado}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-4 mb-3">
-            <label htmlFor="cep" className="form-label">CEP</label>
-            <input
-              type="text"
-              id="cep"
-              name="cep"
-              className="form-control"
-              value={novoEndereco.cep}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-
-        <button type="submit" className="btn btn-primary">
-          {editarEnderecoId ? "Atualizar Endereço" : "Adicionar Endereço"}
-        </button>
-      </form>
-
-      {/* Lista de Endereços */}
-      <div className="row">
-        {enderecos.map((endereco) => (
-          <div className="col-md-4" key={endereco.id}>
-            <div className="card" style={{ marginTop: "20px" }}>
-              <div className="card-body">
-                <h5 className="card-title">{endereco.rua}, {endereco.numero}</h5>
-                <p className="card-text">
-                  {endereco.cidade} - {endereco.estado}, {endereco.cep}
-                </p>
-                <button
-                  className="btn btn-warning me-2"
-                  onClick={() => handleEdit(endereco)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDelete(endereco.id)}
-                >
-                  Deletar
-                </button>
-              </div>
+        {/* Formulário */}
+        <form onSubmit={handleSubmit} className="mb-5">
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="rua" className="form-label">Rua</label>
+              <input
+                type="text"
+                id="rua"
+                name="rua"
+                className="form-control"
+                value={novoEndereco.rua}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="col-md-6 mb-3">
+              <label htmlFor="numero" className="form-label">Número</label>
+              <input
+                type="text"
+                id="numero"
+                name="numero"
+                className="form-control"
+                value={novoEndereco.numero}
+                onChange={handleChange}
+                required
+              />
             </div>
           </div>
-        ))}
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="cidade" className="form-label">Cidade</label>
+              <input
+                type="text"
+                id="cidade"
+                name="cidade"
+                className="form-control"
+                value={novoEndereco.cidade}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="col-md-6 mb-3">
+              <label htmlFor="estado" className="form-label">Estado</label>
+              <input
+                type="text"
+                id="estado"
+                name="estado"
+                className="form-control"
+                value={novoEndereco.estado}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="cep" className="form-label">CEP</label>
+              <input
+                type="text"
+                id="cep"
+                name="cep"
+                className="form-control"
+                value={novoEndereco.cep}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+            {editarEnderecoId ? "Atualizar Endereço" : "Adicionar Endereço"}
+          </button>
+        </form>
+
+        {/* Lista de Endereços */}
+        <div className="row">
+          {enderecos.map((endereco) => (
+            <div className="col-md-4" key={endereco.id}>
+              <div className="card" style={{ marginTop: "20px" }}>
+                <div className="card-body">
+                  <h5 className="card-title" style={{ color: "white" }}>
+                    {endereco.rua}, {endereco.numero} - {endereco.cidade}
+                  </h5>
+                  <button
+                    className="btn btn-warning me-2"
+                    onClick={() => handleEdit(endereco)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(endereco.id)}
+                  >
+                    Deletar
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

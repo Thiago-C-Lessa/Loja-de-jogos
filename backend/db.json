@@ -172,6 +172,15 @@
       "cep": "22999-999",
       "id": "5",
       "usuarioId": "1"
+    },
+    {
+      "id": "6fa8",
+      "rua": "1221",
+      "numero": "131",
+      "cidade": "asa",
+      "estado": "AM",
+      "cep": "11111111",
+      "usuarioId": "1"
     }
   ],
   "usuarios": [
@@ -336,5 +345,5 @@
       "id": "5"
     }
   ],
-  "pedidos":[]
+  "pedidos": []
 }
