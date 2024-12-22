@@ -14,6 +14,7 @@ Currently, two official plugins are available:
 2. Abra um terminal na pasta **backend** e execute:  
   
    "json-server --watch db.json --port 5000 cors"
+   quando o back estiver em funcionamento sem o server json: "npm run dev"
 
 3. Volte ao terminal que abriu na pasta **Loja-de-jogos** e execute:
 
