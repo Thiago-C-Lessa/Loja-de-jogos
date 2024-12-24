@@ -6,7 +6,7 @@ Este projeto é uma aplicação web para uma loja de jogos, desenvolvida utiliza
 
 - **Frontend**: Desenvolvido com React e Vite para um desenvolvimento rápido e com atualizações ao vivo.
 - **Backend**: JSON Server usado para simular uma API REST durante o desenvolvimento.
-- **Gerenciamento de Estado**: Utilizamos Redux para um gerenciamento eficiente do estado global.
+- **Gerenciamento de Estado**: Utilizamos Redux para um gerenciamento eficiente do estado global da entidade Usuário.
 - **Estilização**: Bootstrap foi usado para um design moderno e responsivo.
 
 ## 🔧 Tecnologias Utilizadas
@@ -18,7 +18,7 @@ Este projeto é uma aplicação web para uma loja de jogos, desenvolvida utiliza
   - Bootstrap
 - **Backend**:
   - JSON Server (Desenvolvimento)
-  - Node.js (Implementação Completa)
+  - Node.js (Implementação Quase Completa)
 
 ## 📂 Como Executar
 
