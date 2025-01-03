@@ -40,6 +40,14 @@ h1{
   margin-bottom: 20px;
 }
 
+
+#colunaexcluir{
+  button:hover {
+  background-color: #e00808; /* Exemplo de mudança ao passar o mouse */
+}
+}
+
+
   /* Oculta coluna*/
 @media (max-width: 650px) {
     #colunafoto, #colunaimagem{

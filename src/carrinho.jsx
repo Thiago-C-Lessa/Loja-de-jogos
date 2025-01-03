@@ -3,6 +3,8 @@ import NavbarInterna from './assets/navbarInterna';
 import './Style/carrinho.css';
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Carrinho() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
@@ -47,10 +49,21 @@ function Carrinho() {
   };
 
   const handlePagamento = () => {
+    const itensSemPlataforma = itensCarrinho.some(item => !item.plataforma);
+
+    if (itensSemPlataforma) {
+      toast.error("Selecione uma plataforma!", {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+      return;
+    }
+
     if (!currentUser) {
       navigate("/login"); // Redireciona para a página de login se o usuário não estiver logado
     } else {
-      navigate("/pagamento"); // Redireciona para a página de pagamento
+      navigate("/Comprar"); // Redireciona para a página de pagamento
     }
   };
 
@@ -94,7 +107,9 @@ function Carrinho() {
                         <select
                           onChange={(e) => handlplataforma(index, e.target.value)}
                           defaultValue=""
-                          required
+                          className="form-select"
+                          id={`plataforma-${index}`}
+                          name={`plataforma-${index}`}
                         >
                           <option value="" disabled>
                             Escolha
@@ -152,6 +167,7 @@ function Carrinho() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

@@ -1,273 +1,177 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NavbarInterna from './assets/navbarInterna';
-import './Style/Compra.css';
+import './Style/Comprar.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { useSelector } from "react-redux";
 
 function Comprar() {
-    const {currentUser} = useSelector((state)=>state.userReducer);//pega o Usuário
-    const ID = parseInt(currentUser.id)
-    //console.log(currentUser)
-    const [pagamentos, setPagamentos] = useState([]); // Métodos de pagamento disponíveis
-    const [metodoSelecionado, setMetodoSelecionado] = useState(""); // Método selecionado
-    const [novoMetodo, setNovoMetodo] = useState(false); // Controle para exibir formulário de novo método
-    const [Cartao, detalhesCartao] = useState({ ApelidoCartao: "", numeroCartao: "", NomeCartao: "", dataNascimento: "" });
+    const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
+    const ID = currentUser.id;
 
-    const [enderecos, setEnderecos] = useState([]); // Lista de endereços do usuário
-    const [enderecoSelecionado, setEnderecoSelecionado] = useState(""); // Endereço selecionado
-    const [novoEndereco, setNovoEndereco] = useState(false); // Controle para exibir formulário de novo endereço
-    const [novoEnderecoData, setNovoEnderecoData] = useState({ rua: "", numero: "", cidade: "", estado: "" }); // Novo endereço
+    useEffect(() => {
+        const carrinho = JSON.parse(localStorage.getItem('carrinho')); // Obtém os itens do carrinho armazenados
+        if (carrinho) {
+            setItensCarrinho(carrinho);
+        }
+    }, []);
+
+    const [pagamentos, setPagamentos] = useState([]);
+    const [enderecos, setEnderecos] = useState([]);
+    const [metodoSelecionado, setMetodoSelecionado] = useState("");
+    const [enderecoSelecionado, setEnderecoSelecionado] = useState("");
+    const [itensCarrinho, setItensCarrinho] = useState([]);
+    const [total, setTotal] = useState(0); // Valor total da compra
 
     const navigate = useNavigate();
 
-    function notify() {
-        toast.success("Pagamento concluído!", {
-            position: "top-center",
-            autoClose: 2500,
-            theme: "dark",
-        });
-    }
-
     useEffect(() => {
-        const caregardados = async () => {
+        const carregarDados = async () => {
             try {
-                // Fetch de pagamentos
-                const responsePagamento = await axios.get("http://localhost:5000/pagamentos");
-                const metodosFiltrados = responsePagamento.data.filter((item) => parseInt(item.id) === parseInt(ID));
-                setPagamentos(metodosFiltrados);
-    
-                // Fetch de endereços
-                const responseEndereco = await axios.get("http://localhost:5000/enderecos");
-                const enderecosFiltrados = responseEndereco.data.filter((item) => parseInt(item.usuarioId) === parseInt(ID));
-                setEnderecos(enderecosFiltrados);
+                const [responsePagamento, responseEndereco] = await Promise.all([
+                    axios.get("http://localhost:5000/pagamentos"),
+                    axios.get("http://localhost:5000/enderecos"),
+                ]);
+
+                setPagamentos(responsePagamento.data.filter(item => item.id === ID));
+                setEnderecos(responseEndereco.data.filter(item => item.usuarioId === ID));
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
-                alert("Erro ao carregar dados do usuário.");
+                toast.error("Erro ao carregar dados do usuário.");
             }
         };
-    
-        caregardados();
+        carregarDados();
     }, [ID]);
 
-    function handleMetodoChange(e) {
-        const metodo = e.target.value;
-        setMetodoSelecionado(metodo);
+    // Função para calcular o total da compra com base nos itens no carrinho
+    useEffect(() => {
+        const totalCompra = itensCarrinho.reduce((total, item) => {
+            return total + item.preco;
+        }, 0);
+        setTotal(totalCompra);
+    }, [itensCarrinho]);
 
-        // Exibe o formulário se "Novo método" for selecionado
-        setNovoMetodo(metodo === "NovoPagamento");
-    }
+    const handleMetodoChange = (e) => setMetodoSelecionado(e.target.value);
+    const handleEnderecoChange = (e) => setEnderecoSelecionado(e.target.value);
 
-    function handleEnderecoChange(e) {
-        const endereco = e.target.value;
-        setEnderecoSelecionado(endereco);
+    const salvarPedido = async () => {
+        // Jogo e plataforma selecionados serão extraídos do carrinho
+        const jogosComprados = itensCarrinho.map(item => ({
+            jogoId: item.id,
+            plataformaSelecionada: item.plataforma, 
+        }));
 
-        // Exibe o formulário se "Novo endereço" for selecionado
-        setNovoEndereco(endereco === "NovoEndereco");
-    }
-
-    function handleDetalhesCaratao(e) {
-        const { name, value } = e.target;
-        detalhesCartao({ ...Cartao, [name]: value });
-    }
-
-
-    async function saveToJsonFile(e) {
-        e.preventDefault();
-
-        try {
-            const response = await fetch('http://localhost:5000/api/pagamento', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...Cartao, id: parseInt(id) }), // Inclui o ID
-            });
-
-            if (response.ok) {
-                setNovoMetodo(false);
-                setMetodoSelecionado(""); // Limpa seleção
-                detalhesCartao({ ApelidoCartao: "", numeroCartao: "", NomeCartao: "", dataNascimento: "" });
-                notify();
-                setTimeout(() => {
-                    navigate("/")
-                }, 3000);
-            } else {
-                throw new Error("Erro ao salvar o novo método.");
-            }
-        } catch (error) {
-            console.error(error);
-            alert("Erro ao salvar o novo método.");
-        }
-    }
-
-    async function saveEndereco(e) {
-        e.preventDefault();
+        const pedido = {
+            usuarioId: ID,
+            jogosComprados: jogosComprados,
+            total: total,
+            enderecoId: enderecoSelecionado,
+            metodoPagamentoId: metodoSelecionado,
+            data: new Date().toISOString(),
+        };
 
         try {
-            const response = await fetch('http://localhost:5000/api/endereco', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...novoEnderecoData, id: parseInt(id) }), // Inclui o ID do usuário
+            const response = await axios.post("http://localhost:5000/pedidos", pedido);
+            console.log("Pedido salvo:", response.data);
+            toast.success("Compra realizada com sucesso!", {
+                position: "top-center",
+                autoClose: 2500,
+                theme: "dark",
             });
-
-            if (response.ok) {
-                setNovoEndereco(false);
-                setNovoEnderecoData({ rua: "", numero: "", cidade: "", estado: "" }); // Limpa o formulário
-                const data = await response.json(); // Atualiza a lista de endereços
-                setEnderecos([...enderecos, data]);
-                toast.success("Endereço adicionado com sucesso!", {
-                    position: "top-center",
-                    autoClose: 2500,
-                    theme: "dark",
-                });
-            } else {
-                throw new Error("Erro ao salvar o novo endereço.");
-            }
+            setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
         } catch (error) {
-            console.error(error);
-            alert("Erro ao salvar o novo endereço.");
+            console.error("Erro ao salvar o pedido:", error);
+            toast.error("Erro ao finalizar a compra.");
         }
-    }
-    
+    };
 
-    function finalizado() {
-        notify()
-        setTimeout(() => {
-            navigate("/")
-        }, 3000);
-    }
+    const finalizarCompra = () => {
+        salvarPedido(); // Salva o pedido e redireciona
+    };
 
     return (
         <div>
             <NavbarInterna />
             <div className="container d-flex flex-column align-items-center mt-4">
-
-            <h2 style={{ color: "white" }}>Selecionar Endereço</h2>
-                <select className="form-select mb-4" value={enderecoSelecionado} onChange={handleEnderecoChange}>
+                <h2 style={{ color: "white" }}>Endereço do Usuário</h2>
+                <select
+                    className="form-select mb-4"
+                    value={enderecoSelecionado}
+                    onChange={handleEnderecoChange}
+                    style={{ width: '100%' }} // Tamanho igual
+                >
                     <option value="">Escolha um endereço</option>
-                    {enderecos.map((endereco, index) => (
-                        <option key={index} value={endereco.id}>
-                            {endereco.rua}
+                    {enderecos.map((endereco) => (
+                        <option key={endereco.id} value={endereco.id}>
+                            {endereco.rua}, {endereco.numero}
                         </option>
                     ))}
                 </select>
 
-
-                {enderecoSelecionado && enderecoSelecionado !== "NovoEndereco" && (
+                {enderecoSelecionado && (
                     <div className="card p-4">
                         <h3 style={{ textAlign: "center" }}>Endereço Selecionado:</h3>
-                        <br />
-                        {/* Exibindo informações do endereço */}
                         {enderecos
-                            .filter((endereco) => endereco.id === enderecoSelecionado)
+                            .filter((endereco) => endereco.id === enderecoSelecionado) // Comparação com string
                             .map((endereco) => (
                                 <div key={endereco.id}>
                                     <p><strong>Rua:</strong> {endereco.rua}</p>
                                     <p><strong>Número:</strong> {endereco.numero}</p>
                                     <p><strong>Cidade:</strong> {endereco.cidade}</p>
                                     <p><strong>Estado:</strong> {endereco.estado}</p>
-                                    <p><strong>CEP:</strong> {endereco.cep}</p>
                                 </div>
                             ))}
                     </div>
                 )}
 
-                <h2 style={{ color: "white" }}>Selecionar Método de Pagamento</h2>
-                <select className="form-select mb-4" value={metodoSelecionado} onChange={handleMetodoChange}>
-                    <option value="">Escolha um método</option>
-                    {pagamentos.map((metodo, index) => (
-                        <option key={index} value={metodo.idPagamento}>
-                            {metodo.ApelidoCartao}
-                        </option>
-                    ))}
-                    <option value="NovoPagamento">Adicionar Novo Método</option>
-                </select>
-
-                {metodoSelecionado && metodoSelecionado !== "NovoPagamento" && (
-                    <div className="card p-4">
-                        <h3 style={{ textAlign: "center" }}>Método Selecionado: <br/>
-                            {pagamentos.find((m) => m.idPagamento === metodoSelecionado).ApelidoCartao} <br/>
-                        </h3>
-                        <br/>
-                        {/* Exibindo informações do cartão */}
-                        {pagamentos
-                        .filter((metodo) => metodo.idPagamento === metodoSelecionado)
-                            .map((metodo) => (
-                                <div key={metodo.idPagamento}>
-                                    <p><strong>Nome no Cartão:</strong> {metodo.NomeCartao}</p>
-                                    <p><strong>Número do Cartão:</strong> {String(metodo.numeroCartao)}</p>
-                                    <p><strong>Data de Validade:</strong> {metodo.dataNascimento}</p>
-                                </div>
+                {enderecoSelecionado && (
+                    <div style={{ padding: "3rem" }}>
+                        <h2 style={{ color: "white" }}>Métodos de Pagamento</h2>
+                        <select
+                            className="form-select mb-4"
+                            value={metodoSelecionado}
+                            onChange={handleMetodoChange}
+                            style={{ width: '100%' }} // Tamanho igual
+                        >
+                            <option value="">Escolha um método</option>
+                            {pagamentos.map((metodo) => (
+                                <option key={metodo.idPagamento} value={metodo.idPagamento}>
+                                    {metodo.ApelidoCartao}
+                                </option>
                             ))}
+                        </select>
 
-                            <button className="btn btn-success mt-3" onClick={finalizado}>Confirmar Pagamento</button>
+                        {metodoSelecionado && (
+                            <div className="card p-4">
+                                <h3 style={{ textAlign: "center" }}>Método Selecionado:</h3>
+                                {pagamentos
+                                    .filter((metodo) => metodo.idPagamento === metodoSelecionado)
+                                    .map((metodo) => (
+                                        <div key={metodo.idPagamento}>
+                                            <p><strong>Nome no Cartão:</strong> {metodo.NomeCartao}</p>
+                                            <p><strong>Número do Cartão:</strong> {metodo.numeroCartao}</p>
+                                            <p><strong>Validade:</strong> {metodo.dataNascimento}</p>
+                                        </div>
+                                    ))}
+                                <button
+                                    className="btn btn-success mt-3"
+                                    onClick={finalizarCompra}
+                                >
+                                    Confirmar Compra
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
-
-
-                {novoMetodo && (
-                    <form className="comprar-form card p-4" onSubmit={saveToJsonFile}>
-                        <h3>Adicionar Novo Método</h3>
-                        <label htmlFor="ApelidoCartao">Apelido do Cartão:</label>
-                        <input
-                            required
-                            type="text"
-                            id="ApelidoCartao"
-                            name="ApelidoCartao"
-                            value={Cartao.ApelidoCartao}
-                            onChange={handleDetalhesCaratao}
-                            placeholder="Ex.: Meu Visa"
-                        />
-                        <br />
-
-                        <label htmlFor="numeroCartao">Número do Cartão:</label>
-                        <input
-                            required
-                            type="text"
-                            id="numeroCartao"
-                            name="numeroCartao"
-                            value={Cartao.numeroCartao}
-                            onChange={handleDetalhesCaratao}
-                            placeholder="Digite o número do cartão"
-                        />
-                        <br />
-
-                        <label htmlFor="NomeCartao">Nome no Cartão:</label>
-                        <input
-                            required
-                            type="text"
-                            id="NomeCartao"
-                            name="NomeCartao"
-                            value={Cartao.NomeCartao}
-                            onChange={handleDetalhesCaratao}
-                            placeholder="Nome do titular"
-                        />
-                        <br />
-
-                        <label htmlFor="dataNascimento">Data de Validade:</label>
-                        <input
-                            required
-                            type="month"
-                            id="dataNascimento"
-                            name="dataNascimento"
-                            value={Cartao.dataNascimento}
-                            onChange={handleDetalhesCaratao}
-                        />
-                        <br />
-
-                        <button type="submit" className="btn btn-primary mt-3" >
-                            Confirmar compra
-                        </button>
-                    </form>
-                )}
-
-
-
+                
+              
+                
+                
+                <h5 id="total">VALOR TOTAL DA COMPRA:  R$ {total}</h5>
+                
+          
                 <ToastContainer />
             </div>
         </div>
