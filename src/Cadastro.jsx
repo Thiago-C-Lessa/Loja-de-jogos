@@ -24,6 +24,7 @@ function Cadastro() {
     cpf: "",
     email: "",
     senha: "",
+    tipoAdm: false,
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -74,7 +75,7 @@ function Cadastro() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isValidCPF(formData.cpf)) {
+    if (isValidCPF(formData.cpf)) {       // if (!isValidCPF(formData.cpf)) {
       notify("CPF inválido!", "error");
       return;
     }

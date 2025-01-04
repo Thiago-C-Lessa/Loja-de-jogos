@@ -197,8 +197,18 @@
       "nome": "gustavo",
       "dataNascimento": "2001-09-16",
       "cpf": "18190297007",
-      "email": "111@gmail.com",
-      "senha": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+      "email": "gustavo@gmail.com",
+      "senha": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+      "TipoAdm": true
+    },
+    {
+      "id": "8672",
+      "nome": "D00CX",
+      "dataNascimento": "2001-09-16",
+      "cpf": "12312312312",
+      "email": "D00CX@gmail.com",
+      "senha": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+      "tipoAdm": false
     }
   ],
   "pagamentos": [

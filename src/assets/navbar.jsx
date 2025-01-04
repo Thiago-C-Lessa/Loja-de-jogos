@@ -12,6 +12,7 @@ function Navbar({ onSearch }) {
   // Verifica se está logado
   const { currentUser } = useSelector((state) => state.userReducer);
   console.log({ currentUser });
+  const Tipo = currentUser?.TipoAdm === true;
 
   // Função de logout
   const handleLogout = () => {
@@ -70,9 +71,14 @@ function Navbar({ onSearch }) {
                 <li><a className="dropdown-item" href="/JogoXbox">Xbox Series X/S</a></li>
               </ul>
             </li>
-            <li className="nav-item">
+
+            {Tipo ? (
+              <li className="nav-item">
               <a className="nav-link" href="/GerirJogos">Gerir Jogos</a>
-            </li>
+              </li>
+            ):null
+            }
+
           </ul>
 
           <div id="pesquisas" style={{ width: 'auto', marginRight: '20px' }}>

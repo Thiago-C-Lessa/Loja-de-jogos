@@ -56,6 +56,10 @@ function PerfilUsuario() {
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
             Endereço de E-mail: {currentUser.email}
           </li>
+          <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
+            CPF: {currentUser.cpf}
+          </li>
+          
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 8%)", color: "white", borderColor: "black", display: "flex", justifyContent: "center", alignItems: "center"}}>
           ENDEREÇO DO USUÁRIO
           </li>

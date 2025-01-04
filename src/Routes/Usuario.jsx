@@ -35,14 +35,13 @@ function Usuario() {
         <Route path="*" element={<Navigate to="/" />}/>{/* qualquer url inexistente será tranferida para home*/}
         <Route path="/Login" element={<Login />} />
         <Route path="/Cadastro" element={<Cadastro />} />
-        <Route path='/GerirJogos' element={<GerirJogos/>} />
         <Route path="/Carrinho" element={<Carrinho/>}/>
         <Route path="/JogoPc" element={<JogosPc/>}/>
         <Route path="/JogoXbox" element={<JogosXbox/>}/>
         <Route path="/JogoPs5" element={<JogosPs5/>}/>
         <Route path="/jogo/:id" element={<JogoDetalhes />} />
         <Route path="/Comprar" element={<Comprar />} />
-        <Route path="/PerfilUsuario/:id" element={<PerfilUsuario/>}/>
+        <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>
         <Route path="/Pagamentos/:id" element={<Pagamentos/>}/>
         <Route path="/EditarEndereco/::usuarioId" element={<EditarEndereco />} />
         <Route path="/CriarEndereco/:usuarioId" element={<CriarEndereco />} />
