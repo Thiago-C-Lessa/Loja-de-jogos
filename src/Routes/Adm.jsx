@@ -10,7 +10,7 @@ import JogosPs5 from '../jogosPs5';
 import JogoDetalhes from '../JogoDetalhes';
 import Comprar from '../Comprar';
 import PerfilUsuario from '../PerfilUsuario';
-import Pagamentos from '../Pagamentos';
+import Pagamentos from '../GerirPagamentos';
 import EditarEndereco from '../EditarEndereco';
 import CriarEndereco from '../CriarEndereco';
 import VisualizarEndereco from '../VisualizarEndereco';
@@ -43,8 +43,8 @@ function Adm() {
         <Route path="/JogoPs5" element={<JogosPs5/>}/>
         <Route path="/jogo/:id" element={<JogoDetalhes />} />
         <Route path="/Comprar" element={<Comprar />} />
-        <Route path="/PerfilUsuario/:id" element={<PerfilUsuario/>}/>    {/*Por enquanto deixei, excluisivamente para o endereco, o id do usuário como usuarioId, e o id do endereco como id. Cuidado para não confundir*/}
-        <Route path="/Pagamentos/:id" element={<Pagamentos/>}/>
+        <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>    {/*Por enquanto deixei, excluisivamente para o endereco, o id do usuário como usuarioId, e o id do endereco como id. Cuidado para não confundir*/}
+        <Route path="/Pagamentos" element={<Pagamentos/>}/>
         <Route path="/EditarEndereco/:usuarioId" element={<EditarEndereco />} />
         <Route path="/CriarEndereco/:usuarioId" element={<CriarEndereco />} />
         <Route path="/VisualizarEndereco/:usuarioId" element={<VisualizarEndereco />} />

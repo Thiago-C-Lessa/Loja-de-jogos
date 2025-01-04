@@ -57,7 +57,7 @@ function PerfilUsuario() {
             Endereço de E-mail: {currentUser.email}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 8%)", color: "white", borderColor: "black", display: "flex", justifyContent: "center", alignItems: "center"}}>
-          DADOS DO ENDEREÇO DO USUÁRIO
+          ENDEREÇO DO USUÁRIO
           </li>
           <EnderecoCard id={ID}></EnderecoCard>
 
@@ -84,7 +84,7 @@ function PerfilUsuario() {
       </div>
 
       {/* Histórico de Compras */}
-      <div className="card" style={{ maxWidth: "700px", margin: "100px auto" }}>
+      <div className="card" style={{ maxWidth: "700px", margin: "25px auto" }}>
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Histórico de Compras</div>
         <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
           <h5 className="card-title" style={{color: "white"}}>Ver histórico de compras</h5>
@@ -94,17 +94,26 @@ function PerfilUsuario() {
         </div>
       </div>
 
-      {/* Pagamentos cadastrados 
-      <div className="card" style={{ maxWidth: "700px", margin: "100px auto" }}>
-        <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Pagamentos</div>
-        <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
-          <h5 className="card-title" style={{color: "white"}}>Pagamento cadastrados</h5>
-          <a href={`/Pagamentos/${id}`} className="btn btn-danger">
-            Acessar
-          </a>
+      <div>
+        Pagamentos cadastrados
+        <div className="card" style={{ maxWidth: "700px", margin: "0px auto"}}>
+          <div
+            className="card-header"
+            style={{ color: "white", backgroundColor: "hsl(235, 60%, 8%)" }}
+          >
+            Pagamentos
+          </div>
+          <div className="card-body" style={{ backgroundColor: "hsl(235, 60%, 20%)" }}>
+            <h5 className="card-title" style={{ color: "white" }}>
+              Pagamento cadastrados
+            </h5>
+            <a href={`/Pagamentos`} className="btn btn-danger">
+              Acessar
+            </a>
+          </div>
         </div>
       </div>
-      */}
+
     </>
   );
 }

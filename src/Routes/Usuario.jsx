@@ -10,7 +10,7 @@ import JogosPs5 from '../jogosPs5';
 import JogoDetalhes from '../JogoDetalhes';
 import Comprar from '../Comprar';
 import PerfilUsuario from '../PerfilUsuario';
-import Pagamentos from '../Pagamentos';
+import Pagamentos from '../GerirPagamentos';
 import EditarEndereco from '../EditarEndereco';
 import CriarEndereco from '../CriarEndereco';
 import VisualizarEndereco from '../VisualizarEndereco';

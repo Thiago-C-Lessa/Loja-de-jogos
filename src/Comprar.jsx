@@ -35,7 +35,7 @@ function Comprar() {
                     axios.get("http://localhost:5000/enderecos"),
                 ]);
 
-                setPagamentos(responsePagamento.data.filter(item => item.id === ID));
+                setPagamentos(responsePagamento.data.filter(item => item.idUsuario === ID));
                 setEnderecos(responseEndereco.data.filter(item => item.usuarioId === ID));
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
@@ -75,6 +75,7 @@ function Comprar() {
         try {
             const response = await axios.post("http://localhost:5000/pedidos", pedido);
             console.log("Pedido salvo:", response.data);
+            localStorage.removeItem('carrinho');
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
                 autoClose: 2500,
@@ -137,7 +138,7 @@ function Comprar() {
                         >
                             <option value="">Escolha um método</option>
                             {pagamentos.map((metodo) => (
-                                <option key={metodo.idPagamento} value={metodo.idPagamento}>
+                                <option key={metodo.id} value={metodo.id}>
                                     {metodo.ApelidoCartao}
                                 </option>
                             ))}
@@ -147,9 +148,9 @@ function Comprar() {
                             <div className="card p-4">
                                 <h3 style={{ textAlign: "center" }}>Método Selecionado:</h3>
                                 {pagamentos
-                                    .filter((metodo) => metodo.idPagamento === metodoSelecionado)
+                                    .filter((metodo) => metodo.id === metodoSelecionado)
                                     .map((metodo) => (
-                                        <div key={metodo.idPagamento}>
+                                        <div key={metodo.id}>
                                             <p><strong>Nome no Cartão:</strong> {metodo.NomeCartao}</p>
                                             <p><strong>Número do Cartão:</strong> {metodo.numeroCartao}</p>
                                             <p><strong>Validade:</strong> {metodo.dataNascimento}</p>

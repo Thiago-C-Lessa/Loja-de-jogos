@@ -2,9 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom"; // Para obter o parâmetro da URL
 import NavbarInterna from './assets/navbarInterna.jsx';
+import { useSelector } from "react-redux";
+import '../src/Style/GerirPagamentos.css'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Pagamentos = () => {
+
   const { id } = useParams(); // Obtém o ID do usuário da URL
+  const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
+  const ID = currentUser?.id;
+
   const [pagamentos, setPagamentos] = useState([]);
   const [novoPagamento, setNovoPagamento] = useState({
     ApelidoCartao: "",
@@ -12,28 +20,55 @@ const Pagamentos = () => {
     NomeCartao: "",
     dataNascimento: "",
     id: id, // O ID do usuário será atribuído ao criar um novo pagamento
+    idUsuario: ID,
   });
   const [editarPagamentoId, setEditarPagamentoId] = useState(null);
 
-  const API_URL = "http://localhost:5000/pagamento";
+  const API_URL = "http://localhost:5000/pagamentos";
 
-  // Carregar pagamentos de um usuário específico
   useEffect(() => {
-    axios
-      .get(`${API_URL}/${id}`)
-      .then((response) => {
-        console.log(response.data); // Verifique os dados retornados
-        setPagamentos(response.data);
-      })
-      .catch((error) => console.error("Erro ao carregar pagamentos:", error));
-  }, [id]);
-  
+    const carregarDados = async () => {
+        try {
+            const responsePagamento= await axios.get(API_URL);
+            setPagamentos(responsePagamento.data.filter(item => item.idUsuario === ID));
+        } catch (error) {
+            console.error("Erro ao carregar os dados:", error);
+        }
+    };
+    carregarDados();
+}, [ID]);
+
 
   // Lidar com mudanças no formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNovoPagamento({ ...novoPagamento, [name]: value });
   };
+
+  function notify(x) {
+  
+    if (x==0){
+    toast.success("pagamento excluido!", {
+      position: "top-center", 
+      autoClose: 2500, 
+      theme: "dark", 
+    });}
+
+    if (x==1){
+      toast.success("pagamento Adicionado!", {
+        position: "top-center", 
+        autoClose: 2500, 
+        theme: "dark", 
+      });}
+
+    if (x==2){
+      toast.success("pagamento Atualizado!", {
+        position: "top-center", 
+        autoClose: 2500, 
+        theme: "dark", 
+      });}
+    
+  }
 
   // Criar ou atualizar um pagamento
   const handleSubmit = (e) => {
@@ -42,23 +77,27 @@ const Pagamentos = () => {
     if (editarPagamentoId) {
       // Atualizar pagamento
       axios
-        .put(`${API_URL}/${editarPagamentoId}`, novoPagamento)
-        .then((response) => {
-          setPagamentos(
-            pagamentos.map((pagamento) =>
-              pagamento.idPagamento === editarPagamentoId ? response.data : pagamento
-            )
-          );
-          setEditarPagamentoId(null);
-          setNovoPagamento({
-            ApelidoCartao: "",
-            numeroCartao: "",
-            NomeCartao: "",
-            dataNascimento: "",
-            id: id,
-          });
-        })
-        .catch((error) => console.error("Erro ao atualizar pagamento:", error));
+      axios
+      .put(`${API_URL}/${editarPagamentoId}`, novoPagamento)
+      .then((response) => {
+        setPagamentos(
+          pagamentos.map((pagamento) =>
+            pagamento.id === editarPagamentoId ? response.data : pagamento
+          )
+        );
+        setEditarPagamentoId(null);
+        setNovoPagamento({
+          ApelidoCartao: "",
+          numeroCartao: "",
+          NomeCartao: "",
+          dataNascimento: "",
+          id: id,
+          idUsuario: ID,
+        });
+        notify(2)
+      })
+      .catch((error) => console.error("Erro ao atualizar pagamento:", error));
+    
     } else {
       // Criar pagamento
       axios
@@ -71,23 +110,28 @@ const Pagamentos = () => {
             NomeCartao: "",
             dataNascimento: "",
             id: id,
+            idUsuario: ID,
           });
+          notify(1)
         })
         .catch((error) => console.error("Erro ao criar pagamento:", error));
     }
   };
 
   // Deletar um pagamento
-  const handleDelete = (idPagamento) => {
+  const handleDelete = (id) => {
     axios
-      .delete(`${API_URL}/${idPagamento}`)
-      .then(() => setPagamentos(pagamentos.filter((p) => p.idPagamento !== idPagamento)))
+      .delete(`${API_URL}/${id}`)
+      .then(() => {
+        setPagamentos(pagamentos.filter((p) => p.id !== id));
+        notify(0)
+      })
       .catch((error) => console.error("Erro ao deletar pagamento:", error));
   };
 
   // Iniciar edição de um pagamento
   const handleEdit = (pagamento) => {
-    setEditarPagamentoId(pagamento.idPagamento);
+    setEditarPagamentoId(pagamento.id);
     setNovoPagamento(pagamento);
 
     window.scrollTo({
@@ -95,6 +139,7 @@ const Pagamentos = () => {
       behavior: "smooth",
     });
   };
+
 
   return (
     <div>
@@ -165,9 +210,9 @@ const Pagamentos = () => {
         <div className="row">
           {pagamentos.map((pagamento) => (
             <div className="col-md-4" key={pagamento.idPagamento}>
-              <div className="card" style={{ marginTop: "20px" }}>
+              <div className="card" id = "cardPagamento">
                 <div className="card-body " style={{color:"white"}}>
-                  <h5 className="card-title" style={{ color: "white" }}>
+                  <h5 className="card-title">
                     {pagamento.ApelidoCartao}
                   </h5>
                   <p className="card-text">N. cartão: {pagamento.NomeCartao}</p>
@@ -181,7 +226,7 @@ const Pagamentos = () => {
                   </button>
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(pagamento.idPagamento)}
+                    onClick={() => handleDelete(pagamento.id)}
                   >
                     Deletar
                   </button>
@@ -191,6 +236,7 @@ const Pagamentos = () => {
           ))}
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 };

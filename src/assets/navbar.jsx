@@ -103,7 +103,7 @@ function Navbar({ onSearch }) {
           {/* Verifica se o usuário está logado */}
           {currentUser ? (
             <>
-              <a href="/PerfilUsuario/:id">
+              <a href="/PerfilUsuario">
                 <img
                   src="/imagem/user-avatar.png" // Substitua pela imagem do avatar genérico
                   alt="User Avatar"
