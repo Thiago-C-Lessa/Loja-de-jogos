@@ -2,7 +2,7 @@
   "jogos": [
     {
       "id": "1",
-      "nome": "Counter-Strike 2",
+      "nome": "Counter-Strike",
       "imagem": "/imagem/cs2.jpg",
       "preco": 1499,
       "descricao": "Há mais de duas décadas, o Counter-Strike oferece uma experiência competitiva de elite moldada por milhões de jogadores mundialmente. Agora, o próximo capítulo da história do CS vai começar. Isso é Counter-Strike 2.",
@@ -150,8 +150,19 @@
       "preco": 1039,
       "descricao": "The only aim' in Rust is to survive. Everything wants you to die - the island’s wildlife and other inhabitants, the environment, other survivors. Do whatever it takes to last another night.",
       "genero": "mundo aberto",
-      "quantidade_ps5": 5,
+      "quantidade_ps5": "6",
       "quantidade_pc": 10
+    },
+    {
+      "id": "a6cb",
+      "nome": "jogo do messi",
+      "imagem": "/imagem/messi-vascaino.jpg",
+      "preco": "500",
+      "descricao": "o melhor jogo do messi",
+      "genero": "messi",
+      "quantidade_ps5": "5",
+      "quantidade_pc": 0,
+      "quantidade_xbox": 0
     }
   ],
   "enderecos": [
@@ -239,39 +250,42 @@
   ],
   "avaliacoes": [
     {
-      "id": "1",
-      "jogoId": "1",
-      "usuario": "João Silva",
-      "texto": "Ótimo jogo! A história é envolvente e os gráficos são incríveis.",
+      "texto": "teste 2",
+      "estrelas": 2,
+      "JogoId": "1",
+      "usuario": "Usuário Teste",
+      "id": "dc5b"
+    },
+    {
+      "id": "c3d4",
+      "JogoId": "1",
+      "usuario": "gustavo",
+      "texto": "meu nome",
       "estrelas": 5
     },
     {
-      "id": "2",
-      "jogoId": "2",
-      "usuario": "Maria Oliveira",
-      "texto": "Gostei bastante, mas achei o preço um pouco alto.",
-      "estrelas": 4
+      "id": "c401",
+      "JogoId": "1",
+      "usuario": "gustavo",
+      "texto": "teste teste",
+      "estrelas": 4,
+      "IdUsuario": "1cfd"
     },
     {
-      "id": "3",
-      "jogoId": "3",
-      "usuario": "Pedro Santos",
-      "texto": "Achei repetitivo, mas valeu a experiência.",
-      "estrelas": 3
-    },
-    {
-      "jogoId": "7",
-      "usuario": "Usuário Teste",
-      "texto": "jogo legal",
-      "estrelas": 2,
-      "id": "4"
-    },
-    {
-      "jogoId": "7",
-      "usuario": "Usuário Teste",
-      "texto": "Jogo pay to win",
+      "id": "1bdd",
+      "JogoId": "1",
+      "usuario": "gustavo",
+      "texto": "teste final",
       "estrelas": 5,
-      "id": "5"
+      "IdUsuario": "1cfd"
+    },
+    {
+      "id": "39a5",
+      "JogoId": "1",
+      "usuario": "D00CX",
+      "texto": "outro usuario",
+      "estrelas": 5,
+      "IdUsuario": "8672"
     }
   ],
   "pedidos": [

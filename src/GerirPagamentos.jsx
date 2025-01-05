@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Pagamentos = () => {
 
-  const { id } = useParams(); // Obtém o ID do usuário da URL
+  
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
   const ID = currentUser?.id;
 
@@ -19,7 +19,6 @@ const Pagamentos = () => {
     numeroCartao: "",
     NomeCartao: "",
     dataNascimento: "",
-    id: id, // O ID do usuário será atribuído ao criar um novo pagamento
     idUsuario: ID,
   });
   const [editarPagamentoId, setEditarPagamentoId] = useState(null);
@@ -91,7 +90,6 @@ const Pagamentos = () => {
           numeroCartao: "",
           NomeCartao: "",
           dataNascimento: "",
-          id: id,
           idUsuario: ID,
         });
         notify(2)
@@ -109,7 +107,6 @@ const Pagamentos = () => {
             numeroCartao: "",
             NomeCartao: "",
             dataNascimento: "",
-            id: id,
             idUsuario: ID,
           });
           notify(1)
