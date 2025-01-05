@@ -286,90 +286,51 @@
       "texto": "outro usuario",
       "estrelas": 5,
       "IdUsuario": "8672"
+    },
+    {
+      "id": "56a7",
+      "JogoId": "a6cb",
+      "usuario": "gustavo",
+      "texto": "VASCO DA GAMA",
+      "estrelas": 1,
+      "IdUsuario": "1cfd"
     }
   ],
   "pedidos": [
     {
-      "id": "cb07",
+      "id": "b3d7",
       "usuarioId": "1cfd",
       "jogosComprados": [
         {
-          "jogoId": "14",
-          "nome": "DayZ"
+          "jogoId": "1",
+          "plataformaSelecionada": "PS5",
+          "quantidade": 2
         },
         {
-          "jogoId": "12",
-          "nome": "Cyberpunk 2077"
-        },
-        {
-          "jogoId": "7",
-          "nome": "Call of Duty®: Black Ops 6"
-        },
-        {
-          "jogoId": "7",
-          "nome": "Call of Duty®: Black Ops 6"
+          "jogoId": "1",
+          "plataformaSelecionada": "PC",
+          "quantidade": 1
         }
       ],
-      "total": 6496,
+      "total": "449.70",
       "enderecoId": "5",
-      "metodoPagamentoId": "5",
-      "data": "2025-01-03T22:26:27.543Z"
+      "metodoPagamentoId": "103c",
+      "data": "2025-01-05T23:47:04.056Z"
     },
     {
-      "id": "07c7",
+      "id": "009c",
       "usuarioId": "1cfd",
       "jogosComprados": [
         {
-          "jogoId": "14",
-          "plataformaSelecionada": "Xbox"
-        },
-        {
-          "jogoId": "12",
-          "plataformaSelecionada": "PC"
-        },
-        {
-          "jogoId": "7",
-          "plataformaSelecionada": "PC"
-        },
-        {
-          "jogoId": "7",
-          "plataformaSelecionada": "PC"
+          "jogoId": "1",
+          "plataformaSelecionada": "PS5",
+          "quantidade": 1
         }
       ],
-      "total": 6496,
+      "total": "149.90",
       "enderecoId": "5",
-      "metodoPagamentoId": "4",
-      "data": "2025-01-03T22:30:54.897Z"
-    },
-    {
-      "id": "c8d4",
-      "usuarioId": "1cfd",
-      "jogosComprados": [
-        {
-          "jogoId": "14",
-          "plataformaSelecionada": "Xbox"
-        },
-        {
-          "jogoId": "12",
-          "plataformaSelecionada": "PC"
-        },
-        {
-          "jogoId": "7",
-          "plataformaSelecionada": "PC"
-        },
-        {
-          "jogoId": "7",
-          "plataformaSelecionada": "PC"
-        },
-        {
-          "jogoId": "7",
-          "plataformaSelecionada": "PC"
-        }
-      ],
-      "total": 7995,
-      "enderecoId": "5",
-      "metodoPagamentoId": "4",
-      "data": "2025-01-03T23:00:05.730Z"
+      "metodoPagamentoId": "103c",
+      "data": "2025-01-05T23:47:27.087Z"
     }
   ]
 }

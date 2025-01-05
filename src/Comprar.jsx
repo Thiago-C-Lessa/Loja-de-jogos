@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { useSelector } from "react-redux";
 
+
+
 function Comprar() {
     const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
     const ID = currentUser.id;
@@ -34,7 +36,6 @@ function Comprar() {
                     axios.get("http://localhost:5000/pagamentos"),
                     axios.get("http://localhost:5000/enderecos"),
                 ]);
-
                 setPagamentos(responsePagamento.data.filter(item => item.idUsuario === ID));
                 setEnderecos(responseEndereco.data.filter(item => item.usuarioId === ID));
             } catch (error) {
@@ -45,22 +46,25 @@ function Comprar() {
         carregarDados();
     }, [ID]);
 
-    // Função para calcular o total da compra com base nos itens no carrinho
+    // Função para calcular o total da compra
     useEffect(() => {
         const totalCompra = itensCarrinho.reduce((total, item) => {
-            return total + item.preco;
+            return total + ((item.preco * item.quantidade) / 10);
         }, 0);
-        setTotal(totalCompra);
+        setTotal(totalCompra.toFixed(2));  // Aplica .toFixed(2) após o cálculo do total
     }, [itensCarrinho]);
+    
 
     const handleMetodoChange = (e) => setMetodoSelecionado(e.target.value);
     const handleEnderecoChange = (e) => setEnderecoSelecionado(e.target.value);
 
-    const salvarPedido = async () => {
+    const FinalizarCompra = async () => {
         // Jogo e plataforma selecionados serão extraídos do carrinho
         const jogosComprados = itensCarrinho.map(item => ({
             jogoId: item.id,
-            plataformaSelecionada: item.plataforma, 
+            plataformaSelecionada: item.plataforma,
+            quantidade: item.quantidade,
+            
         }));
 
         const pedido = {
@@ -73,24 +77,21 @@ function Comprar() {
         };
 
         try {
-            const response = await axios.post("http://localhost:5000/pedidos", pedido);
-            console.log("Pedido salvo:", response.data);
+            await axios.post("http://localhost:5000/pedidos", pedido);
             localStorage.removeItem('carrinho');
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
                 autoClose: 2500,
                 theme: "dark",
             });
-            setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
+            
         } catch (error) {
             console.error("Erro ao salvar o pedido:", error);
             toast.error("Erro ao finalizar a compra.");
-        }
+        }finally{setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
+            }
     };
 
-    const finalizarCompra = () => {
-        salvarPedido(); // Salva o pedido e redireciona
-    };
 
     return (
         <div>
@@ -158,7 +159,7 @@ function Comprar() {
                                     ))}
                                 <button
                                     className="btn btn-success mt-3"
-                                    onClick={finalizarCompra}
+                                    onClick={FinalizarCompra}
                                 >
                                     Confirmar Compra
                                 </button>

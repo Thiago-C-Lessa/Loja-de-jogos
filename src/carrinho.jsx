@@ -24,9 +24,9 @@ function Carrinho() {
     localStorage.setItem('carrinho', JSON.stringify(newCarrinho)); // Atualiza o localStorage
   };
 
-  const handlequantidade = (index, quantity) => {
+  const handlequantidade = (index, Novaquantidade) => {
     const updatedCarrinho = [...itensCarrinho];
-    updatedCarrinho[index].quantidade = quantity; // Atualiza a quantidade no estado
+    updatedCarrinho[index].quantidade = Novaquantidade;; // Atualiza a quantidade no estado
     setItensCarrinho(updatedCarrinho);
     localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho)); // Atualiza o localStorage
   };
@@ -43,8 +43,7 @@ function Carrinho() {
       (acc, item) => acc + (parseFloat((item.preco)/10) * (item.quantidade || 1)),
       0
     ).toFixed(2);
-    // Salva o valor total no localStorage para acesso na página de pagamento
-    localStorage.setItem('totalCarrinho', total);
+    
     return total;
   };
 

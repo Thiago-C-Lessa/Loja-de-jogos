@@ -35,9 +35,11 @@ function Home() {
 
   // Função de adicionar ao carrinho
   const addToCart = (jogo) => {
+
+    const jogoComQuantidade = { ...jogo, quantidade: 1 };
     
     setCarrinho((prevCarrinho) => {
-      const novoCarrinho = [...prevCarrinho, jogo];
+      const novoCarrinho = [...prevCarrinho, jogoComQuantidade];
       // Atualiza o localStorage sempre que o carrinho mudar
       localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
       notify()
