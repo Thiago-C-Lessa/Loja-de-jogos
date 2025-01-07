@@ -43,7 +43,7 @@ function PerfilUsuario() {
         </div>
       </div>
         
-      <div className="card" style={{ width: "700px", margin: "auto" }}>
+      <div className="card" style={{ width: "700px", margin: "auto", maxWidth:"100%"  }}>
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)", display: "flex", justifyContent: "center", alignItems: "center" }}>DADOS DO USUÁRIO</div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>

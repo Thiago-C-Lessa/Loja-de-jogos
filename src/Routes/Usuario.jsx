@@ -15,6 +15,7 @@ import CriarEndereco from '../CriarEndereco';
 import VisualizarEndereco from '../VisualizarEndereco';
 import DeletarEndereco from '../DeletarEndereco';
 import EditarUsuario from '../EditarUsuario';
+import HistoricoCompras from '../HistoricoCompras';
 
 
 import { BrowserRouter as Router,
@@ -49,6 +50,7 @@ function Usuario() {
         <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
         <Route path="/DeletarEndereco" element={<DeletarEndereco />} />
         <Route path="/EditarUsuario" element={<EditarUsuario />} />
+        <Route path="/HistoricoCompras" element={<HistoricoCompras />} />
         
    
 

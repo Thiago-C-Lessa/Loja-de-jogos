@@ -61,7 +61,7 @@ function Comprar() {
     const FinalizarCompra = async () => {
         // Jogo e plataforma selecionados serão extraídos do carrinho
         const jogosComprados = itensCarrinho.map(item => ({
-            jogoId: item.id,
+            jogo: item.nome,
             plataformaSelecionada: item.plataforma,
             quantidade: item.quantidade,
             

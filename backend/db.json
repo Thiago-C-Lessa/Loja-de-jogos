@@ -340,64 +340,49 @@
   ],
   "pedidos": [
     {
-      "id": "b3d7",
-      "usuarioId": "1cfd",
+      "id": "3e73",
+      "usuarioId": "8672",
       "jogosComprados": [
         {
-          "jogoId": "1",
+          "jogo": "Counter-Strike",
           "plataformaSelecionada": "PS5",
           "quantidade": 2
         },
         {
-          "jogoId": "1",
+          "jogo": "Cyberpunk 2077",
           "plataformaSelecionada": "PC",
-          "quantidade": 1
-        }
-      ],
-      "total": "449.70",
-      "enderecoId": "5",
-      "metodoPagamentoId": "103c",
-      "data": "2025-01-05T23:47:04.056Z"
-    },
-    {
-      "id": "009c",
-      "usuarioId": "1cfd",
-      "jogosComprados": [
+          "quantidade": 2
+        },
         {
-          "jogoId": "1",
+          "jogo": "The Last of us",
           "plataformaSelecionada": "PS5",
           "quantidade": 1
         }
       ],
-      "total": "149.90",
-      "enderecoId": "5",
-      "metodoPagamentoId": "103c",
-      "data": "2025-01-05T23:47:27.087Z"
+      "total": "849.50",
+      "enderecoId": "5bd7",
+      "metodoPagamentoId": "5008",
+      "data": "2025-01-07T22:57:32.689Z"
     },
     {
-      "id": "ad01",
+      "id": "b0f9",
       "usuarioId": "8672",
       "jogosComprados": [
         {
-          "jogoId": "7",
+          "jogo": "Baldur's Gate 3",
           "plataformaSelecionada": "PC",
           "quantidade": 1
         },
         {
-          "jogoId": "7",
-          "plataformaSelecionada": "PC",
-          "quantidade": 1
-        },
-        {
-          "jogoId": "7",
+          "jogo": "Call of Duty®: Black Ops 6",
           "plataformaSelecionada": "PC",
           "quantidade": 1
         }
       ],
-      "total": "449.70",
-      "enderecoId": "5bd7",
+      "total": "309.80",
+      "enderecoId": "220d",
       "metodoPagamentoId": "5008",
-      "data": "2025-01-07T01:08:08.977Z"
+      "data": "2025-01-07T22:57:52.980Z"
     }
   ]
 }

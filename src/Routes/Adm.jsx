@@ -16,6 +16,7 @@ import CriarEndereco from '../CriarEndereco';
 import VisualizarEndereco from '../VisualizarEndereco';
 import DeletarEndereco from '../DeletarEndereco';
 import EditarUsuario from '../EditarUsuario';
+import HistoricoCompras from '../HistoricoCompras';
 
 
 
@@ -43,7 +44,7 @@ function Adm() {
         <Route path="/JogoPs5" element={<JogosPs5/>}/>
         <Route path="/jogo/:id" element={<JogoDetalhes />} />
         <Route path="/Comprar" element={<Comprar />} />
-        <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>    {/*Por enquanto deixei, excluisivamente para o endereco, o id do usuário como usuarioId, e o id do endereco como id. Cuidado para não confundir*/}
+        <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>
         <Route path="/Pagamentos" element={<Pagamentos/>}/>
         <Route path="/EditarEndereco" element={<EditarEndereco />} />
         <Route path="/CriarEndereco" element={<CriarEndereco />} />
@@ -51,7 +52,7 @@ function Adm() {
         <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
         <Route path="/DeletarEndereco" element={<DeletarEndereco />} />
         <Route path="/EditarUsuario" element={<EditarUsuario />} />
-    
+        <Route path="/HistoricoCompras" element={<HistoricoCompras />} />
         
 
         {/* <Route path="/another" element={<AnotherPage />} /> */}

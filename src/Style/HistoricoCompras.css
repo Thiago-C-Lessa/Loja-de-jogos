@@ -1,0 +1,24 @@
+#vazio{
+    color: white;
+    border-color: black;
+    text-align: center;
+}
+
+.esquerda{
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.direita{
+    margin-left: 5px;
+    margin-right:15px;
+}
+
+#jogos {
+    display: flex;              
+    justify-content: space-between; 
+    background-color: hsl(235, 60%, 22%);
+    padding: 5px;                
+    margin: 5px 0;               
+    border-radius: 5px;           
+}
