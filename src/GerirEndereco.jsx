@@ -4,7 +4,14 @@ import NavbarInterna from './assets/navbarInterna.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useSelector } from "react-redux";
+
 const GerirEnderecos = () => {
+
+  const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
+  const ID = currentUser?.id;
+
+
   const [enderecos, setEnderecos] = useState([]);
   const [novoEndereco, setNovoEndereco] = useState({
     rua: "",
@@ -12,10 +19,12 @@ const GerirEnderecos = () => {
     cidade: "",
     estado: "",
     cep: "",
+    idUsuario: ID,
   });
   const [editarEnderecoId, setEditarEnderecoId] = useState(null);
 
   const API_URL = "http://localhost:5000/enderecos";
+  
 
   function notify(x) {
     if (x === 0) {
@@ -41,11 +50,18 @@ const GerirEnderecos = () => {
 
   // Carregar todos os endereços
   useEffect(() => {
-    axios
-      .get(API_URL)
-      .then((response) => setEnderecos(response.data))
-      .catch((error) => console.error("Erro ao carregar endereços:", error));
-  }, []);
+    const carregarDados = async () => {
+      try{
+        const responseEndereco= await axios.get(API_URL);
+        setEnderecos(responseEndereco.data.filter(item => item.idUsuario === ID));
+      }catch (error) {
+        console.error("Erro ao carregar os dados:", error);
+    }
+};
+carregarDados();
+}, [ID]);
+
+  
 
   // Lidar com mudanças no formulário
   const handleChange = (e) => {
@@ -59,6 +75,7 @@ const GerirEnderecos = () => {
 
     if (editarEnderecoId) {
       // Atualizar endereço
+      axios
       axios
         .put(`${API_URL}/${editarEnderecoId}`, novoEndereco)
         .then((response) => {
@@ -74,6 +91,7 @@ const GerirEnderecos = () => {
             cidade: "",
             estado: "",
             cep: "",
+            idUsuario: ID,
           });
           notify(2);
         })
@@ -90,6 +108,7 @@ const GerirEnderecos = () => {
             cidade: "",
             estado: "",
             cep: "",
+            idUsuario: ID,
           });
           notify(1);
         })
@@ -101,9 +120,11 @@ const GerirEnderecos = () => {
   const handleDelete = (id) => {
     axios
       .delete(`${API_URL}/${id}`)
-      .then(() => setEnderecos(enderecos.filter((endereco) => endereco.id !== id)))
+      .then(() => {
+        setEnderecos(enderecos.filter((e) => e.id !== id))
+        notify(0);
+      })
       .catch((error) => console.error("Erro ao deletar endereço:", error));
-    notify(0);
   };
 
   // Iniciar edição de um endereço
@@ -199,31 +220,34 @@ const GerirEnderecos = () => {
           </button>
         </form>
 
-        {/* Lista de Endereços */}
-        <div className="row">
-          {enderecos.map((endereco) => (
-            <div className="col-md-4" key={endereco.id}>
-              <div className="card" style={{ marginTop: "20px" }}>
-                <div className="card-body">
-                  <h5 className="card-title" style={{ color: "white" }}>
-                    {endereco.rua}, {endereco.numero} - {endereco.cidade}
-                  </h5>
-                  <button
-                    className="btn btn-warning me-2"
-                    onClick={() => handleEdit(endereco)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(endereco.id)}
-                  >
-                    Deletar
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+         {/* Lista de Pagamentos */}
+         <div className="row">
+         {enderecos.map((endereco) => (
+  <div className="col-md-4" key={endereco.id}>
+    <div className="card" id="cardPagamento">
+      <div className="card-body" style={{ color: "white" }}>
+        <h5 className="card-title">Rua: {endereco.rua}</h5>
+        <p className="card-text">Número: {endereco.numero}</p>
+        <p className="card-text">Cidade: {endereco.cidade}</p>
+        <p className="card-text">Estado: {endereco.estado}</p>
+        <p className="card-text">CEP: {endereco.cep}</p>
+        <button
+          className="btn btn-warning me-2"
+          onClick={() => handleEdit(endereco)}
+        >
+          Editar
+        </button>
+        <button
+          className="btn btn-danger"
+          onClick={() => handleDelete(endereco.id)}
+        >
+          Deletar
+        </button>
+      </div>
+    </div>
+  </div>
+))}
+
         </div>
       </div>
       <ToastContainer />

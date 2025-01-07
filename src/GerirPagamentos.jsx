@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom"; // Para obter o parâmetro da URL
+
 import NavbarInterna from './assets/navbarInterna.jsx';
 import { useSelector } from "react-redux";
 import '../src/Style/GerirPagamentos.css'

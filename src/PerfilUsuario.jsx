@@ -13,14 +13,13 @@ function PerfilUsuario() {
   //acessa o o usuário no redux
   const { currentUser } = useSelector((state) => state.userReducer);
   const ID = currentUser.id;
-  //console.log(currentUser.id)
+  
 
   //função para converter a data de nascimento
   function formatacaoData(dateString) {
     const [ano, mes, dia] = dateString.split('-');
     return `${dia}/${mes}/${ano}`;
   }
-
 
 
   return (
@@ -45,7 +44,7 @@ function PerfilUsuario() {
       </div>
         
       <div className="card" style={{ width: "700px", margin: "auto" }}>
-        <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)", display: "flex", justifyContent: "center", alignItems: "center"}}>DADOS DO USUÁRIO</div>
+        <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)", display: "flex", justifyContent: "center", alignItems: "center" }}>DADOS DO USUÁRIO</div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
             Nome completo: { currentUser.nome}
@@ -64,24 +63,27 @@ function PerfilUsuario() {
           ENDEREÇO DO USUÁRIO
           </li>
           <EnderecoCard id={ID}></EnderecoCard>
-
-          <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
+          
+          <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black", textAlign: "center",}}>
             
 
-            <a href="/CriarEndereco/:usuarioId" className="btn btn-danger">
+            {/*<a href="/CriarEndereco" className="btn btn-danger">
               Adicionar Endereço
             </a>
 
-            <a href="/EditarEndereco/:usuarioId" className="btn btn-danger">
+            <a href="/EditarEndereco" className="btn btn-danger">
               Editar Endereços
             </a>
 
-            <a href="/VisualizarEndereco/:usuarioId" className="btn btn-danger">
+            <a href="/VisualizarEndereco" className="btn btn-danger">
               Visualizar Endereços
             </a>
 
-            <a href="/DeletarEndereco/:usuarioId" className="btn btn-danger">
+            <a href="/DeletarEndereco" className="btn btn-danger">
               Remover Endereço
+            </a> */}
+            <a href={`/GerirEndereco`} className="btn btn-danger" >
+              Acessar
             </a>
           </li>
         </ul>
@@ -92,14 +94,14 @@ function PerfilUsuario() {
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)"}}>Histórico de Compras</div>
         <div className="card-body" style={{ backgroundColor:"hsl(235, 60%, 20%)"}}>
           <h5 className="card-title" style={{color: "white"}}>Ver histórico de compras</h5>
-          <a href="#" className="btn btn-danger">
+          <a href="/historicoCompras"  className="btn btn-danger">
             Acessar
           </a>
         </div>
       </div>
 
+
       <div>
-        Pagamentos cadastrados
         <div className="card" style={{ maxWidth: "700px", margin: "0px auto"}}>
           <div
             className="card-header"

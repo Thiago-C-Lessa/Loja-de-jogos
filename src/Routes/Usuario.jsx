@@ -2,7 +2,6 @@ import React from 'react';
 import Home from '../Home';
 import Login from '../Login';
 import Cadastro from '../Cadastro';
-import GerirJogos from '../GerirJogos';
 import Carrinho from '../carrinho';
 import JogosPc from '../JogosPc';
 import JogosXbox from '../jogosXbox';
@@ -23,6 +22,7 @@ import { BrowserRouter as Router,
         Route,
         Navigate
         } from "react-router-dom";
+import GerirEnderecos from '../GerirEndereco';
 
 
 function Usuario() {
@@ -42,12 +42,13 @@ function Usuario() {
         <Route path="/jogo/:id" element={<JogoDetalhes />} />
         <Route path="/Comprar" element={<Comprar />} />
         <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>
-        <Route path="/Pagamentos/:id" element={<Pagamentos/>}/>
-        <Route path="/EditarEndereco/::usuarioId" element={<EditarEndereco />} />
-        <Route path="/CriarEndereco/:usuarioId" element={<CriarEndereco />} />
-        <Route path="/VisualizarEndereco/:usuarioId" element={<VisualizarEndereco />} />
-        <Route path="/DeletarEndereco/:usuarioId" element={<DeletarEndereco />} />
-        <Route path="/EditarUsuario/:id" element={<EditarUsuario />} />
+        <Route path="/Pagamentos" element={<Pagamentos/>}/>
+        <Route path="/EditarEndereco" element={<EditarEndereco />} />
+        <Route path="/CriarEndereco" element={<CriarEndereco />} />
+        <Route path="/VisualizarEndereco" element={<VisualizarEndereco />} />
+        <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
+        <Route path="/DeletarEndereco" element={<DeletarEndereco />} />
+        <Route path="/EditarUsuario" element={<EditarUsuario />} />
         
    
 

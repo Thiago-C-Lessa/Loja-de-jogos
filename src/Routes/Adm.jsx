@@ -45,11 +45,12 @@ function Adm() {
         <Route path="/Comprar" element={<Comprar />} />
         <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>    {/*Por enquanto deixei, excluisivamente para o endereco, o id do usuário como usuarioId, e o id do endereco como id. Cuidado para não confundir*/}
         <Route path="/Pagamentos" element={<Pagamentos/>}/>
-        <Route path="/EditarEndereco/:usuarioId" element={<EditarEndereco />} />
-        <Route path="/CriarEndereco/:usuarioId" element={<CriarEndereco />} />
-        <Route path="/VisualizarEndereco/:usuarioId" element={<VisualizarEndereco />} />
-        <Route path="/DeletarEndereco/:usuarioId" element={<DeletarEndereco />} />
-        <Route path="/EditarUsuario/:id" element={<EditarUsuario />} />
+        <Route path="/EditarEndereco" element={<EditarEndereco />} />
+        <Route path="/CriarEndereco" element={<CriarEndereco />} />
+        <Route path="/VisualizarEndereco" element={<VisualizarEndereco />} />
+        <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
+        <Route path="/DeletarEndereco" element={<DeletarEndereco />} />
+        <Route path="/EditarUsuario" element={<EditarUsuario />} />
     
         
 

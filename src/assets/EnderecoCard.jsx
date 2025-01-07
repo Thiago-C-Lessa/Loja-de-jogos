@@ -19,7 +19,7 @@ function EnderecoCard(ID) {
   }, []);
 
   // Filtra os endereços
-  const enderecosFiltrados = end.filter((endereco) => endereco.usuarioId === ID.id);
+  const enderecosFiltrados = end.filter((endereco) => endereco.idUsuario === ID.id );
 
   // Se não houver endereços filtrados
   if (enderecosFiltrados.length === 0) {
@@ -36,35 +36,28 @@ function EnderecoCard(ID) {
       </li>
     );
   }
-
-  return enderecosFiltrados.map((endereco) => (
+  
+  return enderecosFiltrados.map((endereco,index) => (
     <div
       key={endereco.id}
       style={{
         borderTop: "5px solid #000", // Linha grossa no topo
         borderBottom: "5px solid #000", // Linha grossa no fundo
+        marginBottom: "10px solid ", // Distância entre os endereços
       }}
     >
-      <li
-        className="list-group-item"
+     <h4
         style={{
-          backgroundColor: "hsl(235, 60%, 20%)",
+          textAlign: "center",
           color: "white",
-          borderColor: "black",
-        }}
-      >
-        Estado: {endereco.estado}
-      </li>
-      <li
-        className="list-group-item"
-        style={{
           backgroundColor: "hsl(235, 60%, 22%)",
-          color: "white",
-          borderColor: "black",
+          padding: "5px",
+          margin: "0",
         }}
       >
-        Cidade: {endereco.cidade}
-      </li>
+        Endereço {index + 1}
+      </h4>
+      
       <li
         className="list-group-item"
         style={{
@@ -75,6 +68,7 @@ function EnderecoCard(ID) {
       >
         Rua: {endereco.rua}
       </li>
+      
       <li
         className="list-group-item"
         style={{
@@ -85,6 +79,31 @@ function EnderecoCard(ID) {
       >
         Número: {endereco.numero}
       </li>
+      
+      <li
+        className="list-group-item"
+        style={{
+          backgroundColor: "hsl(235, 60%, 22%)",
+          color: "white",
+          borderColor: "black",
+        }}
+      >
+        Cidade: {endereco.cidade}
+      </li>
+
+      <li
+        className="list-group-item"
+        style={{
+          backgroundColor: "hsl(235, 60%, 20%)",
+          color: "white",
+          borderColor: "black",
+        }}
+      >
+        Estado: {endereco.estado}
+      </li>
+      
+      
+      
       <li
         className="list-group-item"
         style={{

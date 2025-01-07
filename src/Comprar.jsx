@@ -37,7 +37,7 @@ function Comprar() {
                     axios.get("http://localhost:5000/enderecos"),
                 ]);
                 setPagamentos(responsePagamento.data.filter(item => item.idUsuario === ID));
-                setEnderecos(responseEndereco.data.filter(item => item.usuarioId === ID));
+                setEnderecos(responseEndereco.data.filter(item => item.idUsuario === ID));
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
                 toast.error("Erro ao carregar dados do usuário.");
