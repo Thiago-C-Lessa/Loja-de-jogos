@@ -29,28 +29,7 @@ function Cadastro() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // Função para validar CPF
-  const isValidCPF = (cpf) => {
-    cpf = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
-    if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-
-    let soma = 0;
-    for (let i = 0; i < 9; i++) {
-      soma += parseInt(cpf.charAt(i)) * (10 - i);
-    }
-    let resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-    if (resto !== parseInt(cpf.charAt(9))) return false;
-
-    soma = 0;
-    for (let i = 0; i < 10; i++) {
-      soma += parseInt(cpf.charAt(i)) * (11 - i);
-    }
-    resto = (soma * 10) % 11;
-    if (resto === 10 || resto === 11) resto = 0;
-
-    return resto === parseInt(cpf.charAt(10));
-  };
+  
 
   // Tratador de evento para inputs
   const handleChange = (e) => {
@@ -61,33 +40,15 @@ function Cadastro() {
     });
   };
 
-  // Função para gerar hash SHA-256
-  const hashPassword = async (password) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-    return hashHex;
-  };
 
   // Função para salvar usuários usando Axios
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isValidCPF(formData.cpf)) {       // if (!isValidCPF(formData.cpf)) {
-      notify("CPF inválido!", "error");
-      return;
-    }
 
     try {
-      // Gera o hash da senha
-      const hashedPassword = await hashPassword(formData.senha);
-
-      // Substitui a senha original pelo hash
-      const formDataWithHashedPassword = { ...formData, senha: hashedPassword };
-
-      const response = await axios.post("http://localhost:5000/usuarios", formDataWithHashedPassword);
+      
+      const response = await axios.post("http://localhost:5000/usuarios",formData);
 
       if (response.status === 201 || response.status === 200) {
         const user = response.data; // Usuário retornado pelo backend
@@ -164,7 +125,7 @@ function Cadastro() {
                 onChange={handleChange}
                 placeholder="Digite seu CPF"
                 pattern="^[0-9]{11}$"
-                maxLength="11"
+                maxLength="14"
                 required
               />
             </div>
@@ -203,7 +164,7 @@ function Cadastro() {
                 <button
                   type="button"
                   className="btn btn-outline-secondary"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => handleChange}
                 >
                   {showPassword ? "Ocultar" : "Mostrar"}
                 </button>

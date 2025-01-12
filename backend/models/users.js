@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 // Função para validar CPF
-function validarCPF(cpf) {
+  function validarCPF(cpf) {
     // Remove caracteres não numéricos
     cpf = cpf.replace(/[^\d]+/g, '');
   
@@ -39,7 +39,6 @@ function validarCPF(cpf) {
   
   // Definir o schema do usuário com validação de CPF
   const userSchema = new Schema({
-    id: { type: String, required: true, unique: true },
     nome: { type: String, required: true },
     dataNascimento: { type: Date, required: true },
     cpf: { 
@@ -66,7 +65,11 @@ function validarCPF(cpf) {
         message: props => `${props.value} não é um e-mail válido!`
       }
     },
-    senha: { type: String, required: true }
+    senha: { type: String, required: true },
+    tipoAdm:{
+      type: Boolean,
+      required: true,
+    }
   }, {
     timestamps: true,  // Adiciona createdAt e updatedAt automaticamente
   });

@@ -10,12 +10,9 @@ import JogoDetalhes from '../JogoDetalhes';
 import Comprar from '../Comprar';
 import PerfilUsuario from '../PerfilUsuario';
 import Pagamentos from '../GerirPagamentos';
-import EditarEndereco from '../EditarEndereco';
-import CriarEndereco from '../CriarEndereco';
-import VisualizarEndereco from '../VisualizarEndereco';
-import DeletarEndereco from '../DeletarEndereco';
 import EditarUsuario from '../EditarUsuario';
 import HistoricoCompras from '../HistoricoCompras';
+import GerirEnderecos from '../GerirEndereco';
 
 
 import { BrowserRouter as Router,
@@ -23,7 +20,7 @@ import { BrowserRouter as Router,
         Route,
         Navigate
         } from "react-router-dom";
-import GerirEnderecos from '../GerirEndereco';
+
 
 
 function Usuario() {
@@ -44,11 +41,7 @@ function Usuario() {
         <Route path="/Comprar" element={<Comprar />} />
         <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>
         <Route path="/Pagamentos" element={<Pagamentos/>}/>
-        <Route path="/EditarEndereco" element={<EditarEndereco />} />
-        <Route path="/CriarEndereco" element={<CriarEndereco />} />
-        <Route path="/VisualizarEndereco" element={<VisualizarEndereco />} />
         <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
-        <Route path="/DeletarEndereco" element={<DeletarEndereco />} />
         <Route path="/EditarUsuario" element={<EditarUsuario />} />
         <Route path="/HistoricoCompras" element={<HistoricoCompras />} />
         

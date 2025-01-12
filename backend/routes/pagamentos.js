@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const pagamentos = require('../models/pagamentos');
+
 //para fazer um log no terminal quando uma requisição for feita
 const logAction = (action, data) => {
     const now = new Date();

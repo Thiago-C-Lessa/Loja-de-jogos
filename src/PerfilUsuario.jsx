@@ -17,8 +17,14 @@ function PerfilUsuario() {
 
   //função para converter a data de nascimento
   function formatacaoData(dateString) {
-    const [ano, mes, dia] = dateString.split('-');
-    return `${dia}/${mes}/${ano}`;
+    // Remove hora
+    const partes = dateString.split('T')[0].split('Z')[0].split('/');
+    
+    
+    if (partes[0].includes('-')) {
+      const [ano, mes, dia] = partes[0].split('-');
+      return `${dia}/${mes}/${ano}`;
+    }
   }
 
 
@@ -62,26 +68,11 @@ function PerfilUsuario() {
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 8%)", color: "white", borderColor: "black", display: "flex", justifyContent: "center", alignItems: "center"}}>
           ENDEREÇO DO USUÁRIO
           </li>
-          <EnderecoCard id={ID}></EnderecoCard>
+
+          {/* <EnderecoCard id={ID}></EnderecoCard>  esta dando ruim com  o mongo dm primeiro tem que fazer as rotas*/}
           
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black", textAlign: "center",}}>
             
-
-            {/*<a href="/CriarEndereco" className="btn btn-danger">
-              Adicionar Endereço
-            </a>
-
-            <a href="/EditarEndereco" className="btn btn-danger">
-              Editar Endereços
-            </a>
-
-            <a href="/VisualizarEndereco" className="btn btn-danger">
-              Visualizar Endereços
-            </a>
-
-            <a href="/DeletarEndereco" className="btn btn-danger">
-              Remover Endereço
-            </a> */}
             <a href={`/GerirEndereco`} className="btn btn-danger" >
               Acessar
             </a>
