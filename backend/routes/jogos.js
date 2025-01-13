@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //importa o modelo do mongo
-const jogo = require('../models/jogos');
+const Jogo = require('../models/jogos');
 
 //para fazer um log no terminal quando uma requisição for feita
 const logAction = (action, data) => {

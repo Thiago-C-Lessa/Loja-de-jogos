@@ -11,9 +11,10 @@ const Pagamentos = () => {
 
   
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
-  const ID = currentUser?.id;
+  const ID = currentUser?._id;
 
   const [pagamentos, setPagamentos] = useState([]);
+  
   const [novoPagamento, setNovoPagamento] = useState({
     ApelidoCartao: "",
     numeroCartao: "",
@@ -28,8 +29,8 @@ const Pagamentos = () => {
   useEffect(() => {
     const carregarDados = async () => {
         try {
-            const responsePagamento= await axios.get(API_URL);
-            setPagamentos(responsePagamento.data.filter(item => item.idUsuario === ID));
+            const responsePagamento= await axios.get(`${API_URL}/${ID}`);
+            setPagamentos(responsePagamento.data);
         } catch (error) {
             console.error("Erro ao carregar os dados:", error);
         }
@@ -76,22 +77,14 @@ const Pagamentos = () => {
     if (editarPagamentoId) {
       // Atualizar pagamento
       axios
-      axios
       .put(`${API_URL}/${editarPagamentoId}`, novoPagamento)
       .then((response) => {
         setPagamentos(
           pagamentos.map((pagamento) =>
-            pagamento.id === editarPagamentoId ? response.data : pagamento
+            pagamento._id === editarPagamentoId ? response.data : pagamento
           )
         );
         setEditarPagamentoId(null);
-        setNovoPagamento({
-          ApelidoCartao: "",
-          numeroCartao: "",
-          NomeCartao: "",
-          dataNascimento: "",
-          idUsuario: ID,
-        });
         notify(2)
       })
       .catch((error) => console.error("Erro ao atualizar pagamento:", error));
@@ -99,36 +92,35 @@ const Pagamentos = () => {
     } else {
       // Criar pagamento
       axios
-        .post(API_URL, novoPagamento)
-        .then((response) => {
-          setPagamentos([...pagamentos, response.data]);
-          setNovoPagamento({
-            ApelidoCartao: "",
-            numeroCartao: "",
-            NomeCartao: "",
-            dataNascimento: "",
-            idUsuario: ID,
-          });
-          notify(1)
-        })
-        .catch((error) => console.error("Erro ao criar pagamento:", error));
+      .post(API_URL, novoPagamento)
+      .then((response) => {
+        console.log("Resposta do servidor:", response.data);
+        setPagamentos([...pagamentos, response.data]);
+        notify(1);
+      })
+      .catch((error) => {
+        console.error("Erro ao criar pagamento:", error.response?.data || error.message);
+      });
+    
     }
+    
   };
 
   // Deletar um pagamento
-  const handleDelete = (id) => {
+  const handleDelete = (_id) => {
     axios
-      .delete(`${API_URL}/${id}`)
+      .delete(`${API_URL}/${_id}`)
       .then(() => {
-        setPagamentos(pagamentos.filter((p) => p.id !== id));
-        notify(0)
+        setPagamentos(pagamentos.filter((pagamento) => pagamento._id !== _id));
+        notify(0);
       })
       .catch((error) => console.error("Erro ao deletar pagamento:", error));
   };
+  
 
   // Iniciar edição de um pagamento
   const handleEdit = (pagamento) => {
-    setEditarPagamentoId(pagamento.id);
+    setEditarPagamentoId(pagamento._id);
     setNovoPagamento(pagamento);
 
     window.scrollTo({
@@ -223,7 +215,7 @@ const Pagamentos = () => {
                   </button>
                   <button
                     className="btn btn-danger"
-                    onClick={() => handleDelete(pagamento.id)}
+                    onClick={() => handleDelete(pagamento._id)}
                   >
                     Deletar
                   </button>
