@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function EnderecoCard(ID) {
+function EnderecoCard({ID}) {
   const API_URL = "http://localhost:5000/enderecos";
 
-  const [end, setEnd] = useState([]);
-  
+  const [enderecos, setEnderecos] = useState([]);
+
+
+
   // Pega os endereços
   useEffect(() => {
     axios
-      .get(API_URL)
+      .get(`${API_URL}/${ID}`)
       .then((response) => {
-        setEnd(response.data);
+        setEnderecos(response.data);
       })
       .catch((error) => {
         console.log("Erro ao carregar endereços:", error);
       });
   }, []);
 
-  // Filtra os endereços
-  const enderecosFiltrados = end.filter((endereco) => endereco.idUsuario === ID.id );
+  
 
   // Se não houver endereços filtrados
-  if (enderecosFiltrados.length === 0) {
+  if (enderecos.length === 0) {
     return (
       <li
         className="list-group-item"
@@ -37,9 +38,9 @@ function EnderecoCard(ID) {
     );
   }
   
-  return enderecosFiltrados.map((endereco,index) => (
+  return  enderecos.map((endereco,index) => (
     <div
-      key={endereco.id}
+      key={endereco._id}
       style={{
         borderTop: "5px solid #000", // Linha grossa no topo
         borderBottom: "5px solid #000", // Linha grossa no fundo

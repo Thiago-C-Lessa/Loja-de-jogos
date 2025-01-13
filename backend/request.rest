@@ -1,5 +1,17 @@
-POST  http://localhost:5000/jogos
+POST  http://localhost:5000/enderecos
 Content-Type: application/json
+
+
+    {
+      "rua": "Ritxanero",
+      "numero": "43",
+      "cidade": "Ritxanero2",
+      "estado": "ERRE JOTA",
+      "cep": "12312341241",
+      "idUsuario": "6783ecbe8aa1ee96beaeb63b"
+    }
+
+
 
 
 

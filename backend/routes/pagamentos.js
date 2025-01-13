@@ -56,6 +56,10 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.get('/',(req, res)=>{
+  logAction('GET Todos os Pagamentos', {});
+  res.send('Pagamentos!!');
+});
 
 
 

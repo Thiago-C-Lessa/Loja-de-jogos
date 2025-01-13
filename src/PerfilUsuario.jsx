@@ -12,7 +12,7 @@ function PerfilUsuario() {
 
   //acessa o o usuário no redux
   const { currentUser } = useSelector((state) => state.userReducer);
-  const ID = currentUser.id;
+  const ID = currentUser._id;
   
 
   //função para converter a data de nascimento
@@ -69,8 +69,9 @@ function PerfilUsuario() {
           ENDEREÇO DO USUÁRIO
           </li>
 
-          {/* <EnderecoCard id={ID}></EnderecoCard>  esta dando ruim com  o mongo dm primeiro tem que fazer as rotas*/}
-          
+           <EnderecoCard ID={ID}></EnderecoCard>  
+
+
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black", textAlign: "center",}}>
             
             <a href={`/GerirEndereco`} className="btn btn-danger" >

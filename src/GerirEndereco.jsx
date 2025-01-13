@@ -9,10 +9,11 @@ import { useSelector } from "react-redux";
 const GerirEnderecos = () => {
 
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
-  const ID = currentUser?.id;
+  const ID = currentUser?._id;
 
 
   const [enderecos, setEnderecos] = useState([]);
+  
   const [novoEndereco, setNovoEndereco] = useState({
     rua: "",
     numero: "",
@@ -52,8 +53,8 @@ const GerirEnderecos = () => {
   useEffect(() => {
     const carregarDados = async () => {
       try{
-        const responseEndereco= await axios.get(API_URL);
-        setEnderecos(responseEndereco.data.filter(item => item.idUsuario === ID));
+        const responseEndereco= await axios.get(`${API_URL}/${ID}`);
+        setEnderecos(responseEndereco.data);
       }catch (error) {
         console.error("Erro ao carregar os dados:", error);
     }
@@ -76,40 +77,22 @@ carregarDados();
     if (editarEnderecoId) {
       // Atualizar endereço
       axios
-      axios
         .put(`${API_URL}/${editarEnderecoId}`, novoEndereco)
         .then((response) => {
           setEnderecos(
             enderecos.map((endereco) =>
-              endereco.id === editarEnderecoId ? response.data : endereco
+              endereco._id === editarEnderecoId ? response.data : endereco
             )
           );
           setEditarEnderecoId(null);
-          setNovoEndereco({
-            rua: "",
-            numero: "",
-            cidade: "",
-            estado: "",
-            cep: "",
-            idUsuario: ID,
-          });
           notify(2);
         })
         .catch((error) => console.error("Erro ao atualizar endereço:", error));
     } else {
       // Criar endereço
-      axios
-        .post(API_URL, novoEndereco)
+      axios.post(API_URL, novoEndereco)
         .then((response) => {
           setEnderecos([...enderecos, response.data]);
-          setNovoEndereco({
-            rua: "",
-            numero: "",
-            cidade: "",
-            estado: "",
-            cep: "",
-            idUsuario: ID,
-          });
           notify(1);
         })
         .catch((error) => console.error("Erro ao criar endereço:", error));
@@ -117,11 +100,11 @@ carregarDados();
   };
 
   // Deletar um endereço
-  const handleDelete = (id) => {
+  const handleDelete = (_id) => {
     axios
-      .delete(`${API_URL}/${id}`)
+      .delete(`${API_URL}/${_id}`)
       .then(() => {
-        setEnderecos(enderecos.filter((e) => e.id !== id))
+        setEnderecos(enderecos.filter((e) => e._id !== _id))
         notify(0);
       })
       .catch((error) => console.error("Erro ao deletar endereço:", error));
@@ -129,7 +112,7 @@ carregarDados();
 
   // Iniciar edição de um endereço
   const handleEdit = (endereco) => {
-    setEditarEnderecoId(endereco.id);
+    setEditarEnderecoId(endereco._id);
     setNovoEndereco(endereco);
 
     window.scrollTo({
@@ -223,7 +206,7 @@ carregarDados();
          {/* Lista de Pagamentos */}
          <div className="row">
          {enderecos.map((endereco) => (
-  <div className="col-md-4" key={endereco.id}>
+  <div className="col-md-4" key={endereco._id}>
     <div className="card" id="cardPagamento">
       <div className="card-body" style={{ color: "white" }}>
         <h5 className="card-title">Rua: {endereco.rua}</h5>
@@ -239,7 +222,7 @@ carregarDados();
         </button>
         <button
           className="btn btn-danger"
-          onClick={() => handleDelete(endereco.id)}
+          onClick={() => handleDelete(endereco._id)}
         >
           Deletar
         </button>
