@@ -3,7 +3,7 @@ const cors = require('cors');
 const PORT = 5000;
 const mongoose = require('mongoose');
 
-const __MONGO_URL__ = 'mongodb://localhost:27017/LojaJogos'
+const __MONGO_URL__ = 'mongodb+srv://Gustavo:-z_C!$uYX!J!X38@cluster0.l3bzx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 //faz as conecções do mongoose
 const connction = mongoose.connect(__MONGO_URL__)
@@ -11,6 +11,8 @@ const connction = mongoose.connect(__MONGO_URL__)
 // Faz a conexão com o MongoDB
 const connectDB = async () => {
     try {
+
+        
         await mongoose.connect(__MONGO_URL__);
 
         console.log('\n        Conectado ao MongoDB database.');

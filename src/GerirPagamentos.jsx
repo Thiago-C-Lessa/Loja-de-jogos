@@ -24,6 +24,17 @@ const Pagamentos = () => {
   });
   const [editarPagamentoId, setEditarPagamentoId] = useState(null);
 
+  const resetForm = () => {
+    setNovoEndereco({
+      rua: "",
+      numero: "",
+      cidade: "",
+      estado: "",
+      cep: "",
+      idUsuario: ID,
+    });
+  };
+
   const API_URL = "http://localhost:5000/pagamentos";
 
   useEffect(() => {
@@ -85,6 +96,7 @@ const Pagamentos = () => {
           )
         );
         setEditarPagamentoId(null);
+        resetForm();
         notify(2)
       })
       .catch((error) => console.error("Erro ao atualizar pagamento:", error));
@@ -96,6 +108,7 @@ const Pagamentos = () => {
       .then((response) => {
         console.log("Resposta do servidor:", response.data);
         setPagamentos([...pagamentos, response.data]);
+        resetForm();
         notify(1);
       })
       .catch((error) => {

@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 function Comprar() {
     const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
-    const ID = currentUser.id;
+    const ID = currentUser._id;
 
     useEffect(() => {
         const carrinho = JSON.parse(localStorage.getItem('carrinho')); // Obtém os itens do carrinho armazenados
@@ -29,15 +29,19 @@ function Comprar() {
 
     const navigate = useNavigate();
 
+    const API_URL_pagamento = "http://localhost:5000/pagamentos"
+    const API_URL_endereco = "http://localhost:5000/enderecos"
+    const API_URL_pedidos = "http://localhost:5000/pedidos"
+
     useEffect(() => {
         const carregarDados = async () => {
             try {
                 const [responsePagamento, responseEndereco] = await Promise.all([
-                    axios.get("http://localhost:5000/pagamentos"),
-                    axios.get("http://localhost:5000/enderecos"),
+                    axios.get(`${API_URL_pagamento}/${ID}`),
+                    axios.get(`${API_URL_endereco}/${ID}`),
                 ]);
-                setPagamentos(responsePagamento.data.filter(item => item.idUsuario === ID));
-                setEnderecos(responseEndereco.data.filter(item => item.idUsuario === ID));
+                setPagamentos(responsePagamento.data);
+                setEnderecos(responseEndereco.data);
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
                 toast.error("Erro ao carregar dados do usuário.");
@@ -68,7 +72,7 @@ function Comprar() {
         }));
 
         const pedido = {
-            usuarioId: ID,
+            idUsuario: ID,
             jogosComprados: jogosComprados,
             total: total,
             enderecoId: enderecoSelecionado,
@@ -77,7 +81,7 @@ function Comprar() {
         };
 
         try {
-            await axios.post("http://localhost:5000/pedidos", pedido);
+            await axios.post(API_URL_pedidos, pedido);
             localStorage.removeItem('carrinho');
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
@@ -106,7 +110,7 @@ function Comprar() {
                 >
                     <option value="">Escolha um endereço</option>
                     {enderecos.map((endereco) => (
-                        <option key={endereco.id} value={endereco.id}>
+                        <option key={endereco._id} value={endereco._id}>
                             {endereco.rua}, {endereco.numero}
                         </option>
                     ))}
@@ -116,9 +120,9 @@ function Comprar() {
                     <div className="card p-4">
                         <h3 style={{ textAlign: "center" }}>Endereço Selecionado:</h3>
                         {enderecos
-                            .filter((endereco) => endereco.id === enderecoSelecionado) // Comparação com string
+                            .filter((endereco) => endereco._id === enderecoSelecionado) // Comparação com string
                             .map((endereco) => (
-                                <div key={endereco.id}>
+                                <div key={endereco._id}>
                                     <p><strong>Rua:</strong> {endereco.rua}</p>
                                     <p><strong>Número:</strong> {endereco.numero}</p>
                                     <p><strong>Cidade:</strong> {endereco.cidade}</p>
@@ -139,7 +143,7 @@ function Comprar() {
                         >
                             <option value="">Escolha um método</option>
                             {pagamentos.map((metodo) => (
-                                <option key={metodo.id} value={metodo.id}>
+                                <option key={metodo._id} value={metodo._id}>
                                     {metodo.ApelidoCartao}
                                 </option>
                             ))}
@@ -149,9 +153,9 @@ function Comprar() {
                             <div className="card p-4">
                                 <h3 style={{ textAlign: "center" }}>Método Selecionado:</h3>
                                 {pagamentos
-                                    .filter((metodo) => metodo.id === metodoSelecionado)
+                                    .filter((metodo) => metodo._id === metodoSelecionado)
                                     .map((metodo) => (
-                                        <div key={metodo.id}>
+                                        <div key={metodo._id}>
                                             <p><strong>Nome no Cartão:</strong> {metodo.NomeCartao}</p>
                                             <p><strong>Número do Cartão:</strong> {metodo.numeroCartao}</p>
                                             <p><strong>Validade:</strong> {metodo.dataNascimento}</p>

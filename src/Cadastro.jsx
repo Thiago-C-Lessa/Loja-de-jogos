@@ -165,7 +165,7 @@ function Cadastro() {
                 <button
                   type="button"
                   className="btn btn-outline-secondary"
-                  onClick={() => handleChange}
+                  onClick={() => setShowPassword(!showPassword)} 
                 >
                   {showPassword ? "Ocultar" : "Mostrar"}
                 </button>

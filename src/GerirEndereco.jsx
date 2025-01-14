@@ -24,6 +24,18 @@ const GerirEnderecos = () => {
   });
   const [editarEnderecoId, setEditarEnderecoId] = useState(null);
 
+  const resetForm = () => {
+    setNovoEndereco({
+      rua: "",
+      numero: "",
+      cidade: "",
+      estado: "",
+      cep: "",
+      idUsuario: ID,
+    });
+  };
+  
+
   const API_URL = "http://localhost:5000/enderecos";
   
 
@@ -82,9 +94,9 @@ carregarDados();
           setEnderecos(
             enderecos.map((endereco) =>
               endereco._id === editarEnderecoId ? response.data : endereco
-            )
-          );
+            ));
           setEditarEnderecoId(null);
+          resetForm();
           notify(2);
         })
         .catch((error) => console.error("Erro ao atualizar endereço:", error));
@@ -93,6 +105,7 @@ carregarDados();
       axios.post(API_URL, novoEndereco)
         .then((response) => {
           setEnderecos([...enderecos, response.data]);
+          resetForm();
           notify(1);
         })
         .catch((error) => console.error("Erro ao criar endereço:", error));

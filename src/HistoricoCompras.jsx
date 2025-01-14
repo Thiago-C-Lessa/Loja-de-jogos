@@ -7,45 +7,34 @@ import "./Style/HistoricoCompras.css";
 
 function HistoricoCompras() {
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
-  const ID = currentUser?.id;
+  const ID = currentUser?._id;
 
-  const API_pedido = "http://localhost:5000/pedidos";
-  const API_jogos = "http://localhost:5000/jogos";
-  const API_enderecos = "http://localhost:5000/enderecos";
+  const API_URL_pedidos = "http://localhost:5000/pedidos";
+  const API_URL_endereco = "http://localhost:5000/enderecos";
 
   const [pedidos, setPedidos] = useState([]);
   const [enderecos, setEnderecos] = useState([]);
 
   // Carregar pedidos do usuário
   useEffect(() => {
-    const carregarPedidos = async () => {
-      try {
-        const response = await axios.get(API_pedido);
-        setPedidos(response.data.filter(item => item.usuarioId === ID));
-      } catch (error) {
-        console.error("Erro ao carregar os pedidos:", error);
-      }
+    const carregarDados = async () => {
+        try {
+            const [responsePedidos, responseEndereco] = await Promise.all([
+                axios.get(`${API_URL_pedidos}/${ID}`),
+                axios.get(`${API_URL_endereco}/${ID}`),
+            ]);
+            setPedidos(responsePedidos.data);
+            setEnderecos(responseEndereco.data);
+        } catch (error) {
+            console.error("Erro ao carregar os dados:", error);
+        }
     };
-    if (ID) {
-      carregarPedidos();
-    }
-  }, [ID]);
-
-  useEffect(() => {
-    const carregarEnderecos = async () => {
-      try {
-        const response = await axios.get(API_enderecos);
-        setEnderecos(response.data);
-      } catch (error) {
-        console.error("Erro ao carregar os endereços:", error);
-      }
-    };
-    carregarEnderecos();
-  }, []);
+    carregarDados();
+}, [ID]);
 
   // Função para obter o nome do endereço pelo ID
   const obterEndereco = (enderecoId) => {
-    const endereco = enderecos.find((endereco) => endereco.id === enderecoId);
+    const endereco = enderecos.find((endereco) => endereco._id === enderecoId);
     return endereco ? `${endereco.rua}, numero ${endereco.numero}` : "Endereço não encontrado";
   };
 
@@ -59,7 +48,7 @@ function HistoricoCompras() {
 
         {/* Se não houver pedidos */}
         {pedidos.length === 0 ? (
-          <div id="vazio">
+          <div _id="vazio">
             <h4 style={{ color: "white", textAlign: "center" }}>
               Ainda não há compras realizadas.
             </h4>
@@ -67,13 +56,13 @@ function HistoricoCompras() {
         ) : (
           <div>
             {pedidos.map((pedido) => (
-              <div key={pedido.id} style={{ marginBottom: "20px", padding: "10px", border: "1px solid white", borderRadius: "8px" }}>
+              <div key={pedido._id} style={{ marginBottom: "20px", padding: "10px", border: "1px solid white", borderRadius: "8px" }}>
                 <div className="card-body" style={{ color: "white" }}>
                   <h2>Pedido do Dia {new Date(pedido.data).toLocaleDateString() } </h2>
                   
                   <div className="d-flex justify-content-between" >
                     <div className="esquerda">
-                      <strong>Identificador do pedido:</strong> {pedido.id}
+                      <strong>Identificador do pedido:</strong> {pedido._id}
                     </div>
                     <div className="direita">
                       <strong>Número de jogos:</strong> {pedido.jogosComprados.length}
@@ -83,8 +72,8 @@ function HistoricoCompras() {
                   <div>
                     <strong>Jogos:</strong>
                     {pedido.jogosComprados.map((jogo, index) => (
-                      <div key={index} id="jogos">
-                        <div><strong>Jogo:</strong> {jogo.jogo}</div>
+                      <div key={index} _id="jogos">
+                        <div style={{backgroundColor: "hsl(235, 60%, 22%)"}}><strong>Jogo:</strong> {jogo.jogo}</div>
                         <div><strong>Plataforma:</strong> {jogo.plataformaSelecionada}</div>
                         <div><strong>Quantidade:</strong> {jogo.quantidade}</div>
                       </div>
