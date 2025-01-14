@@ -71,7 +71,7 @@ const GerirJogos = () => {
         .then((response) => {
           setJogos(
             jogos.map((jogo) =>
-              jogo.id === editarJogoId ? response.data : jogo
+              jogo._id === editarJogoId ? response.data : jogo
             )
           );
           setEditarJogoId(null);
@@ -118,14 +118,14 @@ const GerirJogos = () => {
     console.log(typeof(id))
     axios
       .delete(`${API_URL}/${id}`)
-      .then(() => setJogos(jogos.filter((jogo) => jogo.id !== id)))
+      .then(() => setJogos(jogos.filter((jogo) => jogo._id !== id)))
       .catch((error) => console.error("Erro ao deletar jogo:", error));
       notify(0)
   };
 
   // Iniciar edição de um jogo
   const handleEdit = (jogo) => {
-    setEditarJogoId(jogo.id);
+    setEditarJogoId(jogo._id);
     setNovoJogo(jogo);
 
     window.scrollTo({
@@ -258,7 +258,7 @@ const GerirJogos = () => {
       {/* Lista de Jogos */}
       <div className="row" >
         {jogos.map((jogo) => (
-          <div className="col-md-4" key={jogo.id}>
+          <div className="col-md-4" key={jogo._id}>
             <div className="card" style={{marginTop:"20px"}}>
               <img src={jogo.imagem} className="card-img-top" alt={jogo.nome} />
               <div className="card-body">
@@ -271,7 +271,7 @@ const GerirJogos = () => {
                 </button>
                 <button
                   className="btn btn-danger"
-                  onClick={() => handleDelete(jogo.id)}
+                  onClick={() => handleDelete(jogo._id)}
                 >
                   Deletar
                 </button>

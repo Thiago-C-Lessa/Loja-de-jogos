@@ -12,8 +12,9 @@ function Navbar({ onSearch }) {
   // Verifica se está logado
   const { currentUser } = useSelector((state) => state.userReducer);
   console.log({ currentUser });
-  const Tipo = currentUser?.TipoAdm === true;
-
+  let Tipo = false
+  currentUser.tipoAdm === true?Tipo=true:Tipo=false
+  //const Tipo = currentUser?.TipoAdm === true;// usar const da problema depois de declarada é imutável
   // Função de logout
   const handleLogout = () => {
     dispatch({
@@ -72,7 +73,7 @@ function Navbar({ onSearch }) {
               </ul>
             </li>
 
-            {Tipo ? (
+            {Tipo === true? (
               <li className="nav-item">
               <a className="nav-link" href="/GerirJogos">Gerir Jogos</a>
               </li>

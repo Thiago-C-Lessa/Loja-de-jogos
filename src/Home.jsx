@@ -8,9 +8,6 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 function Home() {
-
-  
-  
   function notify() {
     toast.success("Jogo adicionado no carrinho!", {
       position: "top-center", 

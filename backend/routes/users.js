@@ -22,9 +22,9 @@ router.post('/', async (req, res) => {
         res.status(400).json({ message: err.message, details: err });
       }});
 
-router.get('/', async (req, res) => {
+router.get('/getById', async (req, res) => {
     try {
-        const user = await User.findById(req.params.id); // Busca o usuario pelo ID
+        const user = await User.findById(req.params._id); // Busca o usuario pelo ID
         if (!user) {
         return res.status(404).json({ message: 'usuario não encontrado' }); // Se não encontrar, retorna 404
         }
@@ -32,12 +32,24 @@ router.get('/', async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-    });
+});
 
 
-router.get('/',(req, res)=>{
-    logAction('GET Todos os usuários', {});
-    res.send('usuarios ;/');
+router.get('/', async (req, res) => {
+    try {
+        // Busca todos os usuários no banco de dados
+        const users = await User.find();
+        logAction('GET Todos os usuários', users);
+
+        // Verifica se há usuários e retorna a resposta
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: 'Nenhum usuário encontrado.' });
+        }
+        res.status(200).json(users);
+    } catch (err) {
+        console.error("Erro ao buscar usuários:", err.message, err);
+        res.status(500).json({ message: 'Erro ao buscar usuários.', details: err.message });
+    }
 });
   
 module.exports = router;

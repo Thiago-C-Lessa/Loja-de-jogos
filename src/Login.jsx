@@ -3,6 +3,7 @@ import NavbarInterna from "./assets/navbarInterna";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js"; 
 
 function Login() {
   const navigate = useNavigate();
@@ -25,15 +26,6 @@ function Login() {
     });
   };
 
-  // Função para gerar hash SHA-256
-  const hashPassword = async (password) => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-    return hashHex;
-  };
 
   // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
@@ -41,8 +33,7 @@ function Login() {
 
     try {
       // Gera o hash da senha digitada
-      const hashedPassword = await hashPassword(formData.senha);
-
+      const hashedPassword = CryptoJS.SHA256(formData.senha).toString();
       const response = await axios.get("http://localhost:5000/usuarios");
       const resposta = response.data;
 

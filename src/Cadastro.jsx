@@ -5,9 +5,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js"; 
 
 function Cadastro() {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,8 +30,6 @@ function Cadastro() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  
-
   // Tratador de evento para inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,15 +39,21 @@ function Cadastro() {
     });
   };
 
-
   // Função para salvar usuários usando Axios
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     try {
-      
-      const response = await axios.post("http://localhost:5000/usuarios",formData);
+      // Realiza o hash SHA-256 da senha
+      const hashedPassword = CryptoJS.SHA256(formData.senha).toString();
+
+      // Cria um novo objeto com a senha em hash
+      const userData = {
+        ...formData,
+        senha: hashedPassword,
+      };
+
+      const response = await axios.post("http://localhost:5000/usuarios", userData);
 
       if (response.status === 201 || response.status === 200) {
         const user = response.data; // Usuário retornado pelo backend
@@ -63,6 +67,7 @@ function Cadastro() {
         notify("Cadastro concluído!");
 
         // Redireciona para a página inicial ou anterior
+        console.log("redirecionando")
         navigate(-2);
       } else {
         notify("Erro ao cadastrar o usuário. Tente novamente.", "error");
@@ -126,7 +131,7 @@ function Cadastro() {
                 onChange={handleChange}
                 placeholder="Digite seu CPF"
                 pattern="^[0-9]{11}$"
-                maxLength="14"
+                maxLength="11"
                 required
               />
             </div>
@@ -165,7 +170,7 @@ function Cadastro() {
                 <button
                   type="button"
                   className="btn btn-outline-secondary"
-                  onClick={() => setShowPassword(!showPassword)} 
+                  onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? "Ocultar" : "Mostrar"}
                 </button>

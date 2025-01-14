@@ -24,7 +24,7 @@ import { BrowserRouter as Router,
         } from "react-router-dom";
 import GerirEnderecos from '../GerirEndereco';
 
-
+//<Route path="*" element={<Navigate to="/" />}/> {/* qualquer url inexistente será tranferida para home*/}
 function Adm() {
   
   return (
@@ -32,7 +32,6 @@ function Adm() {
       <Routes>
         
         <Route path="/" element={<Home />} />
-        <Route path="*" element={<Navigate to="/" />}/> {/* qualquer url inexistente será tranferida para home*/}
         <Route path="/Login" element={<Login />} />
         <Route path="/Cadastro" element={<Cadastro />} />
         <Route path='/GerirJogos' element={<GerirJogos/>} />
