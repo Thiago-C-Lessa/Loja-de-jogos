@@ -15,7 +15,6 @@ const logAction = (action, data) => {
 // CREATE: Adicionar um novo jogo
 router.post('/', async (req, res) => {
     try {
-      logAction("CREATE", req)
       const jogo = new Jogo(req.body); // Cria um novo jogo com os dados do corpo da requisição
       await jogo.save(); // Salva o jogo no banco de dados
       res.status(201).json(jogo); // Retorna o jogo salvo com status 201 (Criado)
@@ -52,7 +51,7 @@ router.post('/', async (req, res) => {
   // UPDATE: Atualizar um jogo
   router.put('/:id', async (req, res) => {
     try {
-      logAction("PUT",req)
+
       const jogo = await Jogo.findByIdAndUpdate(req.params.id, req.body, { new: true }); // Atualiza o jogo
       if (!jogo) {
         return res.status(404).json({ message: 'Jogo não encontrado' }); // Se não encontrar o jogo, retorna 404
@@ -66,7 +65,6 @@ router.post('/', async (req, res) => {
   // DELETE: Excluir um jogo
   router.delete('/:id', async (req, res) => {
     try {
-      logAction("DELETE",req)
       const jogo = await Jogo.findByIdAndDelete(req.params.id); // Exclui o jogo pelo ID
       if (!jogo) {
         return res.status(404).json({ message: 'Jogo não encontrado' });

@@ -7,7 +7,7 @@ function App() {
   let { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
 
   // Determinando se o usuário é administrador ou normal
-  let Tipo = currentUser?.TipoAdm === true; // Verifica se é "true" (como string)
+  let Tipo = currentUser?.tipoAdm === true; // Verifica se é "true" (como string)
 
   return (
     <>
