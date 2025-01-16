@@ -13,7 +13,9 @@ function Navbar({ onSearch }) {
   const { currentUser } = useSelector((state) => state.userReducer);
   console.log({ currentUser });
   let Tipo = false
+  if (currentUser != null){
   currentUser.tipoAdm === true?Tipo=true:Tipo=false
+  }
   //const Tipo = currentUser?.TipoAdm === true;// usar const da problema depois de declarada é imutável
   // Função de logout
   const handleLogout = () => {
