@@ -37,7 +37,7 @@ function Usuario() {
         <Route path="/JogoPc" element={<JogosPc/>}/>
         <Route path="/JogoXbox" element={<JogosXbox/>}/>
         <Route path="/JogoPs5" element={<JogosPs5/>}/>
-        <Route path="/jogo/:id" element={<JogoDetalhes />} />
+        <Route path="/jogo/:_id" element={<JogoDetalhes />} />
         <Route path="/Comprar" element={<Comprar />} />
         <Route path="/PerfilUsuario" element={<PerfilUsuario/>}/>
         <Route path="/Pagamentos" element={<Pagamentos/>}/>

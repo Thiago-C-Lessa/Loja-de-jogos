@@ -11,19 +11,14 @@ function JogoDetalhes() {
   const[jogo, setJogo] = useState(null);
   const[loading, setLoading] = useState(true);
 
-  
+  const API_URL_JOGO = "http://localhost:5000/jogos";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         //const response = await fetch("../Json/jogos.json");
-        const response = await axios.get(`http://localhost:5000/jogos`);
-        const jogos = await response.data;
-
-        // Verifica o jogo com o ID correspondente
-        const jogoEncontrado = jogos.find((jogo) => jogo.id === id);
-
-        setJogo(jogoEncontrado);
+        const responseJogo = await axios.get(`${API_URL_JOGO}/${id}`);
+        setJogo(responseJogo.data);
       } catch (error) {
         console.error("Erro ao carregar os dados:", error);
       } finally {
@@ -37,7 +32,7 @@ function JogoDetalhes() {
   const handleAdicionarAoCarrinho = () => {
     const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
       carrinho.push({
-        id: jogo.id,
+        id: jogo._id,
         nome: jogo.nome,
         imagem: jogo.imagem,
         preco: jogo.preco,
@@ -51,11 +46,11 @@ function JogoDetalhes() {
   };
 
   if(loading){
-    return <div>Carregando informações do jogo...</div>;
+    return <div style={{color:"white"}}>Carregando informações do jogo...</div>;
   }
 
   if(!jogo){
-    return <div>Jogo não encontrado.</div>;
+    return <div style={{color:"white"}}>Jogo não encontrado.</div>;
   }
 
   return(

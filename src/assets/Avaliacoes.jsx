@@ -16,7 +16,7 @@ const Avaliacoes = ({jogoId}) => {
 
   
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
-  const ID = currentUser?.id;
+  const ID = currentUser?._id;
   const Nome = currentUser?.nome;
   const Tipo = currentUser?.TipoAdm === true;
 
@@ -52,8 +52,8 @@ const Avaliacoes = ({jogoId}) => {
 
   const fetchAvaliacoes = async () => {
     try {
-      const response = await axios.get(API_URL);
-      setAvaliacoes(response.data.filter(item => item.JogoId.toString() === jogoId.toString()));
+      const response = await axios.get(`${API_URL}/${ID}`);
+      setAvaliacoes(response.data);
     } catch (error) {
       console.error("Erro ao carregar avaliações:", error);
     } finally {
@@ -75,9 +75,9 @@ const Avaliacoes = ({jogoId}) => {
         await axios.put(`${API_URL}/${editarAvaliacaoId}`, {
           texto: avaliacaoTexto,
           estrelas,
-          JogoId: jogoId,
+          jogoId: jogoId,
           usuario: Nome,
-          IdUsuario: ID,
+          idUsuario: ID,
         });
         notify(2);
         setEditarAvaliacaoId(null);
@@ -85,11 +85,11 @@ const Avaliacoes = ({jogoId}) => {
 
       } else {
         await axios.post(API_URL, {
-          JogoId: jogoId,
-          usuario: Nome,
           texto: avaliacaoTexto,
           estrelas,
-          IdUsuario: ID,
+          jogoId: jogoId,
+          usuario: Nome,
+          idUsuario: ID,
         });
         notify(1);
       }
@@ -103,7 +103,7 @@ const Avaliacoes = ({jogoId}) => {
   };
 
   const handleEdit = (avaliacoes) => {
-    setEditarAvaliacaoId(avaliacoes.id);
+    setEditarAvaliacaoId(avaliacoes._id);
     setAvaliacaoTexto(avaliacoes.texto);
     setEstrelas(avaliacoes.estrelas);
     window.scrollTo({
@@ -115,8 +115,8 @@ const Avaliacoes = ({jogoId}) => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${API_URL}/${id}`);
+      setAvaliacoes(avaliacoes.filter((avaliacoes) => avaliacoes._id !== id));
       notify(0);
-      setAvaliacoes(avaliacoes.filter((avaliacoes) => avaliacoes.id !== id));
     } catch (error) {
       console.error("Erro ao excluir avaliação:", error);
       alert("Erro ao excluir avaliação.");
@@ -137,7 +137,7 @@ const Avaliacoes = ({jogoId}) => {
       ) : (
         <ul>
           {avaliacoes.map((avaliacoes) => (
-            <li key={avaliacoes.id}>
+            <li key={avaliacoes._id}>
               <strong>{avaliacoes.usuario}</strong>: {" "}
               <span>
                 {"★".repeat(avaliacoes.estrelas)}
@@ -146,7 +146,7 @@ const Avaliacoes = ({jogoId}) => {
               <p>{avaliacoes.texto}</p>
 
 
-              {avaliacoes.IdUsuario === ID ? ( // Somente a pessoa que fez o comentário pode editá-lo ou apagá-lo (exceto adm)
+              {avaliacoes.idUsuario === ID ? ( // Somente a pessoa que fez o comentário pode editá-lo ou apagá-lo (exceto adm)
               <>
                 <button
                   className="btn btn-warning me-2"
@@ -157,7 +157,7 @@ const Avaliacoes = ({jogoId}) => {
                 
                 <button
                   className="btn btn-danger"
-                  onClick={() => handleDelete(avaliacoes.id)}
+                  onClick={() => handleDelete(avaliacoes._id)}
                 >
                   Excluir
                 </button>
@@ -166,7 +166,7 @@ const Avaliacoes = ({jogoId}) => {
               <>
                 <button
                   className="btn btn-danger"
-                  onClick={() => handleDelete(avaliacoes.id)}
+                  onClick={() => handleDelete(avaliacoes._id)}
                 >
                   Excluir
                 </button>
