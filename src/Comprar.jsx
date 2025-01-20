@@ -37,8 +37,22 @@ function Comprar() {
         const carregarDados = async () => {
             try {
                 const [responsePagamento, responseEndereco] = await Promise.all([
-                    axios.get(`${API_URL_pagamento}/${ID}`),
-                    axios.get(`${API_URL_endereco}/${ID}`),
+                    axios.get(
+                        `${API_URL_pagamento}/${ID}`,
+                        {
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem('token')}`
+                            }
+                          }
+                    ),
+                    axios.get(
+                        `${API_URL_endereco}/${ID}`,
+                        {
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem('token')}`
+                            }
+                          }
+                    ),
                 ]);
                 setPagamentos(responsePagamento.data);
                 setEnderecos(responseEndereco.data);

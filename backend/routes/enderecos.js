@@ -23,7 +23,7 @@ const autenticaToken = (req, res, next)=>
 
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',autenticaToken , async (req, res) => {
     try {
       const enderecos = await Enderecos.find({idUsuario: req.params.id}); // Busca pelo ID do usuario
       if (!enderecos.length) {

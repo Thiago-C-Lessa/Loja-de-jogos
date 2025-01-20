@@ -11,7 +11,14 @@ function EnderecoCard({ID}) {
   // Pega os endereços
   useEffect(() => {
     axios
-      .get(`${API_URL}/${ID}`)
+      .get(
+        `${API_URL}/${ID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      )
       .then((response) => {
         setEnderecos(response.data);
       })

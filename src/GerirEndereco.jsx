@@ -65,7 +65,14 @@ const GerirEnderecos = () => {
   useEffect(() => {
     const carregarDados = async () => {
       try{
-        const responseEndereco= await axios.get(`${API_URL}/${ID}`);
+        const responseEndereco= await axios.get(
+          `${API_URL}/${ID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
         setEnderecos(responseEndereco.data);
       }catch (error) {
         console.error("Erro ao carregar os dados:", error);

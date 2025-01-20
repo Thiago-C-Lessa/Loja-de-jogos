@@ -26,8 +26,16 @@ function HistoricoCompras() {
                   headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                   }
-                }),
-                axios.get(`${API_URL_endereco}/${ID}`),
+                }
+                ),
+                axios.get(
+                  `${API_URL_endereco}/${ID}`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                  }
+                ),
             ]);
             setPedidos(responsePedidos.data);
             setEnderecos(responseEndereco.data);
