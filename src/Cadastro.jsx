@@ -45,12 +45,11 @@ function Cadastro() {
 
     try {
       // Realiza o hash SHA-256 da senha
-      const hashedPassword = CryptoJS.SHA256(formData.senha).toString();
+      //const hashedPassword = CryptoJS.SHA256(formData.senha).toString();
 
       // Cria um novo objeto com a senha em hash
       const userData = {
         ...formData,
-        senha: hashedPassword,
       };
 
       const response = await axios.post("http://localhost:5000/usuarios", userData);

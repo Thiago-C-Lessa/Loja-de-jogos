@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const CryptoJS = require("crypto-js");
+const argon2 = require("argon2");
 
 const User = require('../models/users');
 
@@ -15,7 +16,25 @@ const logAction = (action) => {
     router.post("/", async (req, res) => {
         try {
             // Cria um novo usuário com os dados do corpo da requisição
-            const users = new User(req.body);
+            const {
+                nome,
+                dataNascimento,
+                cpf,
+                email,
+                senha,
+                tipoAdm,
+            } = req.body;
+
+            const hashedPassword = await argon2.hash(senha);
+            const users = new User({
+                nome,
+                dataNascimento,
+                cpf,
+                email,
+                senha: hashedPassword,  // Armazena a senha como hash
+                tipoAdm: "false",
+            });
+    
             await users.save(); // Salva o usuário no banco de dados
     
             logAction("createUser");
@@ -59,23 +78,24 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar usuários.', details: err.message });
     }
 });
+
 //login
 router.post('/login', async(req,res)=>{
     const { email, senha } = req.body;
-    console.log(req.body)
     try {
       const user = await User.findOne({ email });
-  
+      logAction("LOGIN");
+
       if (!user) {
         return res.status(404).json({ message: "Usuário não encontrado." });
       }
   
       // Supondo que `user.senha` seja o hash armazenado
-      const hashedPassword = CryptoJS.SHA256(senha).toString();
-  
-      if (user.senha !== hashedPassword) {
-        return res.status(401).json({ message: "Senha inválida." });
-      }
+      const hashedPassword = await argon2.hash(senha);
+      const senhaValida = await argon2.verify(user.senha, senha);
+      if (!senhaValida) {
+        return res.status(401).json({ message: "Senha incorreta." });
+    }
   
       res.status(200).json(user);
     } catch (error) {
