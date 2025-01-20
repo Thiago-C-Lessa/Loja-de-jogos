@@ -105,4 +105,15 @@
   margin-top: 15px;
 }
 
+.estrelas-container {
+  display: flex;
+  gap: 5px;
+}
 
+.estrela-ativa {
+  color: gold;
+}
+
+.estrela-inativa {
+  color: gray;
+}

@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../Style/Avaliacoes.css";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
+import "../Style/Avaliacoes.css"; // Agora usa o CSS global ajustado
 
-const Avaliacoes = ({jogoId}) => {
+const Avaliacoes = ({ jogoId }) => {
   const [avaliacoes, setAvaliacoes] = useState([]);
   const [avaliacaoTexto, setAvaliacaoTexto] = useState("");
   const [estrelas, setEstrelas] = useState(0);
   const [loading, setLoading] = useState(true);
   const [editarAvaliacaoId, setEditarAvaliacaoId] = useState(null);
 
- 
-
-  
-  const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
+  const { currentUser } = useSelector((state) => state.userReducer);
   const ID = currentUser?._id;
   const Nome = currentUser?.nome;
   const Tipo = currentUser?.TipoAdm === true;
 
-
-
- const API_URL = "http://localhost:5000/avaliacoes";
+  const API_URL = "http://localhost:5000/avaliacoes";
 
   function notify(x) {
     if (x === 0) {
@@ -57,11 +52,9 @@ const Avaliacoes = ({jogoId}) => {
     } catch (error) {
       console.error("Erro ao carregar avaliações:", error);
     } finally {
-      setLoading(false); // Certifique-se de desativar o loading
+      setLoading(false);
     }
   };
-  
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,8 +74,6 @@ const Avaliacoes = ({jogoId}) => {
         });
         notify(2);
         setEditarAvaliacaoId(null);
-
-
       } else {
         await axios.post(API_URL, {
           texto: avaliacaoTexto,
@@ -140,13 +131,15 @@ const Avaliacoes = ({jogoId}) => {
             <li key={avaliacoes._id}>
               <strong>{avaliacoes.usuario}</strong>: {" "}
               <span>
-                {"★".repeat(avaliacoes.estrelas)}
-                {"☆".repeat(5 - avaliacoes.estrelas)}
+                {Array.from({ length: 5 }, (_, index) => (
+                  <span key={index}>
+                    {index < avaliacoes.estrelas ? "★" : "☆"}
+                  </span>
+                ))}
               </span>
               <p>{avaliacoes.texto}</p>
 
-
-              {avaliacoes.idUsuario === ID ? ( // Somente a pessoa que fez o comentário pode editá-lo ou apagá-lo (exceto adm)
+              {avaliacoes.idUsuario === ID ? ( 
               <>
                 <button
                   className="btn btn-warning me-2"
@@ -154,7 +147,6 @@ const Avaliacoes = ({jogoId}) => {
                 >
                   Editar
                 </button>
-                
                 <button
                   className="btn btn-danger"
                   onClick={() => handleDelete(avaliacoes._id)}
@@ -173,7 +165,6 @@ const Avaliacoes = ({jogoId}) => {
               </>
             ) : null)}
 
-
             </li>
           ))}
         </ul>
@@ -188,18 +179,23 @@ const Avaliacoes = ({jogoId}) => {
             placeholder="Escreva sua avaliação..."
             rows="4"
             required
+            style={{border: 'none'}}
           ></textarea>
           <br />
           <label>
             Estrelas:
-            <input
-              type="number"
-              value={estrelas}
-              onChange={(e) => setEstrelas(Number(e.target.value))}
-              min={1}
-              max={5}
-              required
-            />
+            <div className="estrelas-container">
+              {Array.from({ length: 5 }, (_, index) => (
+                <span
+                  key={index}
+                  className={index < estrelas ? "estrela-ativa" : "estrela-inativa"}
+                  onClick={() => setEstrelas(index + 1)}
+                  style={{cursor: "pointer", fontSize: "24px"}}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
           </label>
           <br />
           <div className="botoes-container">
