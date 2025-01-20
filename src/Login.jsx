@@ -30,20 +30,18 @@ function Login() {
   // Função para lidar com o envio do formulário
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      // Gera o hash da senha digitada
-      const hashedPassword = CryptoJS.SHA256(formData.senha).toString();
-      const response = await axios.get("http://localhost:5000/usuarios");
-      const resposta = response.data;
-
-      // Verifica se o usuário existe e se a senha corresponde ao hash
-      const user = resposta.find(
-        (u) => u.email === formData.login && u.senha === hashedPassword
-      );
-
-      if (user) {
+      // Envia o e-mail e senha para o backend
+      const response = await axios.post("http://localhost:5000/usuarios/login", {
+        email: formData.login,
+        senha: formData.senha,
+      });
+  
+      // Verifica a resposta do backend
+      if (response.status === 200) {
         // Login bem-sucedido
+        const user = response.data;
         dispatch({
           type: "user/login",
           payload: user,
@@ -51,14 +49,20 @@ function Login() {
         setError(null);
         navigate(-1); // Volta à página anterior
       } else {
-        // Usuário ou senha inválidos
-        setError("Login ou senha inválidos.");
+        // Caso o backend retorne um erro controlado
+        setError(response.data.message || "Login ou senha inválidos.");
       }
     } catch (error) {
       console.error("Erro ao tentar fazer login:", error);
-      setError("Ocorreu um erro ao tentar fazer login. Tente novamente.");
+  
+      // Mensagem de erro genérica
+      setError(
+        error.response?.data?.message ||
+          "Ocorreu um erro ao tentar fazer login. Tente novamente."
+      );
     }
   };
+  
 
   // Usa o Redux
   const { currentUser } = useSelector((rootReducer) => rootReducer.userReducer);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
+const CryptoJS = require("crypto-js");
 
 const User = require('../models/users');
 
@@ -12,22 +12,8 @@ const logAction = (action) => {
 };
 
     //POST
-    router.post("/createUser", async (req, res) => {
-        const { email, cpf } = req.body;
-    
+    router.post("/", async (req, res) => {
         try {
-            // Verifica se o email ou CPF já estão em uso
-            const usuarioExistente = await User.findOne({
-                $or: [{ email }, { cpf }],
-            });
-    
-            if (usuarioExistente) {
-                return res.status(400).json({
-                    message: "Email ou CPF já estão em uso.",
-                    details: usuarioExistente,
-                });
-            }
-    
             // Cria um novo usuário com os dados do corpo da requisição
             const users = new User(req.body);
             await users.save(); // Salva o usuário no banco de dados
@@ -73,10 +59,31 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar usuários.', details: err.message });
     }
 });
-
-router.get('/login', async(req,res)=>{
-
+//login
+router.post('/login', async(req,res)=>{
+    const { email, senha } = req.body;
+    console.log(req.body)
+    try {
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        return res.status(404).json({ message: "Usuário não encontrado." });
+      }
+  
+      // Supondo que `user.senha` seja o hash armazenado
+      const hashedPassword = CryptoJS.SHA256(senha).toString();
+  
+      if (user.senha !== hashedPassword) {
+        return res.status(401).json({ message: "Senha inválida." });
+      }
+  
+      res.status(200).json(user);
+    } catch (error) {
+      console.error("Erro no login:", error);
+      res.status(500).json({ message: "Erro interno do servidor." });
+    }
 });
+
 //GET BY EMAIL
 router.get("/getByEmail/:email", async (req, res) => {
     const { email } = req.body;

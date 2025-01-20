@@ -37,9 +37,9 @@ const pagamentosRouter = require('./routes/pagamentos');
 const app = express();
 
 
-
 //usa cors para evitar bo da entradas diferentes
 app.use(cors({
+    //origin: 'http://localhost:5173',
     origin: '*', // Permite todas as origens. Substitua '*' por uma origem específica para mais segurança.
     methods: ['GET', 'POST', 'PUT', 'DELETE'],  
 }));
