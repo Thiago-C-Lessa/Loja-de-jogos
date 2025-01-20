@@ -12,21 +12,41 @@ const logAction = (action) => {
 };
 
     //POST
-router.post('/', async (req, res) => {
-    try {
-      const users = new User(req.body); // Cria um novo usuario com os dados do corpo da requisição
-      await users.save(); // Salva o usuario no banco de dados
-      logAction("createUser")
-      res.status(201).json(users); // Retorna o usuario salvo com status 201 (Criado)
-    } catch (err) {
-        console.error("Erro ao criar usuário:", err.message, err);
-        res.status(400).json({ message: err.message, details: err });
-      }});
+    router.post("/createUser", async (req, res) => {
+        const { email, cpf } = req.body;
+    
+        try {
+            // Verifica se o email ou CPF já estão em uso
+            const usuarioExistente = await User.findOne({
+                $or: [{ email }, { cpf }],
+            });
+    
+            if (usuarioExistente) {
+                return res.status(400).json({
+                    message: "Email ou CPF já estão em uso.",
+                    details: usuarioExistente,
+                });
+            }
+    
+            // Cria um novo usuário com os dados do corpo da requisição
+            const users = new User(req.body);
+            await users.save(); // Salva o usuário no banco de dados
+    
+            logAction("createUser");
+            res.status(201).json(users); // Retorna o usuário salvo com status 201 (Criado)
+        } catch (err) {
+            console.error("Erro ao criar usuário:", err.message, err);
+            res.status(400).json({ message: err.message, details: err });
+        }
+    });
+    
+    
 
       //GETBYID
 router.get('/getById', async (req, res) => {
+    const { id } = req.body;
     try {
-        const user = await User.findById(req.params._id); // Busca o usuario pelo ID
+        const user = await User.findOne({ id }); // Busca o usuario pelo ID
         if (!user) {
         return res.status(404).json({ message: 'usuario não encontrado' }); // Se não encontrar, retorna 404
         }
@@ -56,6 +76,25 @@ router.get('/', async (req, res) => {
 
 router.get('/login', async(req,res)=>{
 
+});
+//GET BY EMAIL
+router.get("/getByEmail/:email", async (req, res) => {
+    const { email } = req.body;
+    try {
+        // Buscar o usuário pelo email
+        const usuario = await User.findOne({ email });
+        logAction("getByEmail")
+
+        if (!usuario) {
+            return res.status(404).json({ mensagem: 'Usuário não encontrado.' });
+        }
+
+        // Retorna os dados do usuário encontrado
+        res.status(200).json({ mensagem: 'Usuário encontrado.', usuario });
+    } catch (erro) {
+        console.error(erro);
+        res.status(500).json({ mensagem: 'Erro ao buscar usuário.', erro });
+    }
 });
   
 module.exports = router;

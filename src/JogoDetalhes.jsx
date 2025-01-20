@@ -7,7 +7,7 @@ import axios from "axios";
 
 
 function JogoDetalhes() {
-  const{id} = useParams();
+  const{_id} = useParams();
   const[jogo, setJogo] = useState(null);
   const[loading, setLoading] = useState(true);
 
@@ -17,7 +17,7 @@ function JogoDetalhes() {
     const fetchData = async () => {
       try {
         //const response = await fetch("../Json/jogos.json");
-        const responseJogo = await axios.get(`${API_URL_JOGO}/${id}`);
+        const responseJogo = await axios.get(`${API_URL_JOGO}/${_id}`);
         setJogo(responseJogo.data);
       } catch (error) {
         console.error("Erro ao carregar os dados:", error);
@@ -27,7 +27,7 @@ function JogoDetalhes() {
     };
 
     fetchData();
-  }, [id]);
+  }, [_id]);
 
   const handleAdicionarAoCarrinho = () => {
     const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -74,7 +74,7 @@ function JogoDetalhes() {
         
         
 
-        <Avaliacoes jogoId={id} />
+        <Avaliacoes jogoId={_id} />
       </div>
     </div>
   );
