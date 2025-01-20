@@ -19,7 +19,7 @@ Este projeto é uma aplicação web para uma loja de jogos, desenvolvida utiliza
 - **Backend**:
   - JSON Server (Completa)
   - Node.js (Implementação Quase Completa)
-  - JWT (Em andamento)
+  - JWT (Implementada sem validade de tempo)
 
 ## 📂 Como Executar
 

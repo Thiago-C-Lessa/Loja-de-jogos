@@ -56,7 +56,7 @@ function JogoDetalhes() {
   return(
     <div>
       <NavbarInterna />
-      <div className="jogo-detalhes-container">
+      <div className="jogo-detalhes-container"  style={{ maxWidth: "1200px"}}>
         <h1 className="jogo-detalhes-titulo">{jogo.nome}</h1>
         <img
           src={jogo.imagem}
