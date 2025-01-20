@@ -13,6 +13,21 @@ const logAction = (action) =>
     console.log(log);
 };
 
+const autenticaToken = (req, res, next)=>
+  {
+      const token = req.headers.authorization?.split(' ')[1];
+      if (!token) {
+          return res.status(403).json({ message: "Token de autenticação não fornecido." });
+      }
+      jwt.verify(token, process.env.__TOKEN_JWT__, (err,user)=>{
+          if(err)
+          {
+              return res.sendStatus(403)
+          } 
+          req.user = user;
+          next();
+      })
+  }
 
     //POST
     router.post("/", async (req, res) => {
@@ -40,7 +55,16 @@ const logAction = (action) =>
             await users.save(); // Salva o usuário no banco de dados
     
             logAction("createUser");
-            res.status(201).json(users); // Retorna o usuário salvo com status 201 (Criado)
+            const token = jwt.sign(
+                { id: users._id, email: users.email },
+                process.env.__TOKEN_JWT__
+            );
+            // Retorna o usuário salvo com status 201 (Criado)
+            res.status(200).json({ 
+              message: "Usuaário cridado com sucesso.",
+              user: users,
+              token: token
+            });
         } catch (err) {
             console.error("Erro ao criar usuário:", err.message, err);
             res.status(400).json({ message: err.message, details: err });
@@ -65,6 +89,7 @@ router.get('/getById', async (req, res) => {
 });
 
 //GETTODOSUSUARIOS
+/*
 router.get('/', async (req, res) => {
     try {
         // Busca todos os usuários no banco de dados
@@ -80,7 +105,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Erro ao buscar usuários.', details: err.message });
     }
 });
-
+*/
 //login
 router.post('/login', async(req,res)=>{
     const { email, senha } = req.body;
@@ -104,7 +129,7 @@ router.post('/login', async(req,res)=>{
     );
 
     res.status(200).json({ 
-      message: "Senha incorreta.",
+      message: "Login realizado.",
       user: user,
       token: token
     });

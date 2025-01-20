@@ -11,6 +11,11 @@ function Cadastro() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // impede que datas futuras sejam adicionasdas ao nascimento
+  // Obtém a data atual no formato YYYY-MM-DD
+  const hoje = new Date().toISOString().split('T')[0]; 
+
+
   const notify = (message, type = "success") => {
     toast[type](message, {
       position: "top-center",
@@ -54,13 +59,15 @@ function Cadastro() {
       const response = await axios.post("http://localhost:5000/usuarios", userData);
 
       if (response.status === 201 || response.status === 200) {
-        const user = response.data; // Usuário retornado pelo backend
+        const user = response.data.user; // Usuário retornado pelo backend
 
         // Atualiza o estado global com o usuário logado
         dispatch({
           type: "user/login",
           payload: user,
         });
+
+        localStorage.setItem('token',response.data.token);//armazena o token no local storage
 
         notify("Cadastro concluído!");
 
@@ -111,6 +118,7 @@ function Cadastro() {
                 id="dobInput"
                 name="dataNascimento"
                 value={formData.dataNascimento}
+                max={hoje}
                 onChange={handleChange}
                 required
               />

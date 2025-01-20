@@ -10,8 +10,7 @@ function EnderecoCard({ID}) {
 
   // Pega os endereços
   useEffect(() => {
-    axios
-      .get(
+    axios.get(
         `${API_URL}/${ID}`,
         {
           headers: {
