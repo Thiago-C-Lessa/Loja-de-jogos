@@ -3,9 +3,18 @@ const router = express.Router();
 
 const Avaliacoes = require('../models/avaliacoes');
 
+//para fazer um log no terminal quando uma requisição for feita
+const logAction = (action) => 
+  {
+      const now = new Date();
+      const log = `[${now.toISOString()}] Ação: ${action} \n`;
+      console.log(log);
+  };
+
 router.get('/:id', async (req, res) => {
     try {
-      const avaliacoes = await Avaliacoes.find({idUsuario: req.params.id}); // Busca pelo ID do jogo
+      const avaliacoes = await Avaliacoes.find({ jogoId: req.params.id }); // Busca pelo ID do jogo
+      logAction("GET avaliacoes id")
       if (!avaliacoes.length) {
         return res.status(404).json({ message: 'avaliacão não encontrado' }); // Se não encontrar, retorna 404
       }

@@ -5,18 +5,15 @@ const User = require('./users');
 
 const AvaliacoesSchema = new Schema({
     
-    
-    
-    texto: { type: String, required: true },
-    estrelas: { type: Number, required: true },
-    jogoId: { type: String, required: true },
-    usuario: { type: String, required: true },
     idUsuario: { 
         type: mongoose.Schema.Types.ObjectId,  // Referência para o _id do usuário
         ref: 'User',  // Nome do modelo de usuário, garantindo a associação correta
         required: true 
-    }
-
+    },
+    texto: { type: String, required: true },
+    estrelas: { type: Number, required: true },
+    jogoId: { type: String, required: true },
+    usuario: { type: String, required: true },
     });
 
    

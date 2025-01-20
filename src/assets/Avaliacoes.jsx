@@ -52,7 +52,7 @@ const Avaliacoes = ({jogoId}) => {
 
   const fetchAvaliacoes = async () => {
     try {
-      const response = await axios.get(`${API_URL}/${ID}`);
+      const response = await axios.get(`${API_URL}/${jogoId}`);
       setAvaliacoes(response.data);
     } catch (error) {
       console.error("Erro ao carregar avaliações:", error);
