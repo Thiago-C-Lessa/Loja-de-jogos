@@ -20,7 +20,13 @@ function HistoricoCompras() {
     const carregarDados = async () => {
         try {
             const [responsePedidos, responseEndereco] = await Promise.all([
-                axios.get(`${API_URL_pedidos}/${ID}`),
+                axios.get(
+                `${API_URL_pedidos}/${ID}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                  }
+                }),
                 axios.get(`${API_URL_endereco}/${ID}`),
             ]);
             setPedidos(responsePedidos.data);

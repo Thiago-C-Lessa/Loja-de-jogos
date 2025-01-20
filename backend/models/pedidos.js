@@ -1,12 +1,15 @@
 const mongoose  = require('mongoose');
 const Schema = mongoose.Schema;
+const User = require('./users');
 
 
 const PedidosSchema = new Schema({
-    
-    
         
-        idUsuario: { type: String, required: true }, 
+    idUsuario: { 
+        type: mongoose.Schema.Types.ObjectId,  // Referência para o _id do usuário
+        ref: 'User',  // Nome do modelo de usuário, garantindo a associação correta
+        required: true 
+    }, 
         jogosComprados: [
             {
           

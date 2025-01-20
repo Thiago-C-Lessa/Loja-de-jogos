@@ -51,7 +51,6 @@ function Cadastro() {
       const userData = {
         ...formData,
       };
-
       const response = await axios.post("http://localhost:5000/usuarios", userData);
 
       if (response.status === 201 || response.status === 200) {
@@ -72,8 +71,8 @@ function Cadastro() {
         notify("Erro ao cadastrar o usuário. Tente novamente.", "error");
       }
     } catch (err) {
-      console.error("Erro na requisição:", err);
-      notify("Erro na requisição. Verifique sua conexão.", "error");
+      console.error("Erro na requisição:", err.response.data.message);
+      notify(err.response.data.message, "error");
     }
   };
 

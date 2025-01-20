@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const CryptoJS = require("crypto-js");
 const argon2 = require("argon2");
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/users');
 
 //para fazer um log no terminal quando uma requisição for feita
-const logAction = (action) => {
+const logAction = (action) => 
+{
     const now = new Date();
     const log = `[${now.toISOString()}] Ação: ${action} \n`;
     console.log(log);
 };
+
 
     //POST
     router.post("/", async (req, res) => {
@@ -91,13 +93,23 @@ router.post('/login', async(req,res)=>{
       }
   
       // Supondo que `user.senha` seja o hash armazenado
-      const hashedPassword = await argon2.hash(senha);
       const senhaValida = await argon2.verify(user.senha, senha);
       if (!senhaValida) {
         return res.status(401).json({ message: "Senha incorreta." });
     }
+
+    const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.__TOKEN_JWT__
+    );
+
+    res.status(200).json({ 
+      message: "Senha incorreta.",
+      user: user,
+      token: token
+    });
   
-      res.status(200).json(user);
+      //res.status(200).json(user);
     } catch (error) {
       console.error("Erro no login:", error);
       res.status(500).json({ message: "Erro interno do servidor." });

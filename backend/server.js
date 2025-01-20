@@ -1,9 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const PORT = 5000;
 const mongoose = require('mongoose');
+const jwt =  require('jsonwebtoken');
+require('dotenv').config();
 
-const __MONGO_URL__ = 'mongodb+srv://Gustavo:-z_C!$uYX!J!X38@cluster0.l3bzx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const _PORT_ = process.env._PORT_;
+const __MONGO_URL__ = process.env.__MONGO_URL__;
 
 //faz as conecções do mongoose
 const connction = mongoose.connect(__MONGO_URL__)
@@ -11,11 +13,9 @@ const connction = mongoose.connect(__MONGO_URL__)
 // Faz a conexão com o MongoDB
 const connectDB = async () => {
     try {
-
-        
         await mongoose.connect(__MONGO_URL__);
-
         console.log('\n        Conectado ao MongoDB database.');
+
     } catch (error) {
         console.error(`Ocorreu um erro na conexão com o MongoDB: ${error.message}`);
     }
@@ -61,7 +61,7 @@ app.use('/pedidos',pedidosRouter);
 
 
 //INICIA faz com que o express fique na porta especificada
-app.listen(PORT,()=>{
+app.listen(_PORT_,()=>{
     console.log(`
 
         ⣇⣿⠘⣿⣿⣿⡿⡿⣟⣟⢟⢟⢝⠵⡝⣿⡿⢂⣼⣿⣷⣌⠩⡫⡻⣝⠹⢿⣿⣷
@@ -81,14 +81,14 @@ app.listen(PORT,()=>{
 
 
         Index:
-        http://localhost:${PORT}/
+        http://localhost:${_PORT_}/
 
         Endpoints:
-        http://localhost:${PORT}/jogos
-        http://localhost:${PORT}/enderecos
-        http://localhost:${PORT}/usuarios
-        http://localhost:${PORT}/pagamentos
-        http://localhost:${PORT}/avaliacoes
-        http://localhost:${PORT}/pedidos`)
+        http://localhost:${_PORT_}/jogos
+        http://localhost:${_PORT_}/enderecos
+        http://localhost:${_PORT_}/usuarios
+        http://localhost:${_PORT_}/pagamentos
+        http://localhost:${_PORT_}/avaliacoes
+        http://localhost:${_PORT_}/pedidos`)
 });
 

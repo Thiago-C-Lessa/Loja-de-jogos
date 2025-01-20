@@ -3,7 +3,6 @@ import NavbarInterna from "./assets/navbarInterna";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import CryptoJS from "crypto-js"; 
 
 function Login() {
   const navigate = useNavigate();
@@ -41,11 +40,14 @@ function Login() {
       // Verifica a resposta do backend
       if (response.status === 200) {
         // Login bem-sucedido
-        const user = response.data;
+        const user = response.data.user;
         dispatch({
           type: "user/login",
           payload: user,
         });
+        
+        localStorage.setItem('token',response.data.token);//armazena o token no local storage
+
         setError(null);
         navigate(-1); // Volta à página anterior
       } else {

@@ -20,7 +20,9 @@ function Navbar({ onSearch }) {
   // Função de logout
   const handleLogout = () => {
     dispatch({
-      type:'user/logout'}); // Dispara a ação de logout
+      type:'user/logout' // Dispara a ação de logout
+    }); 
+    localStorage.removeItem('token');
   };
 
   return (

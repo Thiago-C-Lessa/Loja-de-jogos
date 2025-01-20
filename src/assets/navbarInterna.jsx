@@ -20,6 +20,7 @@ function NavbarInterna() {
     dispatch({
       type: 'user/logout', // Dispara a ação de logout
     });
+    localStorage.removeItem('token');
   };
 
   return (

@@ -17,8 +17,9 @@ Este projeto é uma aplicação web para uma loja de jogos, desenvolvida utiliza
   - Redux
   - Bootstrap
 - **Backend**:
-  - JSON Server (Desenvolvimento)
+  - JSON Server (Completa)
   - Node.js (Implementação Quase Completa)
+  - JWT (Em andamento)
 
 ## 📂 Como Executar
 
