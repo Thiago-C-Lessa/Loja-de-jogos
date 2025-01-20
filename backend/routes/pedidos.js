@@ -33,7 +33,7 @@ router.get('/:id', autenticaToken, async (req, res) => {
     }
   });
 
-router.post('/', async (req, res) => {
+router.post('/', autenticaToken, async (req, res) => {
 try {
     const pedidos = new Pedidos(req.body); // Cria um novo pedido com os dados do corpo da requisição
     await pedidos.save();

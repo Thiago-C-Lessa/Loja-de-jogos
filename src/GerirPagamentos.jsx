@@ -40,7 +40,14 @@ const Pagamentos = () => {
   useEffect(() => {
     const carregarDados = async () => {
         try {
-            const responsePagamento= await axios.get(`${API_URL}/${ID}`);
+            const responsePagamento= await axios.get(
+              `${API_URL}/${ID}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+              }
+            );
             setPagamentos(responsePagamento.data);
         } catch (error) {
             console.error("Erro ao carregar os dados:", error);
@@ -88,7 +95,13 @@ const Pagamentos = () => {
     if (editarPagamentoId) {
       // Atualizar pagamento
       axios
-      .put(`${API_URL}/${editarPagamentoId}`, novoPagamento)
+      .put(`${API_URL}/${editarPagamentoId}`, novoPagamento,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      )
       .then((response) => {
         setPagamentos(
           pagamentos.map((pagamento) =>
@@ -104,7 +117,12 @@ const Pagamentos = () => {
     } else {
       // Criar pagamento
       axios
-      .post(API_URL, novoPagamento)
+      .post(API_URL, novoPagamento,        
+        {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
       .then((response) => {
         console.log("Resposta do servidor:", response.data);
         setPagamentos([...pagamentos, response.data]);
@@ -122,7 +140,13 @@ const Pagamentos = () => {
   // Deletar um pagamento
   const handleDelete = (_id) => {
     axios
-      .delete(`${API_URL}/${_id}`)
+      .delete(`${API_URL}/${_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      )
       .then(() => {
         setPagamentos(pagamentos.filter((pagamento) => pagamento._id !== _id));
         notify(0);

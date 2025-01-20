@@ -109,7 +109,12 @@ carregarDados();
         .catch((error) => console.error("Erro ao atualizar endereço:", error));
     } else {
       // Criar endereço
-      axios.post(API_URL, novoEndereco)
+      axios.post(API_URL, novoEndereco,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
         .then((response) => {
           setEnderecos([...enderecos, response.data]);
           resetForm();
@@ -122,7 +127,14 @@ carregarDados();
   // Deletar um endereço
   const handleDelete = (_id) => {
     axios
-      .delete(`${API_URL}/${_id}`)
+      .delete(
+        `${API_URL}/${_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+      )
       .then(() => {
         setEnderecos(enderecos.filter((e) => e._id !== _id))
         notify(0);

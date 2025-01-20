@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Pagamentos = require('../models/pagamentos');
+const jwt = require('jsonwebtoken');
 
 //para fazer um log no terminal quando uma requisição for feita
 const logAction = (action, data) => {
@@ -10,7 +11,25 @@ const logAction = (action, data) => {
     console.log(log);
 };
 
-router.get('/:id', async (req, res) => {
+const autenticaToken = (req, res, next)=>
+  {
+      const token = req.headers.authorization?.split(' ')[1];
+      if (!token) {
+          return res.status(403).json({ message: "Token de autenticação não fornecido." });
+      }
+      jwt.verify(token, process.env.__TOKEN_JWT__, (err,user)=>{
+          if(err)
+          {
+              return res.sendStatus(403)
+          } 
+          req.user = user;
+          next();
+      })
+  }
+
+
+
+router.get('/:id', autenticaToken, async (req, res) => {
     try {
       const pagamentos = await Pagamentos.find({idUsuario: req.params.id}); // Busca pelo ID do usuario
       if (!pagamentos.length) {
@@ -22,7 +41,7 @@ router.get('/:id', async (req, res) => {
     }
   });
 
-router.post('/', async (req, res) => {
+router.post('/', autenticaToken, async (req, res) => {
 try {
     const pagamentos = new Pagamentos(req.body); // Cria um novo pagamento com os dados do corpo da requisição
     await pagamentos.save(); // Salva o pagamento no banco de dados
@@ -33,7 +52,7 @@ try {
 }
 });
 
-router.delete('/:id', async(req , res) => {
+router.delete('/:id', autenticaToken, async(req , res) => {
   try{
     const id = req.params.id;
     const pagamentos = await Pagamentos.findByIdAndDelete(id)
@@ -43,7 +62,7 @@ router.delete('/:id', async(req , res) => {
   }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', autenticaToken, async (req, res) => {
   try {
     const id = req.params.id;
     // Atualiza o pagamento com os dados do corpo da requisição

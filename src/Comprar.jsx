@@ -51,7 +51,7 @@ function Comprar() {
                             headers: {
                               Authorization: `Bearer ${localStorage.getItem('token')}`
                             }
-                          }
+                        }
                     ),
                 ]);
                 setPagamentos(responsePagamento.data);
@@ -95,7 +95,13 @@ function Comprar() {
         };
 
         try {
-            await axios.post(API_URL_pedidos, pedido);
+            await axios.post(API_URL_pedidos, pedido,
+                {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             localStorage.removeItem('carrinho');
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",

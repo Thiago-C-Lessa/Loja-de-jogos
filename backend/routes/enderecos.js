@@ -35,7 +35,7 @@ router.get('/:id',autenticaToken , async (req, res) => {
     }
   });
 
-router.post('/', async (req, res) => {
+router.post('/',autenticaToken , async (req, res) => {
 try {
     const enderecos = new Enderecos(req.body); // Cria um novo endereco com os dados do corpo da requisição
     await enderecos.save(); // Salva  no banco de dados
@@ -46,7 +46,7 @@ try {
 }
 });
 
-router.delete('/:id', async(req , res) => {
+router.delete('/:id',autenticaToken , async(req , res) => {
   try{
     const id = req.params.id;
     const enderecos = await Enderecos.findByIdAndDelete(id)
@@ -56,7 +56,7 @@ router.delete('/:id', async(req , res) => {
   }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',autenticaToken , async (req, res) => {
   try {
     const id = req.params.id;
     // Atualiza o endereco com os dados do corpo da requisição
