@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Importando useNavigate para navegação
 import NavbarInterna from './assets/navbarInterna';
 import './Style/Comprar.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 import { useSelector } from "react-redux";
-
-
 
 function Comprar() {
     const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
@@ -27,7 +25,7 @@ function Comprar() {
     const [itensCarrinho, setItensCarrinho] = useState([]);
     const [total, setTotal] = useState(0); // Valor total da compra
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook para navegação
 
     const API_URL_pagamento = "http://localhost:5000/pagamentos"
     const API_URL_endereco = "http://localhost:5000/enderecos"
@@ -41,15 +39,15 @@ function Comprar() {
                         `${API_URL_pagamento}/${ID}`,
                         {
                             headers: {
-                              Authorization: `Bearer ${localStorage.getItem('token')}`
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
                             }
-                          }
+                        }
                     ),
                     axios.get(
                         `${API_URL_endereco}/${ID}`,
                         {
                             headers: {
-                              Authorization: `Bearer ${localStorage.getItem('token')}`
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
                             }
                         }
                     ),
@@ -71,10 +69,17 @@ function Comprar() {
         }, 0);
         setTotal(totalCompra.toFixed(2));  // Aplica .toFixed(2) após o cálculo do total
     }, [itensCarrinho]);
-    
 
     const handleMetodoChange = (e) => setMetodoSelecionado(e.target.value);
-    const handleEnderecoChange = (e) => setEnderecoSelecionado(e.target.value);
+    const handleEnderecoChange = (e) => {
+        const selectedValue = e.target.value;
+        setEnderecoSelecionado(selectedValue);
+
+        // Se a opção "Adicionar novo endereço" for selecionada, navegue para /GerirEndereco
+        if (selectedValue === "add-new") {
+            navigate("/GerirEndereco"); // Navegação para a tela de gerenciamento de endereços
+        }
+    };
 
     const FinalizarCompra = async () => {
         // Jogo e plataforma selecionados serão extraídos do carrinho
@@ -82,7 +87,6 @@ function Comprar() {
             jogo: item.nome,
             plataformaSelecionada: item.plataforma,
             quantidade: item.quantidade,
-            
         }));
 
         const pedido = {
@@ -98,7 +102,7 @@ function Comprar() {
             await axios.post(API_URL_pedidos, pedido,
                 {
                     headers: {
-                      Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
                 }
             );
@@ -108,14 +112,13 @@ function Comprar() {
                 autoClose: 2500,
                 theme: "dark",
             });
-            
         } catch (error) {
             console.error("Erro ao salvar o pedido:", error);
             toast.error("Erro ao finalizar a compra.");
-        }finally{setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
-            }
+        } finally {
+            setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
+        }
     };
-
 
     return (
         <div>
@@ -134,6 +137,7 @@ function Comprar() {
                             {endereco.rua}, {endereco.numero}
                         </option>
                     ))}
+                    <option value="add-new">Adicionar novo endereço</option>
                 </select>
 
                 {enderecoSelecionado && (
@@ -191,13 +195,9 @@ function Comprar() {
                         )}
                     </div>
                 )}
-                
-              
-                
-                
+
                 <h5 id="total">VALOR TOTAL DA COMPRA:  R$ {total}</h5>
-                
-          
+
                 <ToastContainer />
             </div>
         </div>
