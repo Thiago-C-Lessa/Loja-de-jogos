@@ -33,10 +33,30 @@ function Carrinho() {
 
   const handlplataforma = (index, plataforma) => {
     const updatedCarrinho = [...itensCarrinho];
+    const jogoAtual = updatedCarrinho[index];
+  
+    // Verifica se já existe outro jogo com a mesma plataforma
+    const plataformaIgual = updatedCarrinho.some(
+      (item, i) => 
+        i !== index && 
+        item.nome === jogoAtual.nome && 
+        item.plataforma === plataforma
+    );
+  
+    if (plataformaIgual) {
+      toast.error(`Plataforma ${plataforma} já selecionada`, {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+      return;
+    }
+  
     updatedCarrinho[index].plataforma = plataforma; // Atualiza a plataforma
     setItensCarrinho(updatedCarrinho);
     localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho));
   };
+  
 
   const calcularTotal = () => {
     const total = itensCarrinho.reduce(
@@ -120,14 +140,43 @@ function Carrinho() {
                       )}
                     </td>
                     <td id="colunaquantidade">
-                      <input
-                        id="colunaquantidade2"
-                        type="number"
-                        min="1"
-                        value={item.quantidade || 1}
-                        onChange={(e) => handlequantidade(index, parseInt(e.target.value))}
-                      />
-                    </td>
+                    <input
+                      id="colunaquantidade2"
+                      type="number"
+                      min="1"
+                      max={
+                        item.plataforma === "PS5"
+                          ? item.quantidade_ps5
+                          : item.plataforma === "Xbox"
+                          ? item.quantidade_xbox
+                          : item.plataforma === "PC"
+                          ? item.quantidade_pc
+                          : 1
+                      }
+                      value={item.quantidade || 1}
+                      onChange={(e) => {
+                        const novaQuantidade = parseInt(e.target.value);
+                        const maxQuantidade =
+                          item.plataforma === "PS5"
+                            ? item.quantidade_ps5
+                            : item.plataforma === "Xbox"
+                            ? item.quantidade_xbox
+                            : item.plataforma === "PC"
+                            ? item.quantidade_pc
+                            : 1;
+
+                        if (novaQuantidade <= maxQuantidade) {
+                          handlequantidade(index, novaQuantidade);
+                        } else {
+                          toast.error(`Quantidade máxima para ${item.plataforma}: ${maxQuantidade}`, {
+                            position: "top-center",
+                            autoClose: 2500,
+                            theme: "dark",
+                          });
+                        }
+                      }}
+                    />
+                  </td>
                     <td id="colunapreco">
                       R$ {((item.preco / 10) * (item.quantidade || 1)).toFixed(2)}
                     </td>

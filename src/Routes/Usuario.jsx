@@ -13,7 +13,7 @@ import Pagamentos from '../GerirPagamentos';
 import EditarUsuario from '../EditarUsuario';
 import HistoricoCompras from '../HistoricoCompras';
 import GerirEnderecos from '../GerirEndereco';
-
+import MaisVendidos from '../MaisVendidos';
 
 import { BrowserRouter as Router,
         Routes,
@@ -44,6 +44,7 @@ function Usuario() {
         <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
         <Route path="/EditarUsuario" element={<EditarUsuario />} />
         <Route path="/HistoricoCompras" element={<HistoricoCompras />} />
+        <Route path='/MaisVendidos' element={<MaisVendidos/>}/>
         
    
 

@@ -1,9 +1,11 @@
 import React from 'react';
 import '../Style/navbar.css';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar({ onSearch }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSearchChange = (event) => {
     onSearch(event.target.value); // Passar a pesquisa para o App
@@ -23,6 +25,7 @@ function Navbar({ onSearch }) {
       type:'user/logout' // Dispara a ação de logout
     }); 
     localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (
@@ -57,6 +60,9 @@ function Navbar({ onSearch }) {
             className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
             style={{ '--bs-scroll-height': '300px' }}
           >
+            <li className="nav-item">
+              <a className="nav-link" href="/MaisVendidos">Mais Vendidos</a>
+            </li>
             <li className="nav-item">
               <a className="nav-link" href="/JogoPc">Jogos para PC</a>
             </li>

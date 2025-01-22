@@ -30,6 +30,7 @@ function Comprar() {
     const API_URL_pagamento = "http://localhost:5000/pagamentos"
     const API_URL_endereco = "http://localhost:5000/enderecos"
     const API_URL_pedidos = "http://localhost:5000/pedidos"
+    const API_URL_jogos = "http://localhost:5000/jogos"
 
     useEffect(() => {
         const carregarDados = async () => {
@@ -82,30 +83,42 @@ function Comprar() {
     };
 
     const FinalizarCompra = async () => {
-        // Jogo e plataforma selecionados serão extraídos do carrinho
-        const jogosComprados = itensCarrinho.map(item => ({
-            jogo: item.nome,
-            plataformaSelecionada: item.plataforma,
-            quantidade: item.quantidade,
+        // Mapeando os jogos comprados para atualização
+        const atualizarJogos = itensCarrinho.map(item => ({
+            id: item._id, // ID do jogo
+            numeroVendas: ((item.numeroVendas) || 0) + item.quantidade, // Incrementa pelas vendas realizadas
+            ...(item.plataforma === "PS5" && { quantidade_ps5: item.quantidade_ps5 - item.quantidade }),
+            ...(item.plataforma === "Xbox" && { quantidade_xbox: item.quantidade_xbox - item.quantidade }),
+            ...(item.plataforma === "PC" && { quantidade_pc: item.quantidade_pc - item.quantidade }),
         }));
-
+    
         const pedido = {
             idUsuario: ID,
-            jogosComprados: jogosComprados,
+            jogosComprados: itensCarrinho.map(item => ({
+                jogo: item.nome,
+                plataformaSelecionada: item.plataforma,
+                quantidade: item.quantidade,
+            })),
             total: total,
             enderecoId: enderecoSelecionado,
             metodoPagamentoId: metodoSelecionado,
             data: new Date().toISOString(),
         };
-
+    
         try {
-            await axios.post(API_URL_pedidos, pedido,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                }
-            );
+            // Envia o pedido para o servidor
+            await axios.post(API_URL_pedidos, pedido, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+    
+            // Atualiza as informações dos jogos comprados no servidor
+            for (const jogo of atualizarJogos) {
+                await axios.put(`${API_URL_jogos}/${jogo.id}`, jogo, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
+            }
+    
+            // Limpa o carrinho e notifica o usuário
             localStorage.removeItem('carrinho');
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
@@ -115,10 +128,12 @@ function Comprar() {
         } catch (error) {
             console.error("Erro ao salvar o pedido:", error);
             toast.error("Erro ao finalizar a compra.");
+            console.log(atualizarJogos);
         } finally {
             setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
         }
     };
+    
 
     return (
         <div>

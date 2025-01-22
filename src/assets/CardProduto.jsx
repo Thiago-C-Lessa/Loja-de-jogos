@@ -18,18 +18,26 @@ function CardProduto(props) {
   }, []);
 
   // Filtrar jogos com base na pesquisa e na plataforma
-  const jogosFiltrados = jogos.filter(
+  let jogosFiltrados = jogos.filter(
     (jogo) =>
       (jogo.nome.toLowerCase().includes(props.pesquisa.toLowerCase()) ||
         jogo.genero.toLowerCase().includes(props.pesquisa.toLowerCase())) &&
-      ((props.plataforma === "todos" &&
+      (((props.plataforma === "todos" || props.plataforma === "top10") &&
         (jogo.quantidade_pc > 0 ||
           jogo.quantidade_ps5 > 0 ||
           jogo.quantidade_xbox > 0)) ||
         (props.plataforma === "pc" && jogo.quantidade_pc > 0) ||
         (props.plataforma === "ps5" && jogo.quantidade_ps5 > 0) ||
         (props.plataforma === "xbox" && jogo.quantidade_xbox > 0))
-  );
+      
+      );
+
+    if (props.plataforma === "top10") {
+      jogosFiltrados.sort((a, b) => b.numeroVendas - a.numeroVendas);
+      console.log("Jogos filtrados após ordenar e cortar:", jogosFiltrados);
+      jogosFiltrados = jogosFiltrados.slice(0, 10); // Retorna apenas os 10 jogos com mais vendas
+    }
+
 
   // Agrupar jogos por gênero
   const jogosPorGenero = jogosFiltrados.reduce((grupo_jogos, jogo) => {
@@ -40,6 +48,8 @@ function CardProduto(props) {
     grupo_jogos[genero].push(jogo); // Adiciona o jogo ao array do seu gênero
     return grupo_jogos;
   }, {});
+
+
   return (
     <div className="CardsGrid">
       {Object.keys(jogosPorGenero).map((genero) => (

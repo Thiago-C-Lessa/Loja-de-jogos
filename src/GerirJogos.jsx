@@ -16,6 +16,7 @@ const GerirJogos = () => {
     quantidade_ps5: 0,
     quantidade_pc: 0,
     quantidade_xbox: 0,
+    numeroVenda: 0,
   });
   const [editarJogoId, setEditarJogoId] = useState(null);
 
@@ -81,7 +82,7 @@ const GerirJogos = () => {
             preco: "",
             descricao: "",
             genero: "",
-            quantidade_ps5: '',
+            quantidade_ps5: 0,
             quantidade_pc: 0,
             quantidade_xbox: 0,
 

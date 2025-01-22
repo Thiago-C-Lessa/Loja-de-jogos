@@ -13,6 +13,8 @@ import PerfilUsuario from '../PerfilUsuario';
 import Pagamentos from '../GerirPagamentos';
 import EditarUsuario from '../EditarUsuario';
 import HistoricoCompras from '../HistoricoCompras';
+import MaisVendidos from '../MaisVendidos';
+
 
 
 
@@ -46,6 +48,7 @@ function Adm() {
         <Route path="/GerirEndereco" element={<GerirEnderecos />}/>
         <Route path="/EditarUsuario" element={<EditarUsuario />} />
         <Route path="/HistoricoCompras" element={<HistoricoCompras />} />
+        <Route path='/MaisVendidos' element={<MaisVendidos/>}/>
         
 
         {/* <Route path="/another" element={<AnotherPage />} /> */}

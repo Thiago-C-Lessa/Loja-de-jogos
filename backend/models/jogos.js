@@ -11,7 +11,8 @@ const jogoSchema = new Schema({
   genero: { type: String, required: true },           // Gênero do jogo
   quantidade_ps5: { type: Number, default: 0 },       // Estoque para PS5
   quantidade_pc: { type: Number, default: 0 },        // Estoque para PC
-  quantidade_xbox: { type: Number, default: 0 }
+  quantidade_xbox: { type: Number, default: 0 },
+  numeroVendas:{type:Number,default:0}
 }, {
   timestamps: true, // Adiciona campos createdAt e updatedAt automaticamente
 });
