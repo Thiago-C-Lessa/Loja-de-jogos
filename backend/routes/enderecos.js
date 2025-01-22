@@ -27,8 +27,7 @@ router.get('/:id',autenticaToken , async (req, res) => {
     try {
       const enderecos = await Enderecos.find({idUsuario: req.params.id}); // Busca pelo ID do usuario
       if (!enderecos.length) {
-        //return res.status(404).json({ message: 'Endereco não encontrado' }); Se não encontrar, retorna 404 -- Se retornar erro, não carrega backend na compra
-        return res.status(200).json([]); // Se não encontrar
+        return res.status(404).json({ message: 'Endereco não encontrado' }); // Se não encontrar, retorna 404
       }
       res.status(200).json(enderecos); // Retorna o Pagamento encontrado
     } catch (err) {

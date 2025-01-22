@@ -33,8 +33,7 @@ router.get('/:id', autenticaToken, async (req, res) => {
     try {
       const pagamentos = await Pagamentos.find({idUsuario: req.params.id}); // Busca pelo ID do usuario
       if (!pagamentos.length) {
-        //return res.status(404).json({ message: 'Pagamento não encontrado' }); Se não encontrar, retorna 404 -- Se retornar erro, não carrega backend na compra
-        return res.status(200).json([]); // Se não encontrar
+        return res.status(404).json({ message: 'Pagamento não encontrado' }); // Se não encontrar, retorna 404
       }
       res.status(200).json(pagamentos); // Retorna o Pagamento encontrado
     } catch (err) {

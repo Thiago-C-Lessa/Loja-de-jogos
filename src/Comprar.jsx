@@ -82,16 +82,6 @@ function Comprar() {
         }
     };
 
-    const handleMetodoPagamentoChange = (e) => {
-        const selectedValue = e.target.value;
-        setMetodoSelecionado(selectedValue);
-
-        // Se a opção "Adicionar novo método" for selecionada, navegue para /Pagamentos
-        if (selectedValue === "add-new") {
-            navigate("/Pagamentos"); // Navegação para a tela de gerenciamento de métodos de pagamento
-        }
-    };
-
     const FinalizarCompra = async () => {
         // Mapeando os jogos comprados para atualização
         const atualizarJogos = itensCarrinho.map(item => ({
@@ -187,7 +177,7 @@ function Comprar() {
                         <select
                             className="form-select mb-4"
                             value={metodoSelecionado}
-                            onChange={handleMetodoPagamentoChange}
+                            onChange={handleMetodoChange}
                             style={{ width: '100%' }} // Tamanho igual
                         >
                             <option value="">Escolha um método</option>
@@ -196,7 +186,6 @@ function Comprar() {
                                     {metodo.ApelidoCartao}
                                 </option>
                             ))}
-                            <option value="add-new">Adicionar novo método</option>
                         </select>
 
                         {metodoSelecionado && (
