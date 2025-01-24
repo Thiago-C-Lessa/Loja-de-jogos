@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import NavbarInterna from './assets/navbarInterna.jsx'
+import NavbarInterna from './assets/navbarInterna.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const GerirJogos = () => {
   const [jogos, setJogos] = useState([]);
@@ -23,28 +22,15 @@ const GerirJogos = () => {
   const API_URL = "https://localhost:5000/jogos";
 
   function notify(x) {
-
-    if (x==0){
-    toast.success("Jogo excluido!", {
-      position: "top-center", 
-      autoClose: 2500, 
-      theme: "dark", 
-    });}
-
-    if (x==1){
-      toast.success("Jogo Adicionado!", {
-        position: "top-center", 
-        autoClose: 2500, 
-        theme: "dark", 
-      });}
-
-    if (x==2){
-      toast.success("Jogo Atualizado!", {
-        position: "top-center", 
-        autoClose: 2500, 
-        theme: "dark", 
-      });}
-    
+    if (x === 0) {
+      toast.success("Jogo excluído!", { position: "top-center", autoClose: 2500, theme: "dark" });
+    }
+    if (x === 1) {
+      toast.success("Jogo Adicionado!", { position: "top-center", autoClose: 2500, theme: "dark" });
+    }
+    if (x === 2) {
+      toast.success("Jogo Atualizado!", { position: "top-center", autoClose: 2500, theme: "dark" });
+    }
   }
 
   // Carregar todos os jogos
@@ -60,6 +46,34 @@ const GerirJogos = () => {
     const { name, value } = e.target;
     setNovoJogo({ ...novoJogo, [name]: value });
   };
+
+  // Lidar com o upload de imagem
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Aqui você está criando a URL para o frontend exibir a imagem
+      const imageUrl = `/imagem/${file.name}`;
+      setNovoJogo({ ...novoJogo, imagem: imageUrl });
+  
+      // Criar um FormData para enviar o arquivo
+      const formData = new FormData();
+      formData.append('file', file);  // 'file' é o nome do campo que o backend espera
+  
+      // Enviar o arquivo com axios
+      axios.post(`${API_URL}/uploadImagem`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',  // É importante definir o tipo de conteúdo
+        },
+      })
+        .then((response) => {
+          console.log('Imagem enviada com sucesso:', response.data);
+        })
+        .catch((error) => {
+          console.error('Erro ao enviar imagem:', error);
+        });
+    }
+  };
+  
 
   // Criar ou atualizar um jogo
   const handleSubmit = (e) => {
@@ -85,11 +99,9 @@ const GerirJogos = () => {
             quantidade_ps5: 0,
             quantidade_pc: 0,
             quantidade_xbox: 0,
-
           });
-          notify(2)
-        }
-      )
+          notify(2);
+        })
         .catch((error) => console.error("Erro ao atualizar jogo:", error));
     } else {
       // Criar jogo
@@ -107,21 +119,19 @@ const GerirJogos = () => {
             quantidade_pc: 0,
             quantidade_xbox: 0,
           });
-          notify(1)
-        }
-      )
+          notify(1);
+        })
         .catch((error) => console.error("Erro ao criar jogo:", error));
     }
   };
 
   // Deletar um jogo
   const handleDelete = (id) => {
-    console.log(typeof(id))
     axios
       .delete(`${API_URL}/${id}`)
       .then(() => setJogos(jogos.filter((jogo) => jogo._id !== id)))
       .catch((error) => console.error("Erro ao deletar jogo:", error));
-      notify(0)
+    notify(0);
   };
 
   // Iniciar edição de um jogo
@@ -133,157 +143,155 @@ const GerirJogos = () => {
       top: 0,
       behavior: "smooth", // Para fazer transição suave
     });
-
   };
 
   return (
     <div>
-      <NavbarInterna/>
-    <div className="container my-4">
-      <h1 style={{color:"White", textAlign: "center"}}>Gerir Jogos</h1>
+      <NavbarInterna />
+      <div className="container my-4">
+        <h1 style={{ color: "White", textAlign: "center" }}>Gerir Jogos</h1>
 
-      {/* Formulário */}
-      <form onSubmit={handleSubmit} className="mb-5">
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="nome" className="form-label">Nome</label>
-            <input
-              type="text"
-              id="nome"
-              name="nome"
-              className="form-control"
-              value={novoJogo.nome}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label htmlFor="imagem" className="form-label">Imagem</label>
-            <input
-              type="text"
-              id="imagem"
-              name="imagem"
-              className="form-control"
-              value={novoJogo.imagem}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="preco" className="form-label">Preço</label>
-            <input
-              type="number"
-              id="preco"
-              name="preco"
-              className="form-control"
-              value={novoJogo.preco}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label htmlFor="genero" className="form-label">Gênero</label>
-            <input
-              type="text"
-              id="genero"
-              name="genero"
-              className="form-control"
-              value={novoJogo.genero}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6 mb-3">
-            <label htmlFor="descricao" className="form-label">Descrição</label>
-            <textarea
-              id="descricao"
-              name="descricao"
-              className="form-control"
-              value={novoJogo.descricao}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-3 mb-3">
-            <label htmlFor="quantidade_ps5" className="form-label">Quantidade PS5</label>
-            <input
-              type="number"
-              id="quantidade_ps5"
-              name="quantidade_ps5"
-              className="form-control"
-              value={novoJogo.quantidade_ps5}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="col-md-3 mb-3">
-            <label htmlFor="quantidade_pc" className="form-label">Quantidade PC</label>
-            <input
-              type="number"
-              id="quantidade_pc"
-              name="quantidade_pc"
-              className="form-control"
-              value={novoJogo.quantidade_pc}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="col-md-3 mb-3">
-            <label htmlFor="quantidade_xbox" className="form-label" >Quantidade Xbox</label >
-            <input
-              type="number"
-              id="quantidade_xbox"
-              name="quantidade_xbox"
-              className="form-control"
-              value={novoJogo.quantidade_xbox}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-        </div>
-
-        <button type="submit" className="btn btn-primary">
-          {editarJogoId ? "Atualizar Jogo" : "Adicionar Jogo"}
-        </button>
-      </form>
-      
-
-      {/* Lista de Jogos */}
-      <div className="row" >
-        {jogos.map((jogo) => (
-          <div className="col-md-4" key={jogo._id}>
-            <div className="card" style={{marginTop:"20px"}}>
-              <img src={jogo.imagem} className="card-img-top" alt={jogo.nome} />
-              <div className="card-body">
-              <h5 className="card-title" style={{ color: "white" }}>{jogo.nome}</h5>
-                <button
-                  className="btn btn-warning me-2"
-                  onClick={() => handleEdit(jogo)}
-                >
-                  Editar
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDelete(jogo._id)}
-                >
-                  Deletar
-                </button>
-              </div>
+        {/* Formulário */}
+        <form onSubmit={handleSubmit} className="mb-5">
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="nome" className="form-label">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                className="form-control"
+                value={novoJogo.nome}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="col-md-6 mb-3">
+              <label htmlFor="imagem" className="form-label">Imagem</label>
+              <input
+                type="file"
+                id="imagem"
+                name="imagem"
+                className="form-control"
+                onChange={handleImageChange}
+                required
+              />
             </div>
           </div>
-        ))}
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="preco" className="form-label">Preço</label>
+              <input
+                type="number"
+                id="preco"
+                name="preco"
+                className="form-control"
+                value={novoJogo.preco}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="col-md-6 mb-3">
+              <label htmlFor="genero" className="form-label">Gênero</label>
+              <input
+                type="text"
+                id="genero"
+                name="genero"
+                className="form-control"
+                value={novoJogo.genero}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor="descricao" className="form-label">Descrição</label>
+              <textarea
+                id="descricao"
+                name="descricao"
+                className="form-control"
+                value={novoJogo.descricao}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="col-md-3 mb-3">
+              <label htmlFor="quantidade_ps5" className="form-label">Quantidade PS5</label>
+              <input
+                type="number"
+                id="quantidade_ps5"
+                name="quantidade_ps5"
+                className="form-control"
+                value={novoJogo.quantidade_ps5}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="col-md-3 mb-3">
+              <label htmlFor="quantidade_pc" className="form-label">Quantidade PC</label>
+              <input
+                type="number"
+                id="quantidade_pc"
+                name="quantidade_pc"
+                className="form-control"
+                value={novoJogo.quantidade_pc}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="col-md-3 mb-3">
+              <label htmlFor="quantidade_xbox" className="form-label" >Quantidade Xbox</label >
+              <input
+                type="number"
+                id="quantidade_xbox"
+                name="quantidade_xbox"
+                className="form-control"
+                value={novoJogo.quantidade_xbox}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+          </div>
+
+          <button type="submit" className="btn btn-primary">
+            {editarJogoId ? "Atualizar Jogo" : "Adicionar Jogo"}
+          </button>
+        </form>
+
+
+        {/* Lista de Jogos */}
+        <div className="row" >
+          {jogos.map((jogo) => (
+            <div className="col-md-4" key={jogo._id}>
+              <div className="card" style={{ marginTop: "20px" }}>
+                <img src={jogo.imagem} className="card-img-top" alt={jogo.nome} />
+                <div className="card-body">
+                  <h5 className="card-title" style={{ color: "white" }}>{jogo.nome}</h5>
+                  <button
+                    className="btn btn-warning me-2"
+                    onClick={() => handleEdit(jogo)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(jogo._id)}
+                  >
+                    Deletar
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+      <ToastContainer />
     </div>
-    <ToastContainer/>
-  </div>
   );
 };
 

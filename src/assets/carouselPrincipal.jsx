@@ -31,13 +31,19 @@ const Carousel = () => {
       {/* Slides */}
       <div className="carousel-inner">
         <div className="carousel-item active">
-          <img src="../imagem/cs2.jpg" className="d-block w-100" alt="Slide 1" />
+          <a href="http://localhost:5173/jogo/6785ec76eeabeeca07e97126">
+            <img src="/imagem/cs2.jpg" className="d-block w-100" alt="Slide 1" />
+          </a>
         </div>
         <div className="carousel-item">
-          <img src="../imagem/the_last_of_us_carousel.jpg" className="d-block w-100" alt="Slide 2" />
+          <a href="http://localhost:5173/jogo/abcd1234">
+            <img src="/imagem/the_last_of_us_carousel.jpg" className="d-block w-100" alt="Slide 2" />
+          </a>
         </div>
         <div className="carousel-item">
-          <img src="../imagem/the_witcher.jpg" className="d-block w-100" alt="Slide 3" />
+          <a href="http://localhost:5173/jogo/9876zyxw">
+            <img src="/imagem/the_witcher.jpg" className="d-block w-100" alt="Slide 3" />
+          </a>
         </div>
       </div>
 

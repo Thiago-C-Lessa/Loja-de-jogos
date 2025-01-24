@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
 
 //importa o modelo do mongo
 const Jogo = require('../models/jogos');
@@ -17,6 +19,20 @@ const logActionNoText = (action) => {
   const log = `[${now.toISOString()}] Ação: ${action}\n`;
   console.log(log);
 };
+
+// Configuração do armazenamento do multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../../public/imagem/')); // Certifique-se de que o caminho está correto
+  },
+  filename: (req, file, cb) => {
+    // Gerar um nome de arquivo único (você pode adicionar um timestamp ou algum identificador único se necessário)
+    //const uniqueSuffix = Date.now() + path.extname(file.originalname);  Adiciona um timestamp ao nome
+    cb(null, file.originalname);  // Garante que o nome do arquivo seja único
+  }
+});
+
+const upload = multer({ storage: storage });
 
 
 // CREATE: Adicionar um novo jogo
@@ -83,5 +99,15 @@ router.post('/', async (req, res) => {
       res.status(400).json({ message: err.message });
     }
   });
+
+//post img
+router.post('/uploadImagem', upload.single('file'), (req, res) => {
+  logActionNoText("upload imagem");
+  if (!req.file) {
+    return res.status(400).send('Nenhum arquivo foi enviado.');
+  }
+
+  res.status(200).send(`Arquivo ${req.file.filename} foi salvo com sucesso!`);
+});
   
 module.exports = router;
