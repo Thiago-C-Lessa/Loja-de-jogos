@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NavbarInterna from './assets/navbarInterna.jsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 const GerirJogos = () => {
   const [jogos, setJogos] = useState([]);
@@ -20,6 +21,9 @@ const GerirJogos = () => {
   const [editarJogoId, setEditarJogoId] = useState(null);
 
   const API_URL = "https://localhost:5000/jogos";
+
+  const fileInputRef = useRef(null);
+
 
   function notify(x) {
     if (x === 0) {
@@ -78,7 +82,7 @@ const GerirJogos = () => {
   // Criar ou atualizar um jogo
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     if (editarJogoId) {
       // Atualizar jogo
       axios
@@ -100,6 +104,12 @@ const GerirJogos = () => {
             quantidade_pc: 0,
             quantidade_xbox: 0,
           });
+  
+          // Limpa o campo de upload de imagem
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+  
           notify(2);
         })
         .catch((error) => console.error("Erro ao atualizar jogo:", error));
@@ -119,11 +129,18 @@ const GerirJogos = () => {
             quantidade_pc: 0,
             quantidade_xbox: 0,
           });
+  
+          // Limpa o campo de upload de imagem
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+  
           notify(1);
         })
         .catch((error) => console.error("Erro ao criar jogo:", error));
     }
   };
+  
 
   // Deletar um jogo
   const handleDelete = (id) => {
@@ -174,6 +191,7 @@ const GerirJogos = () => {
                 name="imagem"
                 className="form-control"
                 onChange={handleImageChange}
+                ref={fileInputRef} // Atribui a referência ao campo de arquivo
                 required
               />
             </div>
