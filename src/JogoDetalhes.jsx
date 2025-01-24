@@ -11,7 +11,7 @@ function JogoDetalhes() {
   const[jogo, setJogo] = useState(null);
   const[loading, setLoading] = useState(true);
 
-  const API_URL_JOGO = "http://localhost:5000/jogos";
+  const API_URL_JOGO = "https://localhost:5000/jogos";
 
   useEffect(() => {
     const fetchData = async () => {

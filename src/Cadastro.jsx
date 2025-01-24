@@ -56,7 +56,7 @@ function Cadastro() {
       const userData = {
         ...formData,
       };
-      const response = await axios.post("http://localhost:5000/usuarios", userData);
+      const response = await axios.post("https://localhost:5000/usuarios", userData);
 
       if (response.status === 201 || response.status === 200) {
         const user = response.data.user; // Usuário retornado pelo backend

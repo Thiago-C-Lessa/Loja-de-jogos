@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function EnderecoCard({ID}) {
-  const API_URL = "http://localhost:5000/enderecos";
+  const API_URL = "https://localhost:5000/enderecos";
 
   const [enderecos, setEnderecos] = useState([]);
 

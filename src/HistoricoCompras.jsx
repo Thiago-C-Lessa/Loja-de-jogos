@@ -9,8 +9,8 @@ function HistoricoCompras() {
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
   const ID = currentUser?._id;
 
-  const API_URL_pedidos = "http://localhost:5000/pedidos";
-  const API_URL_endereco = "http://localhost:5000/enderecos";
+  const API_URL_pedidos = "https://localhost:5000/pedidos";
+  const API_URL_endereco = "https://localhost:5000/enderecos";
 
   const [pedidos, setPedidos] = useState([]);
   const [enderecos, setEnderecos] = useState([]);

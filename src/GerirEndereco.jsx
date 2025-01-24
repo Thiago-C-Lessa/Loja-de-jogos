@@ -36,7 +36,7 @@ const GerirEnderecos = () => {
   };
   
 
-  const API_URL = "http://localhost:5000/enderecos";
+  const API_URL = "https://localhost:5000/enderecos";
   
 
   function notify(x) {

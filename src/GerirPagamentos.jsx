@@ -35,7 +35,7 @@ const Pagamentos = () => {
     });
   };
 
-  const API_URL = "http://localhost:5000/pagamentos";
+  const API_URL = "https://localhost:5000/pagamentos";
 
   useEffect(() => {
     const carregarDados = async () => {

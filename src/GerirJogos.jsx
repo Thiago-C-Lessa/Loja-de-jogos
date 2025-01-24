@@ -20,7 +20,7 @@ const GerirJogos = () => {
   });
   const [editarJogoId, setEditarJogoId] = useState(null);
 
-  const API_URL = "http://localhost:5000/jogos";
+  const API_URL = "https://localhost:5000/jogos";
 
   function notify(x) {
 

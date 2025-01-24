@@ -27,10 +27,10 @@ function Comprar() {
 
     const navigate = useNavigate(); // Hook para navegação
 
-    const API_URL_pagamento = "http://localhost:5000/pagamentos"
-    const API_URL_endereco = "http://localhost:5000/enderecos"
-    const API_URL_pedidos = "http://localhost:5000/pedidos"
-    const API_URL_jogos = "http://localhost:5000/jogos"
+    const API_URL_pagamento = "https://localhost:5000/pagamentos"
+    const API_URL_endereco = "https://localhost:5000/enderecos"
+    const API_URL_pedidos = "https://localhost:5000/pedidos"
+    const API_URL_jogos = "https://localhost:5000/jogos"
 
     useEffect(() => {
         const carregarDados = async () => {

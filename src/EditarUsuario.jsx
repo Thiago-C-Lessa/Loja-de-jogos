@@ -12,7 +12,7 @@ const EditarUsuario = () => {
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/usuarios/${id}`); // Ajuste conforme o endpoint
+        const response = await axios.get(`https://localhost:5000/api/usuarios/${id}`); // Ajuste conforme o endpoint
         const usuario = response.data;
         setNome(usuario.nome);
         setDataNascimento(usuario.dataNascimento);
@@ -28,7 +28,7 @@ const EditarUsuario = () => {
   const handleConfirmarEdicoes = async () => {
     try {
       const updatedUsuario = { nome, dataNascimento, email };
-      await axios.put(`http://localhost:5000/api/usuarios/${id}`, updatedUsuario);
+      await axios.put(`https://localhost:5000/api/usuarios/${id}`, updatedUsuario);
       alert("Usuário atualizado com sucesso!");
     } catch (error) {
       console.error("Erro ao atualizar o usuário:", error);

@@ -17,7 +17,7 @@ const Avaliacoes = ({ jogoId }) => {
   const Nome = currentUser?.nome;
   const Tipo = currentUser?.TipoAdm === true;
 
-  const API_URL = "http://localhost:5000/avaliacoes";
+  const API_URL = "https://localhost:5000/avaliacoes";
 
   function notify(x) {
     if (x === 0) {

@@ -32,7 +32,7 @@ function Login() {
   
     try {
       // Envia o e-mail e senha para o backend
-      const response = await axios.post("http://localhost:5000/usuarios/login", {
+      const response = await axios.post("https://localhost:5000/usuarios/login", {
         email: formData.login,
         senha: formData.senha,
       });
