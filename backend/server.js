@@ -2,10 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const jwt =  require('jsonwebtoken');
+const https = require('https');
+const fs = require('fs');
 require('dotenv').config();
 
 const _PORT_ = process.env._PORT_;
 const __MONGO_URL__ = process.env.__MONGO_URL__;
+
+//ssl keys
+const privateKey = fs.readFileSync('./ssl_Keys/localhost-key.pem', 'utf8');
+const certificate = fs.readFileSync('./ssl_Keys/localhost.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
 
 //faz as conecções do mongoose
 const connction = mongoose.connect(__MONGO_URL__)
@@ -40,10 +47,9 @@ const app = express();
 //usa cors para evitar bo da entradas diferentes
 app.use(cors({
     //origin: 'http://localhost:5173',
-    origin: '*', // Permite todas as origens. Substitua '*' por uma origem específica para mais segurança.
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],  
+    origin: '*', // Permite qualquer origem (não recomendado em produção)
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
-
 
 //usa json para processar os req e res
 app.use(express.json());
@@ -61,9 +67,9 @@ app.use('/pedidos',pedidosRouter);
 
 
 //INICIA faz com que o express fique na porta especificada
-app.listen(_PORT_,()=>{
+// Inicia o servidor HTTPS
+https.createServer(credentials, app).listen(_PORT_, () => {
     console.log(`
-
         ⣇⣿⠘⣿⣿⣿⡿⡿⣟⣟⢟⢟⢝⠵⡝⣿⡿⢂⣼⣿⣷⣌⠩⡫⡻⣝⠹⢿⣿⣷
         ⡆⣿⣆⠱⣝⡵⣝⢅⠙⣿⢕⢕⢕⢕⢝⣥⢒⠅⣿⣿⣿⡿⣳⣌⠪⡪⣡⢑⢝⣇
         ⡆⣿⣿⣦⠹⣳⣳⣕⢅⠈⢗⢕⢕⢕⢕⢕⢈⢆⠟⠋⠉⠁⠉⠉⠁⠈⠼⢐⢕⢽
@@ -81,14 +87,13 @@ app.listen(_PORT_,()=>{
 
 
         Index:
-        http://localhost:${_PORT_}/
+        https://localhost:${_PORT_}/
 
         Endpoints:
-        http://localhost:${_PORT_}/jogos
-        http://localhost:${_PORT_}/enderecos
-        http://localhost:${_PORT_}/usuarios
-        http://localhost:${_PORT_}/pagamentos
-        http://localhost:${_PORT_}/avaliacoes
-        http://localhost:${_PORT_}/pedidos`)
+        https://localhost:${_PORT_}/jogos
+        https://localhost:${_PORT_}/enderecos
+        https://localhost:${_PORT_}/usuarios
+        https://localhost:${_PORT_}/pagamentos
+        https://localhost:${_PORT_}/avaliacoes
+        https://localhost:${_PORT_}/pedidos`);
 });
-

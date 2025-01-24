@@ -8,7 +8,7 @@ function CardProduto(props) {
   // Carregar os jogos
   useEffect(() => {
     axios
-      .get("http://localhost:5000/jogos")
+      .get("https://localhost:5000/jogos")
       .then((response) => {
         setJogos(response.data);
       })
