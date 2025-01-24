@@ -53,6 +53,8 @@ const autenticaToken = (req, res, next)=>
             });
     
             await users.save(); // Salva o usuário no banco de dados
+
+            users.senha = null;
     
             logAction("createUser");
             const token = jwt.sign(
@@ -73,7 +75,7 @@ const autenticaToken = (req, res, next)=>
     
     
 
-      //GETBYID
+//GETBYID
 router.get('/getById', async (req, res) => {
     const { id } = req.body;
     try {
@@ -127,6 +129,8 @@ router.post('/login', async(req,res)=>{
         { id: user._id, email: user.email },
         process.env.__TOKEN_JWT__
     );
+
+    user.senha = null;
 
     res.status(200).json({ 
       message: "Login realizado.",
