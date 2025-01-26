@@ -39,6 +39,7 @@ const avaliacoesRouter = require('./routes/avaliacoes');
 const pedidosRouter = require('./routes/pedidos');
 const enderecosRouter = require('./routes/enderecos');
 const pagamentosRouter = require('./routes/pagamentos');
+const carrinhosRouter = require('./routes/carrinhos');
 
 
 const app = express();
@@ -62,6 +63,7 @@ app.use('/usuarios',userRouter);
 app.use('/pagamentos',pagamentosRouter);
 app.use('/avaliacoes',avaliacoesRouter);
 app.use('/pedidos',pedidosRouter);
+app.use('/carrinhos',carrinhosRouter);
 
 
 
@@ -95,5 +97,6 @@ https.createServer(credentials, app).listen(_PORT_, () => {
         https://localhost:${_PORT_}/usuarios
         https://localhost:${_PORT_}/pagamentos
         https://localhost:${_PORT_}/avaliacoes
-        https://localhost:${_PORT_}/pedidos`);
+        https://localhost:${_PORT_}/pedidos
+        https://localhost:${_PORT_}/carrinhos`);
 });

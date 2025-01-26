@@ -2,8 +2,21 @@ import Navbar from "./assets/navbar";
 import React, { useState, useEffect } from "react";
 import CardProduto from './assets/CardProduto';
 import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+
 
 function JogosPc() {
+
+  const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
+  const ID = currentUser?._id;
+
+  const navigate = useNavigate();
+
+  const API_URL = "https://localhost:5000/carrinhos"; // Atualize a URL conforme necessário
+
+
   function notify() {
     toast.success("Jogo adicionado no carrinho!", {
       position: "top-center", 
@@ -15,11 +28,7 @@ function JogosPc() {
   const [pesquisa, setPesquisa] = useState("");
   const [plataforma, setPlataforma] = useState("pc"); // define qual plataforma sera mostrado na pagina
 
-  const [carrinho, setCarrinho] = useState(() => {
-    // Carregar o carrinho do localStorage ou iniciar com um carrinho vazio
-    const carrinhoSalvo = JSON.parse(localStorage.getItem('carrinho'));
-    return carrinhoSalvo || [];
-  });
+  
 
   // Função de busca
   const busca = (Texto) => {
@@ -27,14 +36,45 @@ function JogosPc() {
   };
 
   // Função de adicionar ao carrinho
-  const addToCart = (jogo) => {
-    setCarrinho((prevCarrinho) => {
-      const novoCarrinho = [...prevCarrinho, jogo];
-      // Atualiza o localStorage sempre que o carrinho mudar
-      localStorage.setItem('carrinho', JSON.stringify(novoCarrinho));
-      notify();
-      return novoCarrinho;
-    });
+  const addToCart = async (jogo) => {
+    
+    if (!ID) {
+      navigate('/login'); // Redireciona para a página de login
+    return;}
+
+    const dadosjogo = {
+      idUsuario: ID,
+      jogo: [{ jogoid: jogo._id, quantidade: 1 }],
+    };
+  
+    try {
+      // Verificar se o carrinho já existe no banco de dados
+      const response = await axios.get(`${API_URL}/${ID}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+  
+      // Se o carrinho já existir
+      if (response.status === 200) {
+        const carrinhoId = response.data._id;
+  
+        // Adiciona o novo jogo ao carrinho
+        await axios.put(
+          `${API_URL}/${carrinhoId}`,
+          { jogo: [{ jogoid: jogo._id, quantidade: 1 }] },
+          { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
+        );
+      }
+    } catch (error) {
+      // Se o carrinho não existir (404), cria um novo
+      if (error.response?.status === 404) {
+        await axios.post(`${API_URL}`, dadosjogo, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+      } else {
+        console.error("Erro ao adicionar jogo ao carrinho:", error);
+      }
+    }
+    notify();
   };
 
   return (

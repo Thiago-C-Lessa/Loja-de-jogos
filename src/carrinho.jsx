@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import NavbarInterna from './assets/navbarInterna';
 import './Style/carrinho.css';
 import { useSelector } from "react-redux";
@@ -8,82 +9,156 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Carrinho() {
   const [itensCarrinho, setItensCarrinho] = useState([]);
-  const { currentUser } = useSelector((state) => state.userReducer); // Obtém o usuário atual do Redux
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.userReducer);
+  const ID = currentUser?._id;
+  const [carrinhoId, setCarrinhoId] = useState(null); // Adicionando o estado carrinhoId
+
+
+  const API_URL_CARRINHO = "https://localhost:5000/carrinhos";
+  const API_URL_JOGOS = "https://localhost:5000/jogos";
 
   useEffect(() => {
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')); // Obtém os itens do carrinho armazenados
-    if (carrinho) {
-      setItensCarrinho(carrinho);
+    const carregarDados = async () => {
+      try {
+        const responseCarrinho = await axios.get(`${API_URL_CARRINHO}/${ID}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        const carrinhoId = responseCarrinho.data._id;
+        const itens = responseCarrinho.data.jogo;
+
+        const detalhesJogos = await Promise.all(
+          itens.map(async (item) => {
+            const responseJogo = await axios.get(`${API_URL_JOGOS}/${item.jogoid}`);
+            const { _id, ...jogoDetalhes } = responseJogo.data; // para que _id nao calse complito com o _id do carrinho.jogo
+
+            return {
+              ...item,
+              ...jogoDetalhes,
+              plataforma: item.plataformaSelecionada || "",
+
+            };
+          })
+        );
+        setItensCarrinho(detalhesJogos);
+        setCarrinhoId(carrinhoId)
+      } catch (error) {
+        console.error("Erro ao carregar o carrinho:", error);
+        toast.error("Erro ao carregar o carrinho.", {
+          position: "top-center",
+          autoClose: 3000,
+          theme: "dark",
+        });
+      }
+    };
+
+    if (currentUser) {
+      carregarDados();
     }
-  }, []);
+  }, [currentUser]);
 
-  const handleRemover = (index) => {
-    const newCarrinho = itensCarrinho.filter((_, i) => i !== index);
-    setItensCarrinho(newCarrinho);
-    localStorage.setItem('carrinho', JSON.stringify(newCarrinho)); // Atualiza o localStorage
-  };
-
-  const handlequantidade = (index, Novaquantidade) => {
-    const updatedCarrinho = [...itensCarrinho];
-    updatedCarrinho[index].quantidade = Novaquantidade;; // Atualiza a quantidade no estado
-    setItensCarrinho(updatedCarrinho);
-    localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho)); // Atualiza o localStorage
-  };
-
-  const handlplataforma = (index, plataforma) => {
-    const updatedCarrinho = [...itensCarrinho];
-    const jogoAtual = updatedCarrinho[index];
-  
-    // Verifica se já existe outro jogo com a mesma plataforma
-    const plataformaIgual = updatedCarrinho.some(
-      (item, i) => 
-        i !== index && 
-        item.nome === jogoAtual.nome && 
-        item.plataforma === plataforma
-    );
-  
-    if (plataformaIgual) {
-      toast.error(`Plataforma ${plataforma} já selecionada`, {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "dark",
+  const handleRemover = async (jogoId) => {
+    try {
+      await axios.delete(`${API_URL_CARRINHO}/${carrinhoId}`, { data: { jogoId },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      return;
+
+    setItensCarrinho((prevItens) => prevItens.filter((item) => item._id !== jogoId));
+    } catch (error) {
+      console.error("Erro ao remover item:", error);
     }
-  
-    updatedCarrinho[index].plataforma = plataforma; // Atualiza a plataforma
-    setItensCarrinho(updatedCarrinho);
-    localStorage.setItem('carrinho', JSON.stringify(updatedCarrinho));
   };
+
+  const handleQuantidade = async (jogoId, novaQuantidade,limite) => {
+    try {
+      
+
+      if (novaQuantidade > limite) {
+        toast.error(`Quantidade excede o limite de ${limite}.`, { theme: "dark" });
+        return;
+      }
+      const response = await axios.put(
+       `${API_URL_CARRINHO}/atualizar-quantidade/${carrinhoId}`,
+        {jogoId, novaQuantidade },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+
+      setItensCarrinho((prevItens) =>
+        prevItens.map((item) =>
+          item._id === jogoId ? { ...item, quantidade: novaQuantidade } : item
+        )
+      );
+      
+    } catch (error) {
+      console.error("Erro ao atualizar a quantidade:", error);
+      toast.error("Erro ao atualizar a quantidade.", { theme: "dark" });
+    }
+  };
+
+  const handlePlataforma = async (jogoId, novaPlataforma,jogo) => {
+    try {
+
+      const plataformaDuplicada = itensCarrinho.some(
+        (item) => item.jogoid === jogo && item.plataforma === novaPlataforma
+      );
+    
+      if (plataformaDuplicada) {
+        toast.error("Este jogo já está selecionado para essa plataforma.", {
+          position: "top-center",
+          autoClose: 3000,
+          theme: "dark",
+        });
+        return;  // Impede a atualização se já existir um item com a mesma plataforma
+      }
+
+      const response = await axios.put(
+        `${API_URL_CARRINHO}/atualizar-plataforma/${carrinhoId}`,
+        { jogoId, novaPlataforma }, // Passando jogoId e novaPlataforma corretamente
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      const itemAtualizado = response.data;
+      setItensCarrinho((prevItens) =>
+        prevItens.map((item) =>
+          item._id === jogoId ? { ...item, plataforma: novaPlataforma } : item
+        )
+      );
+      
+    } catch (error) {
+      console.error("Erro ao atualizar a plataforma:", error);
+      toast.error("Erro ao atualizar a plataforma.", { theme: "dark" });
+    }
+  };
+  
   
 
   const calcularTotal = () => {
-    const total = itensCarrinho.reduce(
-      (acc, item) => acc + (parseFloat((item.preco)/10) * (item.quantidade || 1)),
-      0
-    ).toFixed(2);
-    
-    return total;
+    return itensCarrinho
+      .reduce((acc, item) => acc + item.preco * (item.quantidade || 1)/10, 0)
+      .toFixed(2);
   };
 
   const handlePagamento = () => {
-    const itensSemPlataforma = itensCarrinho.some(item => !item.plataforma);
 
-    if (itensSemPlataforma) {
-      toast.error("Selecione uma plataforma!", {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "dark",
-      });
+  const plataformaNaoSelecionada = itensCarrinho.some(item => !item.plataforma);
+  
+  if (plataformaNaoSelecionada) {
+    toast.error("Todos os itens devem ter uma plataforma selecionada.", {
+      position: "top-center",
+      autoClose: 3000,
+      theme: "dark",
+    });
+    return;  // Impede de avançar para a próxima página
+  }
+    if (!currentUser) {
+      navigate("/login");
       return;
     }
-
-    if (!currentUser) {
-      navigate("/login"); // Redireciona para a página de login se o usuário não estiver logado
-    } else {
-      navigate("/Comprar"); // Redireciona para a página de pagamento
-    }
+    navigate("/comprar");
   };
 
   return (
@@ -91,7 +166,7 @@ function Carrinho() {
       <NavbarInterna />
 
       <div className="container text-center" id="containercarinho">
-        <h1 style={{color: "white"}}>MEU CARRINHO</h1>
+        <h1 style={{ color: "white" }}>MEU CARRINHO</h1>
 
         <div>
           <table className="table" id="carinhodejogos">
@@ -113,22 +188,18 @@ function Carrinho() {
                   </td>
                 </tr>
               ) : (
-                itensCarrinho.map((item, index) => (
-                  <tr key={index}>
+                itensCarrinho.map((item) => (
+                  <tr key={item._id}>
                     <td id="colunaimagem">
                       <img src={item.imagem} alt={item.nome} width="50" />
                     </td>
                     <td id="colunanome">{item.nome}</td>
                     <td id="colunaplataforma">
-                      {item.plataforma ? (
-                        item.plataforma
-                      ) : (
+                      {item.plataforma || ( 
                         <select
-                          onChange={(e) => handlplataforma(index, e.target.value)}
-                          defaultValue=""
+                          onChange={(e) => handlePlataforma(item._id, e.target.value,item.jogoid)}
+                          value= {item.plataforma || ""}
                           className="form-select"
-                          id={`plataforma-${index}`}
-                          name={`plataforma-${index}`}
                         >
                           <option value="" disabled>
                             Escolha
@@ -140,48 +211,37 @@ function Carrinho() {
                       )}
                     </td>
                     <td id="colunaquantidade">
-                    <input
-                      id="colunaquantidade2"
-                      type="number"
-                      min="1"
-                      max={
-                        item.plataforma === "PS5"
+                      <input
+                        type="number"
+                        min="1"
+                        max={(
+                          item.plataforma === "PS5"
                           ? item.quantidade_ps5
                           : item.plataforma === "Xbox"
                           ? item.quantidade_xbox
                           : item.plataforma === "PC"
                           ? item.quantidade_pc
-                          : 1
-                      }
-                      value={item.quantidade || 1}
-                      onChange={(e) => {
-                        const novaQuantidade = parseInt(e.target.value);
-                        const maxQuantidade =
-                          item.plataforma === "PS5"
+                          :1)
+                        }
+                        value={item.quantidade || 1}
+                        onChange={(e) => {
+                          const novaQuantidade = parseInt(e.target.value);
+                          handleQuantidade(item._id, novaQuantidade,(
+                            item.plataforma === "PS5"
                             ? item.quantidade_ps5
                             : item.plataforma === "Xbox"
                             ? item.quantidade_xbox
                             : item.plataforma === "PC"
                             ? item.quantidade_pc
-                            : 1;
-
-                        if (novaQuantidade <= maxQuantidade) {
-                          handlequantidade(index, novaQuantidade);
-                        } else {
-                          toast.error(`Quantidade máxima para ${item.plataforma}: ${maxQuantidade}`, {
-                            position: "top-center",
-                            autoClose: 2500,
-                            theme: "dark",
-                          });
-                        }
-                      }}
-                    />
-                  </td>
+                            :1))
+                        }}
+                      />
+                    </td>
                     <td id="colunapreco">
-                      R$ {((item.preco / 10) * (item.quantidade || 1)).toFixed(2)}
+                      R$ {(item.preco * (item.quantidade || 1)/10).toFixed(2)}
                     </td>
                     <td id="colunaexcluir">
-                      <button type="button" onClick={() => handleRemover(index)}>
+                      <button type="button" onClick={() => handleRemover(item._id)}>
                         Excluir
                       </button>
                     </td>

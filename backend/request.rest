@@ -1,19 +1,12 @@
-POST  http://localhost:5000/enderecos
+POST https://localhost:5000/carrinhos
 Content-Type: application/json
+Authorization: Bearer {{localStorage.getItem('token')}}
 
-
+{
+  "idUsuario": "678f1b424c674ad9f2dda623",
+  "jogo": [
     {
-      "rua": "Ritxanero",
-      "numero": "43",
-      "cidade": "Ritxanero2",
-      "estado": "ERRE JOTA",
-      "cep": "12312341241",
-      "idUsuario": "6783ecbe8aa1ee96beaeb63b"
+      "jogoid": "teste"
     }
-
-
-
-
-
-   
-
+  ]
+}

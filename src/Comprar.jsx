@@ -11,13 +11,6 @@ function Comprar() {
     const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
     const ID = currentUser._id;
 
-    useEffect(() => {
-        const carrinho = JSON.parse(localStorage.getItem('carrinho')); // Obtém os itens do carrinho armazenados
-        if (carrinho) {
-            setItensCarrinho(carrinho);
-        }
-    }, []);
-
     const [pagamentos, setPagamentos] = useState([]);
     const [enderecos, setEnderecos] = useState([]);
     const [metodoSelecionado, setMetodoSelecionado] = useState("");
@@ -31,11 +24,12 @@ function Comprar() {
     const API_URL_endereco = "https://localhost:5000/enderecos"
     const API_URL_pedidos = "https://localhost:5000/pedidos"
     const API_URL_jogos = "https://localhost:5000/jogos"
+    const API_URL_carrinhos = "https://localhost:5000/carrinhos"
 
     useEffect(() => {
         const carregarDados = async () => {
             try {
-                const [responsePagamento, responseEndereco] = await Promise.all([
+                const [responsePagamento, responseEndereco, responseCarrinho] = await Promise.all([
                     axios.get(
                         `${API_URL_pagamento}/${ID}`,
                         {
@@ -52,9 +46,35 @@ function Comprar() {
                             }
                         }
                     ),
+                    axios.get(
+                        `${API_URL_carrinhos}/${ID}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
+                            }
+                        }
+                    ),
                 ]);
+                const carrinhoId = responseCarrinho.data._id;
+
+                const itens = responseCarrinho.data.jogo;
+                const detalhesJogos = await Promise.all(
+                    itens.map(async (item) => {
+                      const responseJogo = await axios.get(`${API_URL_jogos}/${item.jogoid}`);
+                      const { _id, ...jogoDetalhes } = responseJogo.data; // para que _id nao calse complito com o _id do carrinho.jogo
+          
+                      return {
+                        ...item,
+                        ...jogoDetalhes,
+                        plataforma: item.plataformaSelecionada || "",
+          
+                      };
+                    })
+                  );
+
                 setPagamentos(responsePagamento.data);
                 setEnderecos(responseEndereco.data);
+                setItensCarrinho(detalhesJogos)
             } catch (error) {
                 console.error("Erro ao carregar os dados:", error);
                 toast.error("Erro ao carregar dados do usuário.");
@@ -65,9 +85,7 @@ function Comprar() {
 
     // Função para calcular o total da compra
     useEffect(() => {
-        const totalCompra = itensCarrinho.reduce((total, item) => {
-            return total + ((item.preco * item.quantidade) / 10);
-        }, 0);
+        const totalCompra =  itensCarrinho.reduce((acc, item) => acc + item.preco * (item.quantidade || 1)/10, 0);
         setTotal(totalCompra.toFixed(2));  // Aplica .toFixed(2) após o cálculo do total
     }, [itensCarrinho]);
 
@@ -95,7 +113,7 @@ function Comprar() {
     const FinalizarCompra = async () => {
         // Mapeando os jogos comprados para atualização
         const atualizarJogos = itensCarrinho.map(item => ({
-            id: item._id, // ID do jogo
+            id: item.jogoid, // ID do jogo
             numeroVendas: ((item.numeroVendas) || 0) + item.quantidade, // Incrementa pelas vendas realizadas
             ...(item.plataforma === "PS5" && { quantidade_ps5: item.quantidade_ps5 - item.quantidade }),
             ...(item.plataforma === "Xbox" && { quantidade_xbox: item.quantidade_xbox - item.quantidade }),
@@ -105,9 +123,9 @@ function Comprar() {
         const pedido = {
             idUsuario: ID,
             jogosComprados: itensCarrinho.map(item => ({
-                jogo: item.nome,
-                plataformaSelecionada: item.plataforma,
-                quantidade: item.quantidade,
+                jogo: String(item.nome ),
+                plataformaSelecionada: String(item.plataforma ),
+                quantidade: Number(item.quantidade),
             })),
             total: total,
             enderecoId: enderecoSelecionado,
@@ -129,7 +147,6 @@ function Comprar() {
             }
     
             // Limpa o carrinho e notifica o usuário
-            localStorage.removeItem('carrinho');
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
                 autoClose: 2500,
@@ -138,7 +155,6 @@ function Comprar() {
         } catch (error) {
             console.error("Erro ao salvar o pedido:", error);
             toast.error("Erro ao finalizar a compra.");
-            console.log(atualizarJogos);
         } finally {
             setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
         }
