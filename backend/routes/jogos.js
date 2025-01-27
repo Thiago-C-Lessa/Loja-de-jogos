@@ -2,15 +2,32 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const {autenticaToken, verificaAdmin} = require('./users')
 
 //importa o modelo do mongo
 const Jogo = require('../models/jogos');
 
-// Permite com que apenas usuários administradores possam acessar essa rota
-router.get('/admin-only', autenticaToken, verificaAdmin, (req, res) => {
-  res.status(200).json({ message: "Bem-vindo à rota restrita de administrador." });
-});
+const autenticaToken = (req, res, next)=>
+  {
+      const token = req.headers.authorization?.split(' ')[1];
+      if (!token) {
+          return res.status(403).json({ message: "Token de autenticação não fornecido." });
+      }
+      jwt.verify(token, process.env.__TOKEN_JWT__, (err,user)=>{
+          if(err)
+          {
+              return res.sendStatus(403)
+          } 
+          req.user = user;
+          next();
+      })
+  }
+
+  const verificaAdmin = (req, res, next) =>{
+    if(!req.user.tipoAdm || req.user.tipoAdm !== "true"){
+        return res.status(403).json({message: "Acesso negado! Apenas usuários admnistradores podem acessar esta rota."})
+    }
+    next();
+}
 
 //para fazer um log no terminal quando uma requisição for feita
 const logAction = (action, data) => {
@@ -42,7 +59,7 @@ const upload = multer({ storage: storage });
 
 
 // CREATE: Adicionar um novo jogo
-router.post('/', verificaAdmin, async (req, res) => {
+router.post('/', verificaAdmin, autenticaToken, async (req, res) => {
     try {
       const jogo = new Jogo(req.body); // Cria um novo jogo com os dados do corpo da requisição
       await jogo.save(); // Salva o jogo no banco de dados
@@ -77,9 +94,9 @@ router.post('/', verificaAdmin, async (req, res) => {
       res.status(400).json({ message: err.message });
     }
   });
- 
+  
   // UPDATE: Atualizar um jogo
-  router.put('/:id', verificaAdmin, async (req, res) => {
+  router.put('/:id', verificaAdmin, autenticaToken, async (req, res) => {
     try {
       const jogo = await Jogo.findByIdAndUpdate(req.params.id, req.body, { new: true }); // Atualiza o jogo
       if (!jogo) {
@@ -93,14 +110,18 @@ router.post('/', verificaAdmin, async (req, res) => {
   });
   
   // DELETE: Excluir um jogo
-  router.delete('/:id', verificaAdmin, async (req, res) => {
+  router.delete('/:id', verificaAdmin, autenticaToken, async (req, res) => {
     try {
       const jogo = await Jogo.findByIdAndDelete(req.params.id); // Exclui o jogo pelo ID
       if (!jogo) {
         return res.status(404).json({ message: 'Jogo não encontrado' });
       }
       logAction("deleteJogo",{jogo})
-      res.status(200).json({ message: 'Jogo excluído com sucesso' }); // Retorna mensagem de sucesso
+      if (verificaAdmin){
+        res.status(200).json({ message: 'Jogo excluído com sucesso' }); // Retorna mensagem de sucesso
+      } else{
+        res.status(200).json({ message: 'O usuário precisa ser administrador.' }); // Retorna mensagem de sucesso
+      }
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
