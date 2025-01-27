@@ -58,7 +58,7 @@ const autenticaToken = (req, res, next)=>
     
             logAction("createUser");
             const token = jwt.sign(
-                { id: users._id, email: users.email },
+                { id: users._id, email: users.email, tipoAdm: users.tipoAdm},
                 process.env.__TOKEN_JWT__
             );
             // Retorna o usuário salvo com status 201 (Criado)
@@ -126,7 +126,7 @@ router.post('/login', async(req,res)=>{
     }
 
     const token = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email, tipoAdm: user.tipoAdm},
         process.env.__TOKEN_JWT__
     );
 
