@@ -44,12 +44,7 @@ function Carrinho() {
         setItensCarrinho(detalhesJogos);
         setCarrinhoId(carrinhoId)
       } catch (error) {
-        console.error("Erro ao carregar o carrinho:", error);
-        toast.error("Erro ao carregar o carrinho.", {
-          position: "top-center",
-          autoClose: 3000,
-          theme: "dark",
-        });
+        console.error("carinho vazio:", error);
       }
     };
 
@@ -216,11 +211,11 @@ function Carrinho() {
                         min="1"
                         max={(
                           item.plataforma === "PS5"
-                          ? item.quantidade_ps5
+                          ? item.quantidade_ps5+1
                           : item.plataforma === "Xbox"
-                          ? item.quantidade_xbox
+                          ? item.quantidade_xbox+1
                           : item.plataforma === "PC"
-                          ? item.quantidade_pc
+                          ? item.quantidade_pc+1
                           :1)
                         }
                         value={item.quantidade || 1}

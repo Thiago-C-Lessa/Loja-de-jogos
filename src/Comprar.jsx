@@ -17,6 +17,8 @@ function Comprar() {
     const [enderecoSelecionado, setEnderecoSelecionado] = useState("");
     const [itensCarrinho, setItensCarrinho] = useState([]);
     const [total, setTotal] = useState(0); // Valor total da compra
+    const [carrinhoId, setCarrinhoId] = useState(null);
+
 
     const navigate = useNavigate(); // Hook para navegação
 
@@ -55,7 +57,7 @@ function Comprar() {
                         }
                     ),
                 ]);
-                const carrinhoId = responseCarrinho.data._id;
+                setCarrinhoId(responseCarrinho.data._id);
 
                 const itens = responseCarrinho.data.jogo;
                 const detalhesJogos = await Promise.all(
@@ -145,7 +147,10 @@ function Comprar() {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
             }
-    
+            console.log(carrinhoId)
+            await axios.delete(`${API_URL_carrinhos}/deletarCarrinho/${carrinhoId}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+              });
             // Limpa o carrinho e notifica o usuário
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",

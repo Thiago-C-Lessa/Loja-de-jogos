@@ -53,10 +53,6 @@ router.delete('/:id', autenticaToken, async (req, res) => {
     const { id } = req.params;
     const { jogoId } = req.body;
 
-    console.log('Dados enviados:', {id});
-    
-    console.log('Dados enviadoss:', { jogoId});
-    
     const carrinho = await Carrinhos.findById(id);
     const itemIndex = carrinho.jogo.findIndex(item => item._id.toString() === jogoId); 
     carrinho.jogo.splice(itemIndex, 1);
@@ -69,6 +65,22 @@ router.delete('/:id', autenticaToken, async (req, res) => {
     res.status(400).json({ message: err.message }); // Em caso de erro, retorna o erro
   }
 });
+
+router.delete('/deletarCarrinho/:id', autenticaToken, async (req, res) => {
+  try {
+    const { id } = req.params; // Obtém o ID do carrinho a ser deletado
+    const carrinho = await Carrinhos.findByIdAndDelete(id); // Deleta o carrinho no banco de dados
+
+    if (!carrinho) {
+      return res.status(404).json({ message: "Carrinho não encontrado" });
+    }
+
+    res.status(204).send(); // Retorna status 204 em caso de sucesso
+  } catch (err) {
+    res.status(500).json({ message: "Erro ao deletar o carrinho", error: err.message });
+  }
+});
+
 
 
 router.put('/:id', autenticaToken, async (req, res) => {
