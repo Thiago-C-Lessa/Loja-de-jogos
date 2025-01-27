@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import NavbarInterna from "./assets/navbarInterna.jsx";
 import "./Style/main.css";
 import "./Style/navbarInterna.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import EnderecoCard from "./assets/EnderecoCard.jsx";
-
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 
 function PerfilUsuario() {
@@ -14,6 +16,39 @@ function PerfilUsuario() {
   const { currentUser } = useSelector((state) => state.userReducer);
   const ID = currentUser._id;
   
+  const API_URL = "https://localhost:5000/usuarios"
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+
+  const handleDelete = async () => {
+    try {
+      // Faz a requisição DELETE para a API
+      await axios.delete(`${API_URL}/${ID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      // Exibe um toast de sucesso e navega após 1 segundo
+      toast.success("Usuário excluído!", {
+        position: "top-center",
+        autoClose: 2500,
+        theme: "dark",
+      });
+      dispatch({
+        type: 'user/logout', // Dispara a ação de logout
+      });
+      localStorage.removeItem('token');
+      navigate("/", { state: { message: "Usuário excluído com sucesso!" } });
+    } catch (error) {
+      // Caso ocorra um erro, exibe a mensagem e loga o erro no console
+      console.error("Erro ao deletar usuário:", error);
+      alert("ERRO AO DELETAR USUÁRIO");
+    }
+  };
+  
+
 
   //função para converter a data de nascimento
   function formatacaoData(dateString) {
@@ -64,7 +99,12 @@ function PerfilUsuario() {
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
             CPF: {currentUser.cpf}
           </li>
-          
+          <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black", textAlign: "center",}}>
+            
+            <a href={`/EditarUsuario`} className="btn btn-danger" style={{marginRight:'1rem'}}>
+              Editar usuario
+            </a>
+          </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 8%)", color: "white", borderColor: "black", display: "flex", justifyContent: "center", alignItems: "center"}}>
           ENDEREÇO DO USUÁRIO
           </li>
@@ -78,6 +118,7 @@ function PerfilUsuario() {
               Acessar
             </a>
           </li>
+          
         </ul>
       </div>
 
@@ -111,6 +152,16 @@ function PerfilUsuario() {
           </div>
         </div>
       </div>
+      
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        <button onClick={handleDelete} className="btn"
+          style={{ marginRight: '1rem', backgroundColor: 'red', color: 'white' }}
+        >
+          Deletar usuário
+        </button>
+      </div>
+
+          <ToastContainer/>
 
     </>
   );

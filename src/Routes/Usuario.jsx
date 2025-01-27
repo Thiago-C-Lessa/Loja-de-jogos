@@ -15,6 +15,7 @@ import HistoricoCompras from '../HistoricoCompras';
 import GerirEnderecos from '../GerirEndereco';
 import MaisVendidos from '../MaisVendidos';
 
+
 import { BrowserRouter as Router,
         Routes,
         Route,

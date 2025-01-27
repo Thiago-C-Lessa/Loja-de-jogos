@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Home() {
   const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
@@ -15,6 +16,18 @@ function Home() {
   const navigate = useNavigate();
 
   const API_URL = "https://localhost:5000/carrinhos"; // Atualize a URL conforme necessário
+
+  const location = useLocation();
+  useEffect(() => {
+    // Verifica se há uma mensagem no state e exibe
+    if (location.state?.message) {
+      toast.success(location.state.message, {
+        position: "top-center",
+        autoClose: 3000,
+        theme: "dark",
+      });
+    }
+  }, [location]);
 
   function notify() {
     toast.success("Jogo adicionado no carrinho!", {

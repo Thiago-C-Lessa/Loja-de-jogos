@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import NavbarInterna from "./assets/navbarInterna.jsx";
+import NavbarInterna from './assets/navbarInterna.jsx';
 import "./Style/main.css";
 import { useSelector } from "react-redux";
+
 import axios from "axios";
 import "./Style/HistoricoCompras.css";
 
@@ -54,7 +55,9 @@ function HistoricoCompras() {
 
   return (
     <div>
+
       <NavbarInterna />
+
       <div className="container my-4">
         <h1 style={{ color: "White", textAlign: "center" }}>
           Compras realizadas

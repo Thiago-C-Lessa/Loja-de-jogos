@@ -164,5 +164,24 @@ router.get("/getByEmail/:email", async (req, res) => {
         res.status(500).json({ mensagem: 'Erro ao buscar usuário.', erro });
     }
 });
+
+    router.delete('/:id', async (req, res) => {
+        try {
+            const id = req.params.id;
+            console.log(id);
+            const user = await User.findByIdAndDelete(id); // Exclui o jogo pelo ID
+            if (!user) {
+            return res.status(404).json({ message: 'usuario nao encontrado' });
+          }
+          logAction("deleteJogo",{user})
+          res.status(200).json({ message: 'usuario excluido com sucesso' }); // Retorna mensagem de sucesso
+
+        } catch (err) {
+          res.status(400).json({ message: err.message });
+        }
+      });
+
+
+
   
 module.exports = router;
