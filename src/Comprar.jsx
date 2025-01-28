@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Importando useNavigate para navegação
+import React, { useState, useEffect } from "react"; 
+import { useNavigate } from "react-router-dom"; 
 import NavbarInterna from './assets/navbarInterna';
 import './Style/Comprar.css';
 import { toast, ToastContainer } from 'react-toastify';
@@ -8,125 +8,163 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 function Comprar() {
-    const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
-    const ID = currentUser._id;
+    const { currentUser  } = useSelector((state) => state.userReducer);
+    const ID = currentUser ._id;
 
-    const [pagamentos, setPagamentos] = useState([]);
     const [enderecos, setEnderecos] = useState([]);
-    const [metodoSelecionado, setMetodoSelecionado] = useState("");
     const [enderecoSelecionado, setEnderecoSelecionado] = useState("");
+    const [formEnderecoVisivel, setFormEnderecoVisivel] = useState(false);
+    const [novoEndereco, setNovoEndereco] = useState({
+        rua: "",
+        numero: "",
+        cidade: "",
+        estado: "",
+        cep: "",
+        idUsuario: ID,
+    });
+    const [pagamentos, setPagamentos] = useState([]);
+    const [metodoSelecionado, setMetodoSelecionado] = useState("");
+    const [formPagamentoVisivel, setFormPagamentoVisivel] = useState(false);
+    const [novoPagamento, setNovoPagamento] = useState({
+        ApelidoCartao: "",
+        numeroCartao: "",
+        NomeCartao: "",
+        dataNascimento: "",
+        idUsuario: ID,
+    });
     const [itensCarrinho, setItensCarrinho] = useState([]);
-    const [total, setTotal] = useState(0); // Valor total da compra
+    const [total, setTotal] = useState(0);
     const [carrinhoId, setCarrinhoId] = useState(null);
 
+    const navigate = useNavigate();
 
-    const navigate = useNavigate(); // Hook para navegação
-
-    const API_URL_pagamento = "https://localhost:5000/pagamentos"
-    const API_URL_endereco = "https://localhost:5000/enderecos"
-    const API_URL_pedidos = "https://localhost:5000/pedidos"
-    const API_URL_jogos = "https://localhost:5000/jogos"
-    const API_URL_carrinhos = "https://localhost:5000/carrinhos"
+    const API_URL_endereco = "https://localhost:5000/enderecos"; 
+    const API_URL_pagamento = "https://localhost:5000/pagamentos";
+    const API_URL_pedidos = "https://localhost:5000/pedidos";
+    const API_URL_jogos = "https://localhost:5000/jogos";
+    const API_URL_carrinhos = "https://localhost:5000/carrinhos";
 
     useEffect(() => {
         const carregarDados = async () => {
             try {
-                const [responsePagamento, responseEndereco, responseCarrinho] = await Promise.all([
-                    axios.get(
-                        `${API_URL_pagamento}/${ID}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`
-                            }
-                        }
-                    ),
-                    axios.get(
-                        `${API_URL_endereco}/${ID}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`
-                            }
-                        }
-                    ),
-                    axios.get(
-                        `${API_URL_carrinhos}/${ID}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem('token')}`
-                            }
-                        }
-                    ),
+                const [responseEndereco, responsePagamento, responseCarrinho] = await Promise.all([
+                    axios.get(`${API_URL_endereco}/${ID}`, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }),
+                    axios.get(`${API_URL_pagamento}/${ID}`, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }),
+                    axios.get(`${API_URL_carrinhos}/${ID}`, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                    }),
                 ]);
                 setCarrinhoId(responseCarrinho.data._id);
+                setPagamentos(responsePagamento.data);
+                setEnderecos(responseEndereco.data);
 
                 const itens = responseCarrinho.data.jogo;
                 const detalhesJogos = await Promise.all(
                     itens.map(async (item) => {
-                      const responseJogo = await axios.get(`${API_URL_jogos}/${item.jogoid}`);
-                      const { _id, ...jogoDetalhes } = responseJogo.data; // para que _id nao calse complito com o _id do carrinho.jogo
-          
-                      return {
-                        ...item,
-                        ...jogoDetalhes,
-                        plataforma: item.plataformaSelecionada || "",
-          
-                      };
+                        const responseJogo = await axios.get(`${API_URL_jogos}/${item.jogoid}`);
+                        const { _id, ...jogoDetalhes } = responseJogo.data;
+                        return {
+                            ...item,
+                            ...jogoDetalhes,
+                            plataforma: item.plataformaSelecionada || "",
+                        };
                     })
-                  );
+                );
 
-                setPagamentos(responsePagamento.data);
-                setEnderecos(responseEndereco.data);
-                setItensCarrinho(detalhesJogos)
+                setItensCarrinho(detalhesJogos);
             } catch (error) {
-                console.error("Erro ao carregar os dados:", error);
+                console.error("Erro ao carregar dados:", error);
                 toast.error("Erro ao carregar dados do usuário.");
             }
         };
         carregarDados();
     }, [ID]);
 
-    // Função para calcular o total da compra
     useEffect(() => {
-        const totalCompra =  itensCarrinho.reduce((acc, item) => acc + item.preco * (item.quantidade || 1)/10, 0);
-        setTotal(totalCompra.toFixed(2));  // Aplica .toFixed(2) após o cálculo do total
+        const totalCompra = itensCarrinho.reduce((acc, item) => acc + item.preco * (item.quantidade || 1) / 10, 0);
+        setTotal(totalCompra.toFixed(2));
     }, [itensCarrinho]);
 
-    const handleMetodoChange = (e) => setMetodoSelecionado(e.target.value);
     const handleEnderecoChange = (e) => {
         const selectedValue = e.target.value;
         setEnderecoSelecionado(selectedValue);
-
-        // Se a opção "Adicionar novo endereço" for selecionada, navegue para /GerirEndereco
         if (selectedValue === "add-new") {
-            navigate("/GerirEndereco"); // Navegação para a tela de gerenciamento de endereços
+            setFormEnderecoVisivel(true);
+        } else {
+            setFormEnderecoVisivel(false);
         }
     };
 
-    const handleMetodoPagamentoChange = (e) => {
+    const handleMetodoChange = (e) => {
         const selectedValue = e.target.value;
         setMetodoSelecionado(selectedValue);
-
-        // Se a opção "Adicionar novo método" for selecionada, navegue para /Pagamentos
         if (selectedValue === "add-new") {
-            navigate("/Pagamentos"); // Navegação para a tela de gerenciamento de métodos de pagamento
+            setFormPagamentoVisivel(true);
+        } else {
+            setFormPagamentoVisivel(false);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNovoEndereco((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleInputPagamentoChange = (e) => {
+        const { name, value } = e.target;
+        setNovoPagamento((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmitEndereco = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(API_URL_endereco, novoEndereco, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+            setEnderecos((prev) => [...prev, response.data]);
+            setNovoEndereco({ rua: "", numero: "", cidade: "", estado: "", cep: "", idUsuario: ID });
+            setFormEnderecoVisivel(false);
+            toast.success("Endereço adicionado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao adicionar endereço:", error);
+            toast.error("Erro ao adicionar endereço.");
+        }
+    };
+
+    const handleSubmitPagamento = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(API_URL_pagamento, novoPagamento, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+            setPagamentos((prev) => [...prev, response.data]);
+            setNovoPagamento({ ApelidoCartao: "", numeroCartao: "", NomeCartao: "", dataNascimento: "", idUsuario: ID });
+            setFormPagamentoVisivel(false);
+            toast.success("Método de pagamento adicionado com sucesso!");
+        } catch (error) {
+            console.error("Erro ao adicionar método de pagamento:", error);
+            toast.error("Erro ao adicionar método de pagamento.");
         }
     };
 
     const FinalizarCompra = async () => {
-        // Mapeando os jogos comprados para atualização
         const atualizarJogos = itensCarrinho.map(item => ({
-            id: item.jogoid, // ID do jogo
-            numeroVendas: ((item.numeroVendas) || 0) + item.quantidade, // Incrementa pelas vendas realizadas
+            id: item.jogoid,
+            numeroVendas: ((item.numeroVendas) || 0) + item.quantidade,
             ...(item.plataforma === "PS5" && { quantidade_ps5: item.quantidade_ps5 - item.quantidade }),
             ...(item.plataforma === "Xbox" && { quantidade_xbox: item.quantidade_xbox - item.quantidade }),
             ...(item.plataforma === "PC" && { quantidade_pc: item.quantidade_pc - item.quantidade }),
         }));
-    
+
         const pedido = {
             idUsuario: ID,
             jogosComprados: itensCarrinho.map(item => ({
-                jogo: String(item.nome ),
-                plataformaSelecionada: String(item.plataforma ),
+                jogo: String(item.nome),
+                plataformaSelecionada: String(item.plataforma),
                 quantidade: Number(item.quantidade),
             })),
             total: total,
@@ -134,24 +172,22 @@ function Comprar() {
             metodoPagamentoId: metodoSelecionado,
             data: new Date().toISOString(),
         };
-    
+
         try {
-            // Envia o pedido para o servidor
             await axios.post(API_URL_pedidos, pedido, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
-    
-            // Atualiza as informações dos jogos comprados no servidor
+
             for (const jogo of atualizarJogos) {
                 await axios.put(`${API_URL_jogos}/${jogo.id}`, jogo, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
             }
-            console.log(carrinhoId)
+
             await axios.delete(`${API_URL_carrinhos}/deletarCarrinho/${carrinhoId}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-              });
-            // Limpa o carrinho e notifica o usuário
+            });
+
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
                 autoClose: 2500,
@@ -161,10 +197,9 @@ function Comprar() {
             console.error("Erro ao salvar o pedido:", error);
             toast.error("Erro ao finalizar a compra.");
         } finally {
-            setTimeout(() => navigate("/"), 2500); // Redireciona após 2.5s
+            setTimeout(() => navigate("/"), 2500);
         }
     };
-    
 
     return (
         <div>
@@ -175,7 +210,7 @@ function Comprar() {
                     className="form-select mb-4"
                     value={enderecoSelecionado}
                     onChange={handleEnderecoChange}
-                    style={{ width: '100%' }} // Tamanho igual
+                    style={{ width: '100%' }}
                 >
                     <option value="">Escolha um endereço</option>
                     {enderecos.map((endereco) => (
@@ -186,30 +221,88 @@ function Comprar() {
                     <option value="add-new">Adicionar novo endereço</option>
                 </select>
 
-                {enderecoSelecionado && (
-                    <div className="card p-4">
-                        <h3 style={{ textAlign: "center" }}>Endereço Selecionado:</h3>
-                        {enderecos
-                            .filter((endereco) => endereco._id === enderecoSelecionado) // Comparação com string
-                            .map((endereco) => (
-                                <div key={endereco._id}>
-                                    <p><strong>Rua:</strong> {endereco.rua}</p>
-                                    <p><strong>Número:</strong> {endereco.numero}</p>
-                                    <p><strong>Cidade:</strong> {endereco.cidade}</p>
-                                    <p><strong>Estado:</strong> {endereco.estado}</p>
-                                </div>
-                            ))}
-                    </div>
+                {formEnderecoVisivel && (
+                    <form onSubmit={handleSubmitEndereco} className="card p-4">
+                        <h3 style={{ textAlign: "center" }}>Adicionar Novo Endereço</h3>
+                        <div className="mb-3">
+                            <label className="form-label" style={{ color: "black" }}>Rua</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="rua"
+                                value={novoEndereco.rua}
+                                onChange={handleInputChange}
+                                placeholder="Ex.: Avenida Brasil"
+                                required
+                                style={{ color: "black" }}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label" style={{ color: "black" }}>Número</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="numero"
+                                value={novoEndereco.numero}
+                                onChange={handleInputChange}
+                                placeholder="Ex.: 123"
+                                required
+                                style={{ color: "black" }}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label" style={{ color: "black" }}>Cidade</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="cidade"
+                                value={novoEndereco.cidade}
+                                onChange={handleInputChange}
+                                placeholder="Ex.: São Paulo"
+                                required
+                                style={{ color: "black" }}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label" style={{ color: "black" }}>Estado</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="estado"
+                                value={novoEndereco.estado}
+                                onChange={handleInputChange}
+                                placeholder="Ex.: SP"
+                                required
+                                style={{ color: "black" }}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label" style={{ color: "black" }}>CEP</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="cep"
+                                value={novoEndereco.cep}
+                                onChange={handleInputChange}
+                                placeholder="Ex.: 01234-567"
+                                required
+                                style={{ color: "black" }}
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-primary w-100">
+                            Adicionar Endereço
+                        </button>
+                    </form>
                 )}
 
-                {enderecoSelecionado && (
-                    <div style={{ padding: "3rem" }}>
-                        <h2 style={{ color: "white" }}>Métodos de Pagamento</h2>
+                {enderecoSelecionado && enderecoSelecionado !== "add-new" && (
+                    <div className="card p-4 mt-4">
+                        <h3 style={{ textAlign: "center" }}>Métodos de Pagamento</h3>
                         <select
                             className="form-select mb-4"
                             value={metodoSelecionado}
-                            onChange={handleMetodoPagamentoChange}
-                            style={{ width: '100%' }} // Tamanho igual
+                            onChange={handleMetodoChange}
+                            style={{ width: '100%' }}
                         >
                             <option value="">Escolha um método</option>
                             {pagamentos.map((metodo) => (
@@ -220,7 +313,64 @@ function Comprar() {
                             <option value="add-new">Adicionar novo método</option>
                         </select>
 
-                        {metodoSelecionado && (
+                        {formPagamentoVisivel && (
+                            <form onSubmit={handleSubmitPagamento} className="card p-4">
+                                <h3 style={{ textAlign: "center" }}>Adicionar Novo Método de Pagamento</h3>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: "black" }}>Apelido do Cartão</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="ApelidoCartao"
+                                        value={novoPagamento.ApelidoCartao}
+                                        onChange={handleInputPagamentoChange}
+                                        required
+                                        style={{ color: "black" }}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: "black" }}>Número do Cartão</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="numeroCartao"
+                                        value={novoPagamento.numeroCartao}
+                                        onChange={handleInputPagamentoChange}
+                                        required
+                                        style={{ color: "black" }}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: "black" }}>Nome no Cartão</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="NomeCartao"
+                                        value={novoPagamento.NomeCartao}
+                                        onChange={handleInputPagamentoChange}
+                                        required
+                                        style={{ color: "black" }}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label" style={{ color: "black" }}>Data de Validade</label>
+                                    <input
+                                        type="month"
+                                        className="form-control"
+                                        name="dataNascimento"
+                                        value={novoPagamento.dataNascimento}
+                                        onChange={handleInputPagamentoChange}
+                                        required
+                                        style={{ color: "black" }}
+                                    />
+                                </div>
+                                <button type="submit" className="btn btn-primary w-100">
+                                    Adicionar Método de Pagamento
+                                </button>
+                            </form>
+                        )}
+
+                        {metodoSelecionado && metodoSelecionado !== "add-new" && (
                             <div className="card p-4">
                                 <h3 style={{ textAlign: "center" }}>Método Selecionado:</h3>
                                 {pagamentos
@@ -243,7 +393,7 @@ function Comprar() {
                     </div>
                 )}
 
-                <h5 id="total">VALOR TOTAL DA COMPRA:  R$ {total}</h5>
+                <h5 id="total">VALOR TOTAL DA COMPRA: R$ {total}</h5>
 
                 <ToastContainer />
             </div>
