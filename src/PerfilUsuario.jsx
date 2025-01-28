@@ -20,7 +20,38 @@ function PerfilUsuario() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+  const [formData, setFormData] = useState([]);
+
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/getById/${ID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        const users = response.data;
+
+      const dataNascimento = new Date(users.dataNascimento);
+      // Formatando a data para "dd/mm/yyyy"
+      const dataFormatada = dataNascimento.toISOString().split('T')[0];
+        setFormData({
+          nome: users.nome,
+          dataNascimento: dataFormatada,
+          email: users.email,
+          cpf: users.cpf,
+
+        });
+
+      } catch (error) {
+        console.error("Erro ao buscar os dados do usuário:", error);
+      }
+    };
+
+    fetchUsuario();
+  }, [ID]);
 
   const handleDelete = async () => {
     try {
@@ -50,17 +81,6 @@ function PerfilUsuario() {
   
 
 
-  //função para converter a data de nascimento
-  function formatacaoData(dateString) {
-    // Remove hora
-    const partes = dateString.split('T')[0].split('Z')[0].split('/');
-    
-    
-    if (partes[0].includes('-')) {
-      const [ano, mes, dia] = partes[0].split('-');
-      return `${dia}/${mes}/${ano}`;
-    }
-  }
 
 
   return (
@@ -88,16 +108,16 @@ function PerfilUsuario() {
         <div className="card-header" style={{color:"white", backgroundColor:"hsl(235, 60%, 8%)", display: "flex", justifyContent: "center", alignItems: "center" }}>DADOS DO USUÁRIO</div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-            Nome completo: { currentUser.nome}
+            Nome completo: { formData.nome}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
-            Data de nascimento: {formatacaoData(currentUser.dataNascimento)}
+            Data de nascimento: {formData.dataNascimento}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black"}}>
-            Endereço de E-mail: {currentUser.email}
+            Endereço de E-mail: {formData.email}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 22%)", color: "white", borderColor: "black"}}>
-            CPF: {currentUser.cpf}
+            CPF: {formData.cpf}
           </li>
           <li className="list-group-item" style={{backgroundColor: "hsl(235, 60%, 20%)", color: "white", borderColor: "black", textAlign: "center",}}>
             

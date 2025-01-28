@@ -2,39 +2,58 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import NavbarInterna from './assets/navbarInterna.jsx';
+import { useSelector } from "react-redux";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 
 const EditarUsuario = () => {
-  const { id } = useParams(); // Obter o ID do usuário da URL
+  const { currentUser } = useSelector((state) => state.userReducer); // Usuário atual
+  const ID = currentUser?._id;
+
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: "",
     dataNascimento: "",
     email: "",
+    senha:"",
+    novasenha: "",
   });
 
-  const hoje = new Date().toISOString().split('T')[0]; 
 
   // Buscar os dados do usuário ao carregar o componente
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        const response = await axios.get(`https://localhost:5000/usuarios/${id}`);
-        const usuario = response.data;
+        const response = await axios.get(`https://localhost:5000/usuarios/getById/${ID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        const users = response.data;
+
+      const dataNascimento = new Date(users.dataNascimento);
+      // Formatando a data para "dd/mm/yyyy"
+      const dataFormatada = dataNascimento.toISOString().split('T')[0];
         setFormData({
-          nome: usuario.nome,
-          dataNascimento: usuario.dataNascimento,
-          email: usuario.email,
+          nome: users.nome,
+          dataNascimento: dataFormatada,
+          email: users.email,
+
         });
+
       } catch (error) {
         console.error("Erro ao buscar os dados do usuário:", error);
       }
     };
 
     fetchUsuario();
-  }, [id]);
+  }, [ID]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,18 +68,36 @@ const EditarUsuario = () => {
 
     try {
       const updatedUsuario = { ...formData };
-      const response = await axios.put(`https://localhost:5000/usuarios/${id}`, updatedUsuario);
+      const response = await axios.put(`https://localhost:5000/usuarios/${ID}`, updatedUsuario,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        } 
+      )
 
       if (response.status === 200) {
-        alert("Usuário atualizado com sucesso!");
-        navigate(-1); // Redireciona para a página anterior
-      } else {
-        alert("Erro ao atualizar o usuário.");
+        toast.success("Usuario atualizado com sucesso!", {
+                position: "top-center",
+                autoClose: 2500,
+                theme: "dark",
+              });;
+        setTimeout(() => navigate('/PerfilUsuario'), 2500);
       }
     } catch (error) {
-      console.error("Erro ao atualizar o usuário:", error);
-      alert("Erro ao atualizar o usuário.");
+      if (error.response.status === 401) {
+        toast.error("Senha incorreta.", {
+          position: "top-center",
+          autoClose: 2000,
+          theme: "dark",
+        });
+      } else {
+        alert("Erro ao atualizar o usuário.");
+        console.error("Erro ao atualizar o usuário:", error);
+      }
     }
+    
+    
   };
 
   return (
@@ -98,7 +135,6 @@ const EditarUsuario = () => {
                 id="dobInput"
                 name="dataNascimento"
                 value={formData.dataNascimento}
-                max={hoje}
                 onChange={handleChange}
                 required
               />
@@ -118,7 +154,61 @@ const EditarUsuario = () => {
                 placeholder="Digite o e-mail"
                 required
               />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="passwordInput" className="form-label" style={{ color: "black" }}>
+                  Senha Atual
+                </label>
+                <div className="input-group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control"
+                    id="passwordInput"
+                    name="senha"
+                    value={formData.senha}
+                    onChange={handleChange}
+                    placeholder="Digite sua senha"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Ocultar" : "Mostrar"}
+                  </button>
+                </div>
             </div>
+
+            <div className="mb-3">
+              <label htmlFor="newPasswordInput" className="form-label" style={{ color: "black" }}>
+                Nova Senha
+              </label>
+              <div className="input-group">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control"
+                  id="newPasswordInput"
+                  name="novasenha"  // Corrigido para "novasenha"
+                  value={formData.novasenha}
+                  onChange={handleChange}
+                  placeholder="Digite sua nova senha"
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Ocultar" : "Mostrar"}
+                </button>
+              </div>
+            </div>
+
+
+            
+
+            
 
             <button type="submit" className="btn btn-primary w-100" style={{ color: "black" }}>
               Confirmar Edições
@@ -127,6 +217,7 @@ const EditarUsuario = () => {
         </div>
       </div>
     </div>
+    <ToastContainer />
     </div>
   );
 };

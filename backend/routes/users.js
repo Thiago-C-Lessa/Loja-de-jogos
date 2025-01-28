@@ -76,10 +76,9 @@ const autenticaToken = (req, res, next)=>
     
 
 //GETBYID
-router.get('/getById', async (req, res) => {
-    const { id } = req.body;
+router.get('/getById/:id',autenticaToken, async (req, res) => {
     try {
-        const user = await User.findOne({ id }); // Busca o usuario pelo ID
+        const user = await User.findById( req.params.id ); // Busca o usuario pelo ID
         if (!user) {
         return res.status(404).json({ message: 'usuario não encontrado' }); // Se não encontrar, retorna 404
         }
@@ -180,6 +179,49 @@ router.get("/getByEmail/:email", async (req, res) => {
           res.status(400).json({ message: err.message });
         }
       });
+
+    
+      router.put('/:id', autenticaToken, async (req, res) => {
+        try {
+          const id = req.params.id;
+          const dados = req.body;
+            
+          console.log(dados,'senha',id)
+          // Buscar o usuário pelo ID
+          const user = await User.findById(id);
+      
+          if (!user) {
+            return res.status(404).json({ message: "Usuário não encontrado." });
+          }
+      
+          // Verificar se a senha atual está correta
+          const senhaAtual = dados.senha;  // A senha atual enviada no corpo da requisição
+          const senhaValida = await argon2.verify(user.senha, senhaAtual);
+          if (!senhaValida) {
+            return res.status(401).json({ message: "Senha incorreta." });
+          }
+      
+          // Atualizar a senha apenas se a nova senha foi fornecida
+          if (dados.novasenha) {
+            const hashedPassword = await argon2.hash(dados.novasenha);
+            user.senha = hashedPassword;  // Atualiza a senha do usuário
+          }
+      
+          // Atualizar outros dados do usuário (exceto a senha)
+          user.nome = dados.nome || user.nome;
+          user.email = dados.email || user.email;
+          user.dataNascimento = dados.dataNascimento || user.dataNascimento;
+      
+          // Salvar as alterações no banco de dados
+          await user.save();
+      
+          res.status(200).json({ message: "Usuário atualizado com sucesso.", user });
+        } catch (err) {
+          console.error("Erro ao atualizar o usuário:", err);
+          res.status(400).json({ message: err.message });
+        }
+      });
+      
 
 
 
