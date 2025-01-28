@@ -39,6 +39,7 @@ const autenticaToken = (req, res, next)=>
 
 router.post('/', autenticaToken, async (req, res) => {
 try {
+    console.log(req.body)
     const carrinho = new Carrinhos(req.body); // Cria um novo com os dados do corpo da requisição
     await carrinho.save(); 
     res.status(201).json(carrinho); // Retorna o carrinho salvo com status 201 (Criado)
@@ -53,33 +54,39 @@ router.delete('/:id', autenticaToken, async (req, res) => {
     const { id } = req.params;
     const { jogoId } = req.body;
 
+    console.log(jogoId)
+
     const carrinho = await Carrinhos.findById(id);
     const itemIndex = carrinho.jogo.findIndex(item => item._id.toString() === jogoId); 
-    carrinho.jogo.splice(itemIndex, 1);
-    
+    carrinho.jogo.splice(0, 1);
     // Salvando o carrinho com o jogo removido
     await carrinho.save();
-    
     res.sendStatus(204); // Sucesso, sem conteúdo para retornar
   } catch (err) {
     res.status(400).json({ message: err.message }); // Em caso de erro, retorna o erro
   }
 });
 
-router.delete('/deletarCarrinho/:id', autenticaToken, async (req, res) => {
+router.put('/deletarJogosCarrinho/:id', async (req, res) => {
   try {
-    const { id } = req.params; // Obtém o ID do carrinho a ser deletado
-    const carrinho = await Carrinhos.findByIdAndDelete(id); // Deleta o carrinho no banco de dados
+
+    const { id } = req.params;
+    const carrinho = await Carrinhos.findById(id); // Busca o carrinho pelo ID
 
     if (!carrinho) {
       return res.status(404).json({ message: "Carrinho não encontrado" });
     }
 
+    // Remove todos os jogos do array 'jogo'
+    carrinho.jogo = []; 
+    await carrinho.save(); // Salva as alterações no banco de dados
+
     res.status(204).send(); // Retorna status 204 em caso de sucesso
   } catch (err) {
-    res.status(500).json({ message: "Erro ao deletar o carrinho", error: err.message });
+    res.status(500).json({ message: "Erro ao deletar os jogos do carrinho", error: err.message });
   }
 });
+
 
 
 
@@ -129,7 +136,6 @@ router.put('/atualizar-quantidade/:id', autenticaToken, async (req, res) => {
     const { id } = req.params; // ID do carrinho
     const { jogoId, novaQuantidade } = req.body; // JogoID e a nova plataforma
     
-    console.log(id,jogoId)
     // Buscar o carrinho pelo ID
     const carrinho = await Carrinhos.findById(id); // Encontrar o carrinho no banco de dados
 

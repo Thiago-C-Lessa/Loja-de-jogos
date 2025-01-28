@@ -184,9 +184,8 @@ function Comprar() {
                 });
             }
 
-            await axios.delete(`${API_URL_carrinhos}/deletarCarrinho/${carrinhoId}`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-            });
+            await axios.put(`${API_URL_carrinhos}/deletarJogosCarrinho/${carrinhoId}`
+            );
 
             toast.success("Compra realizada com sucesso!", {
                 position: "top-center",
@@ -206,6 +205,7 @@ function Comprar() {
             <NavbarInterna />
             <div className="container d-flex flex-column align-items-center mt-4">
                 <h2 style={{ color: "white" }}>Endereço do Usuário</h2>
+                <div className="card p-4 mt-4" style ={{marginBottom:"1rem"}}>
                 <select
                     className="form-select mb-4"
                     value={enderecoSelecionado}
@@ -222,7 +222,7 @@ function Comprar() {
                 </select>
 
                 {formEnderecoVisivel && (
-                    <form onSubmit={handleSubmitEndereco} className="card p-4">
+                    <form onSubmit={handleSubmitEndereco} className="card p-4" style ={{marginBottom:"1rem"}}>
                         <h3 style={{ textAlign: "center" }}>Adicionar Novo Endereço</h3>
                         <div className="mb-3">
                             <label className="form-label" style={{ color: "black" }}>Rua</label>
@@ -293,10 +293,28 @@ function Comprar() {
                             Adicionar Endereço
                         </button>
                     </form>
+                    
                 )}
 
+                    {enderecoSelecionado && enderecoSelecionado !== "add-new" && (
+                        <div className="card p-4 mt-4" style={{ marginBottom: "1rem" }}>
+                            <h3 style={{ textAlign: "center" }}>Endereço Selecionado:</h3>
+                            {enderecos
+                                .filter((endereco) => endereco._id === enderecoSelecionado)
+                                .map((endereco) => (
+                                    <div key={endereco._id}>
+                                        <p><strong>Rua:</strong> {endereco.rua}</p>
+                                        <p><strong>Número:</strong> {endereco.numero}</p>
+                                        <p><strong>Cidade:</strong> {endereco.cidade}</p>
+                                        <p><strong>Estado:</strong> {endereco.estado}</p>
+                                        <p><strong>CEP:</strong> {endereco.cep}</p>
+                                    </div>
+                                ))}
+                        </div>
+                    )}
+                </div>
                 {enderecoSelecionado && enderecoSelecionado !== "add-new" && (
-                    <div className="card p-4 mt-4">
+                    <div className="card p-4 mt-4" style ={{marginBottom:"1rem"}}>
                         <h3 style={{ textAlign: "center" }}>Métodos de Pagamento</h3>
                         <select
                             className="form-select mb-4"
@@ -369,7 +387,7 @@ function Comprar() {
                                 </button>
                             </form>
                         )}
-
+                    
                         {metodoSelecionado && metodoSelecionado !== "add-new" && (
                             <div className="card p-4">
                                 <h3 style={{ textAlign: "center" }}>Método Selecionado:</h3>
@@ -393,7 +411,7 @@ function Comprar() {
                     </div>
                 )}
 
-                <h5 id="total">VALOR TOTAL DA COMPRA: R$ {total}</h5>
+                <h5  id="total">VALOR TOTAL DA COMPRA: R$ {total}</h5>
 
                 <ToastContainer />
             </div>

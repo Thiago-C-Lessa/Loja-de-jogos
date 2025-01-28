@@ -11,7 +11,11 @@ const CarrinhosSchema = new Schema({
         }, 
             jogo: [
                 {
-                jogoid: { type: String, required: true }, 
+                    jogoid: { 
+                            type: mongoose.Schema.Types.ObjectId,  // Referência para o _id do usuário
+                            ref: 'jogos',  // Nome do modelo de usuário, garantindo a associação correta
+                            required: true 
+                        },
                 plataformaSelecionada: { type: String, default: null }, 
                 quantidade: { type: Number, default: 0 }
                 }

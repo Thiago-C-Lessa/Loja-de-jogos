@@ -56,18 +56,24 @@ function Cadastro() {
       const userData = {
         ...formData,
       };
-      const response = await axios.post("https://localhost:5000/usuarios", userData);
+      const response = await axios.post("https://localhost:5000/usuarios", userData);  
 
       if (response.status === 201 || response.status === 200) {
         const user = response.data.user; // Usuário retornado pelo backend
 
-        // Atualiza o estado global com o usuário logado
         dispatch({
           type: "user/login",
           payload: user,
         });
-
+  
         localStorage.setItem('token',response.data.token);//armazena o token no local storage
+        
+        await axios.post("https://localhost:5000/carrinhos", { idUsuario: user._id },{
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+
+        // Atualiza o estado global com o usuário logado
+       
 
         notify("Cadastro concluído!");
 
