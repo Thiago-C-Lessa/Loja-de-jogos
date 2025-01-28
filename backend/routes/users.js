@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const argon2 = require("argon2");
 const jwt = require('jsonwebtoken');
-
 const User = require('../models/users');
 
 //para fazer um log no terminal quando uma requisição for feita
@@ -13,8 +12,7 @@ const logAction = (action) =>
     console.log(log);
 };
 
-const autenticaToken = (req, res, next)=>
-  {
+const autenticaToken = (req, res, next)=>{
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) {
           return res.status(403).json({ message: "Token de autenticação não fornecido." });
@@ -29,49 +27,56 @@ const autenticaToken = (req, res, next)=>
       })
   }
 
+const verificaAdmin = (req, res, next) =>{
+    if(!req.user.tipoAdm || req.user.tipoAdm !== "true"){
+        return res.status(403).json({message: "Acesso negado! Apenas usuários admnistradores podem acessar esta rota."})
+    }
+    next();
+}
+
     //POST
-    router.post("/", async (req, res) => {
-        try {
-            // Cria um novo usuário com os dados do corpo da requisição
-            const {
-                nome,
-                dataNascimento,
-                cpf,
-                email,
-                senha,
-                tipoAdm,
-            } = req.body;
+router.post("/", async (req, res) => {
+    try {
+        // Cria um novo usuário com os dados do corpo da requisição
+        const {
+            nome,
+            dataNascimento,
+            cpf,
+            email,
+            senha,
+            tipoAdm,
+        } = req.body;
 
-            const hashedPassword = await argon2.hash(senha);
-            const users = new User({
-                nome,
-                dataNascimento,
-                cpf,
-                email,
-                senha: hashedPassword,  // Armazena a senha como hash
-                tipoAdm: "false",
-            });
+        const hashedPassword = await argon2.hash(senha);
+        const users = new User({
+            nome,
+            dataNascimento,
+            cpf,
+            email,
+            senha: hashedPassword,  // Armazena a senha como hash
+            tipoAdm: "false",
+        });
     
-            await users.save(); // Salva o usuário no banco de dados
+        await users.save(); // Salva o usuário no banco de dados
 
-            users.senha = null;
+        users.senha = null;
     
-            logAction("createUser");
-            const token = jwt.sign(
-                { id: users._id, email: users.email },
-                process.env.__TOKEN_JWT__
-            );
-            // Retorna o usuário salvo com status 201 (Criado)
-            res.status(200).json({ 
-              message: "Usuaário cridado com sucesso.",
-              user: users,
-              token: token
-            });
-        } catch (err) {
-            console.error("Erro ao criar usuário:", err.message, err);
-            res.status(400).json({ message: err.message, details: err });
-        }
-    });
+        logAction("createUser");
+        const token = jwt.sign(
+            { id: users._id, email: users.email, tipoAdm: users.tipoAdm},
+            process.env.__TOKEN_JWT__
+        );
+        // Retorna o usuário salvo com status 201 (Criado)
+        res.status(200).json({ 
+            message: "Usuário cridado com sucesso.",
+            user: users,
+            token: token
+        });
+    } catch (err) {
+        console.error("Erro ao criar usuário:", err.message, err);
+        res.status(400).json({ message: err.message, details: err });
+    }
+});
     
     
 
@@ -125,7 +130,7 @@ router.post('/login', async(req,res)=>{
     }
 
     const token = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email, tipoAdm: user.tipoAdm},
         process.env.__TOKEN_JWT__
     );
 
@@ -142,6 +147,13 @@ router.post('/login', async(req,res)=>{
       console.error("Erro no login:", error);
       res.status(500).json({ message: "Erro interno do servidor." });
     }
+});
+
+router.get('/admin-only', autenticaToken, verificaAdmin, (req,res)=>{
+    res.status(200).json({message: "Bem-vindo, Administrador."})
+});
+router.get('/user-info', autenticaToken, (req, res)=>{
+    res.status(200).json({ message: `Olá, ${req.user.email}!` });
 });
 
 //GET BY EMAIL
@@ -226,4 +238,4 @@ router.get("/getByEmail/:email", async (req, res) => {
 
 
   
-module.exports = router;
+module.exports = {router, autenticaToken, verificaAdmin};
